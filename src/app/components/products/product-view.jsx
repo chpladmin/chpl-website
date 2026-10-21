@@ -89,7 +89,7 @@ function ChplProductView({ product, productCount, dispatch }) {
   const [mergeAnchorEl, setMergeAnchorEl] = useState(null);
 
   useEffect(() => {
-    setOptions([{ id: 'all', version: 'All' }].concat(product.versions.sort((a, b) => (a.id < b.id ? 1 : -1))));
+    setOptions([{ id: 'all', version: 'All' }].concat([...product.versions].sort((a, b) => (a.id < b.id ? 1 : -1))));
     const rollup = product.versions
       .flatMap((version) => version.listings)
       .reduce((obj, l) => ({

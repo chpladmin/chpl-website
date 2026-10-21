@@ -3,7 +3,11 @@ import {
   Box, Card, CardContent, CardHeader, CircularProgress, Container, Typography,
 } from '@mui/material';
 import {
-  arrayOf, bool, func, number, string,
+  arrayOf,
+  bool,
+  func,
+  number,
+  string,
 } from 'prop-types';
 
 import ChplUserInvite from './user-invite';
@@ -13,6 +17,7 @@ import ChplUserEdit from './user-edit';
 import { usePutUser } from 'api/users';
 import { ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { user as userPropType } from 'shared/prop-types';
 import { theme } from 'themes';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -205,8 +210,8 @@ function ChplUsersView({
                   />
                 </Box>
                 <Box sx={styles.users}>
-                  { users
-                    .sort((a, b) => a.fullName.localeCompare(b.fullName, 'en', { sensitivity: 'base' }))
+                  { [...users]
+                    .sort((a, b) => compareStrings(a.fullName, b.fullName))
                     .map((u) => displayUser(u))}
                 </Box>
               </CardContent>

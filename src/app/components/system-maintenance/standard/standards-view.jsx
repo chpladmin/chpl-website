@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  IconButton,
-} from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -11,11 +7,7 @@ import InfoIcon from '@mui/icons-material/Info';
 
 import { useFetchStandardsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import {
   ChplSearchResultCard,
   ChplSearchResultControls,
@@ -57,7 +49,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       ]))
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria
+        criteriaDisplay: [...item.criteria]
           .sort(sortCriteria)
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),

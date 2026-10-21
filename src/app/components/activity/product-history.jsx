@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Dialog, DialogContent, Typography,
+  Button,
+  Dialog,
+  DialogContent,
+  Typography,
 } from '@mui/material';
-import {
-  Timeline,
-} from '@mui/lab';
+import { Timeline } from '@mui/lab';
 import TrackChangesOutlined from '@mui/icons-material/TrackChangesOutlined';
 import { object } from 'prop-types';
 
 import ChplActivityDetails from './activity-details';
 
-import {
-  useFetchProductActivitiesMetadata,
-  useFetchVersionActivitiesMetadata,
-} from 'api/activity';
+import { useFetchProductActivitiesMetadata, useFetchVersionActivitiesMetadata } from 'api/activity';
 import { compareProduct } from 'components/activity/services/products.service';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 
@@ -100,7 +98,7 @@ function ChplProductHistory({ product }) {
           { activities.length > 0
             && (
               <Timeline>
-                { activities
+                { [...activities]
                   .sort((a, b) => (a.date < b.date ? 1 : -1))
                   .map((activity, idx, arr) => (
                     <ChplActivityDetails

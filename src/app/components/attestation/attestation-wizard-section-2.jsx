@@ -141,7 +141,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
           value={(item.submittedResponses && item.submittedResponses[0]?.response) || ''}
           onChange={(event) => handleResponse(section, item, event.currentTarget.value)}
         >
-          { item.question.allowedResponses
+          { [...item.question.allowedResponses]
             .sort((a, b) => a.sortOrder - b.sortOrder)
             .map((response) => (
               <FormControlLabel
@@ -172,7 +172,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
                    <FormControl component="fieldset">
                      <FormLabel sx={styles.nonCaps}>{ interpretEmphatic(child.question.question) }</FormLabel>
                      <FormGroup>
-                       { child.question.allowedResponses
+                       { [...child.question.allowedResponses]
                          .sort((a, b) => a.sortOrder - b.sortOrder)
                          .map((answer) => (
                            <FormControlLabel
@@ -221,7 +221,7 @@ function ChplAttestationWizardSection2({ dispatch, instructions = '', sections: 
         <CardContent>
           { getInstructions(instructions) }
           <Divider />
-          { sections.sort((a, b) => a.sortOrder - b.sortOrder).map((section, idx) => getSection(section, idx)) }
+          { [...sections].sort((a, b) => a.sortOrder - b.sortOrder).map((section, idx) => getSection(section, idx)) }
         </CardContent>
       </Card>
     </Container>

@@ -25,14 +25,11 @@ import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 import * as yup from 'yup';
 
-import {
-  useFetchDevelopersBySearch,
-  usePostMessage,
-  usePostMessagePreview,
-} from 'api/developer';
+import { useFetchDevelopersBySearch, usePostMessage, usePostMessagePreview } from 'api/developer';
 import { useFilterContext } from 'components/filter';
 import { ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -169,7 +166,7 @@ function ChplMessaging({ dispatch }) {
 
   useEffect(() => {
     if (undeliverableIsLoading || undeliverableIsError || !undeliverableData.results) { return; }
-    setUndeliverable(undeliverableData.results.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })));
+    setUndeliverable([...undeliverableData.results].sort((a, b) => compareStrings(a.name, b.name)));
     setUndeliverableTotalCount(undeliverableData.recordCount);
   }, [undeliverableData, undeliverableIsError, undeliverableIsLoading]);
 

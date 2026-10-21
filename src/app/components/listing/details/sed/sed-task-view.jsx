@@ -23,6 +23,7 @@ import ChplSedTaskParticipantsView from './sed-task-participants-view';
 
 import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles, theme } from 'themes';
 
@@ -109,7 +110,7 @@ function ChplSedTaskView({ task: initialTask }) {
         count: value,
         percentage: makePercentage(value / initialTask.testParticipants.length),
       }))
-      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+      .sort((a, b) => compareStrings(a.name, b.name)));
   }, [initialTask]);
 
   const handleAccordionChange = () => {
@@ -161,7 +162,7 @@ function ChplSedTaskView({ task: initialTask }) {
                     <TableCell>Associated Certification Criteria</TableCell>
                     <TableCell>
                       <List>
-                        {task.criteria
+                        {[...task.criteria]
                           .sort(sortCriteria)
                           .map((criterion) => (
                             <ListItem key={criterion.id}>

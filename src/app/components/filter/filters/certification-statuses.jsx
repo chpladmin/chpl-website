@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 
 import { defaultFilter } from 'components/filter';
-import { getStatusIcon } from 'services/listing.service';
+import { compareCertificationStatuses, getStatusIcon } from 'services/listing.service';
 
 const getCertificationStatusValueEntry = ({ filter, handleFilterToggle }) => filter.values.map((value) => {
   const labelId = `filter-panel-secondary-items-${(`${value.value}`).replace(/ /g, '_')}`;
@@ -59,11 +59,7 @@ const filter = {
   key: 'certificationStatuses',
   display: 'Certification Status',
   getValueEntry: getCertificationStatusValueEntry,
-  sortValues: (f, a, b) => {
-    const aIndex = values.findIndex((v) => v.value === a.value);
-    const bIndex = values.findIndex((v) => v.value === b.value);
-    return aIndex - bIndex;
-  },
+  sortValues: (f, a, b) => compareCertificationStatuses(a.value, b.value),
   values,
 };
 

@@ -79,14 +79,14 @@ const getAction = (item, dispatch) => {
 };
 
 function ChplReportJobTypesView(props) {
-  const { dispatch } = props;
+  const { dispatch, jobTypes: initialJobTypes } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [jobTypes, setJobTypes] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
 
   useEffect(() => {
-    setJobTypes(props.jobTypes
+    setJobTypes(initialJobTypes
       .map((job) => ({
         ...job,
         oncAcbSpecific: job.jobDataMap.acbSpecific ? 'Yes' : 'No',
@@ -101,7 +101,7 @@ function ChplReportJobTypesView(props) {
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = jobTypes.sort(sortComparator(property, descending));
+    const updated = [...jobTypes].sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
     setJobTypes(updated);
