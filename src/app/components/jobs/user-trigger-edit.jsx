@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
   FormControlLabel,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -19,7 +19,7 @@ import { compareStrings } from 'services/sort.service';
 import { acb as acbPropType, trigger as triggerType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
-const useStyles = makeStyles({
+const styles = {
   cardContainer: {
     display: 'grid',
     gap: '16px',
@@ -44,7 +44,7 @@ const useStyles = makeStyles({
       gridTemplateColumns: '1fr 1fr 1fr',
     },
   },
-});
+};
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -69,7 +69,6 @@ function ChplUserTriggerEdit(props) {
   );
   const [showRange, setShowRange] = useState(false);
   const [trigger, setTrigger] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -160,12 +159,12 @@ function ChplUserTriggerEdit(props) {
           titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`${trigger.name ? 'Edit' : 'Schedule'} Report: ${trigger.job.name}`}
           subheader={(
-            <Typography className={classes.subHeaderColor} variant="body1">
+            <Typography sx={styles.subHeaderColor} variant="body1">
               {trigger.job.description}
             </Typography>
           )}
         />
-        <CardContent className={classes.cardContainer}>
+        <CardContent sx={styles.cardContainer}>
           <Card>
             <CardContent>
               <Typography gutterBottom variant="subtitle1">Send the report to?</Typography>
@@ -183,7 +182,7 @@ function ChplUserTriggerEdit(props) {
               />
             </CardContent>
           </Card>
-          <div className={classes.subContainer}>
+          <Box sx={styles.subContainer}>
             { showRange
             && (
             <Card>
@@ -213,7 +212,7 @@ function ChplUserTriggerEdit(props) {
             <Card>
               <CardContent>
                 <Typography variant="subtitle1">ONC-ACBs available to schedule</Typography>
-                <div className={classes.acbGrid} aria-label="ONC-ACBs available to schedule">
+                <Box sx={styles.acbGrid} aria-label="ONC-ACBs available to schedule">
                   { acbs.map((acb) => (
                     <div key={acb.id}>
                       <FormControlLabel
@@ -230,7 +229,7 @@ function ChplUserTriggerEdit(props) {
                       />
                     </div>
                   ))}
-                </div>
+                </Box>
                 { !isAcbSelectionValid()
                   && (
                     <Typography>At least one ONC-ACB must be selected</Typography>
@@ -238,7 +237,7 @@ function ChplUserTriggerEdit(props) {
               </CardContent>
             </Card>
             )}
-          </div>
+          </Box>
         </CardContent>
       </Card>
       <ChplActionBar dispatch={handleBarDispatch} />

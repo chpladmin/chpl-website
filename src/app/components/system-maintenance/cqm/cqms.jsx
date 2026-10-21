@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
+} from '@mui/material';
+import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 
 import ChplCqmsView from './cqms-view';
 

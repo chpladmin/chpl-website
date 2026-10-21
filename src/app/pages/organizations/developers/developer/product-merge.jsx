@@ -10,9 +10,8 @@ import {
   Divider,
   List,
   ListItem,
-  makeStyles,
-} from '@material-ui/core';
-import { ArrowBack, ArrowForward } from '@material-ui/icons';
+} from '@mui/material';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { func, object } from 'prop-types';
 
@@ -24,7 +23,7 @@ import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext, DeveloperContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   columnContainer: {
     display: 'flex',
@@ -63,7 +62,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gridGap: '32px',
   },
-});
+};
 
 function ChplProductMerge({ dispatch, product }) {
   const { analytics } = useAnalyticsContext();
@@ -72,7 +71,6 @@ function ChplProductMerge({ dispatch, product }) {
   const { developer } = useContext(DeveloperContext);
   const [mergingProducts, setMergingProducts] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -136,7 +134,7 @@ function ChplProductMerge({ dispatch, product }) {
   return (
     <>
       <Container disableGutters maxWidth="xl">
-        <Box className={classes.pageContainer}>
+        <Box sx={styles.pageContainer}>
           <Box>
             <ChplProduct
               product={product}
@@ -146,18 +144,18 @@ function ChplProductMerge({ dispatch, product }) {
               isProcessing={isProcessing}
             />
           </Box>
-          <Divider className={classes.fullWidthGridRow} />
+          <Divider sx={styles.fullWidthGridRow} />
           <Card>
             <CardHeader title="Add Products to merge" />
             <CardContent>
-              <List className={classes.itemList}>
+              <List sx={styles.itemList}>
                 { developer.products
                   .filter((prod) => mergingProducts.every((p) => p.id !== prod.id))
                   .filter((prod) => prod.id !== product.id)
                   .sort((a, b) => compareStrings(a.name, b.name))
                   .map((item) => (
-                    <ListItem divider className={classes.listItem} dense key={item.id}>
-                      <Box className={classes.itemName}>
+                    <ListItem divider sx={styles.listItem} dense key={item.id}>
+                      <Box sx={styles.itemName}>
                         {item.name}
                       </Box>
                       <ChplTooltip
@@ -182,13 +180,13 @@ function ChplProductMerge({ dispatch, product }) {
           <Card>
             <CardHeader title="Products to Merge" />
             <CardContent>
-              <List className={classes.itemList}>
+              <List sx={styles.itemList}>
                 <ListItem>{ product.name }</ListItem>
                 { [...mergingProducts]
                   .sort((a, b) => compareStrings(a.name, b.name))
                   .map((item) => (
-                    <ListItem divider className={classes.listItem} dense key={item.id}>
-                      <Box className={classes.itemName}>
+                    <ListItem divider sx={styles.listItem} dense key={item.id}>
+                      <Box sx={styles.itemName}>
                         {item.name}
                       </Box>
                       <ChplTooltip

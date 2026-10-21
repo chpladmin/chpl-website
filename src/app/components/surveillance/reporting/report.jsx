@@ -6,7 +6,7 @@ import {
   CardHeader,
   CircularProgress,
   MenuItem,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func } from 'prop-types';
 
 import ChplAnnual from './annual';
@@ -85,7 +85,7 @@ function ChplReport({ acb, dispatch }) {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gridGap="16px">
+    <Box display="flex" flexDirection="column" gap="16px">
       { state === ''
         && (
           <Card>
@@ -109,8 +109,8 @@ function ChplReport({ acb, dispatch }) {
         )}
       <Box
         display="grid"
-        gridTemplateColumns={state === '' ? 'repeat(auto-fill, minmax(200px, 1fr))' : 'repeat(1, 1fr)'}
-        gridGap={12}
+        gridTemplateColumns={state === '' ? 'repeat(auto-fill, minmax(250px, 1fr))' : 'repeat(1, 1fr)'}
+        gap="12px"
         alignItems="stretch"
         justifyItems="stretch"
       >
@@ -123,7 +123,7 @@ function ChplReport({ acb, dispatch }) {
               report={filteredQuarterly.find((r) => r.quarter === q.name)}
               year={activeYear}
               acb={acb}
-              style={{ minWidth: '200px', minHeight: '100px' }}
+              style={{ minWidth: '250px', minHeight: '275px' }}
             />
           ))}
         { (state === '' || state === 'focus-annual')
@@ -133,7 +133,7 @@ function ChplReport({ acb, dispatch }) {
               report={filteredAnnual}
               year={activeYear}
               acb={acb}
-              style={{ minWidth: '200px', minHeight: '100px' }}
+              style={{ minWidth: '250px', minHeight: '275px' }}
             />
           )}
       </Box>

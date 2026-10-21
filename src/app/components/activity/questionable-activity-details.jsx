@@ -8,10 +8,9 @@ import {
   Dialog,
   DialogContent,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoIcon from '@material-ui/icons/Info';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InfoIcon from '@mui/icons-material/Info';
 import { object } from 'prop-types';
 
 import { compareDeveloper } from './services/developers.service';
@@ -23,7 +22,7 @@ import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareListing } from 'pages/listing/history/listings.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
-const useStyles = makeStyles({
+const styles = {
   legendTitle: {
     fontSize: '1.25em',
   },
@@ -31,12 +30,12 @@ const useStyles = makeStyles({
     color: '#156dac',
     fontWeight: 'bold',
   },
-});
+};
 
 const getDisplay = (title, value, fullWidth = false) => {
   if (!value) { return null; }
   return (
-    <Box width={fullWidth ? '100%' : '48%'} alignItems={fullWidth ? 'flex-start' : 'center'} gridGap="8px" display="flex" justifyContent="space-between">
+    <Box width={fullWidth ? '100%' : '48%'} alignItems={fullWidth ? 'flex-start' : 'center'} gap="8px" display="flex" justifyContent="space-between">
       <Box display="flex" flexDirection="column" width="100%">
         <Typography variant="subtitle1">
           {title}
@@ -52,7 +51,6 @@ const getDisplay = (title, value, fullWidth = false) => {
 function ChplQuestionableActivityDetails({ activity }) {
   const [details, setDetails] = useState(undefined);
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
 
   const { data, isError, isLoading } = useFetchActivity({
     id: activity.activityId,
@@ -124,12 +122,12 @@ function ChplQuestionableActivityDetails({ activity }) {
         <ChplDialogTitle
           id={`activity-details-${activity.id}-title`}
           onClose={handleClose}
-          className={classes.legendTitle}
+          sx={styles.legendTitle}
         >
           Questionable Activity Details
         </ChplDialogTitle>
         <DialogContent dividers>
-          <Box pb={4} display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+          <Box pb={4} display="flex" gap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
             {getDisplay('Trigger Level', activity.triggerLevel)}
             {getDisplay('Trigger Name', activity.triggerName)}
             {getDisplay('Activity Date', getDisplayDateFormat(activity.activityDate))}
@@ -145,20 +143,20 @@ function ChplQuestionableActivityDetails({ activity }) {
             {getDisplay('Reason', activity.reason, true)}
           </Box>
           { activity.activityId && details?.length > 0
-            && (
-              <Accordion variant="outlined">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography
-                    variant="subtitle2"
-                  >
-                    Activity Details
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <ul dangerouslySetInnerHTML={{ __html: details }} />
-                </AccordionDetails>
-              </Accordion>
-            )}
+          && (
+            <Accordion variant="outlined">
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography
+                  variant="subtitle2"
+                >
+                  Activity Details
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <ul dangerouslySetInnerHTML={{ __html: details }} />
+              </AccordionDetails>
+            </Accordion>
+          )}
         </DialogContent>
       </Dialog>
     </>

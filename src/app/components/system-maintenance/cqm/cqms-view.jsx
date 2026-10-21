@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import { Box, IconButton, Typography } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 import { arrayOf } from 'prop-types';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
@@ -19,9 +14,9 @@ const sortOptions = [
   { property: 'description', text: 'Description' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
-});
+};
 
 const sortVersion = (a, b) => {
   const aNum = parseInt(a.substring(1), 10);
@@ -33,7 +28,6 @@ function ChplCqmsView({ cqms: initialCqms }) {
   const [cqms, setCqms] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('display');
-  const classes = useStyles();
 
   useEffect(() => {
     setCqms(initialCqms
@@ -54,8 +48,8 @@ function ChplCqmsView({ cqms: initialCqms }) {
 
   return (
     <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
           <Typography variant="subtitle2">
             CQMs
           </Typography>
@@ -63,7 +57,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
             {`(${cqms.length} Result${cqms.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
+        <Box display="flex" alignItems="center" gap="4px">
           <ChplSortControls
             sortOptions={sortOptions}
             orderBy={orderBy}
@@ -85,7 +79,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
                     <InfoIcon fontSize="small" />
                   </IconButton>
                 </ChplTooltip>
-              )}
+            )}
               fieldGroups={[
                 [
                   { label: 'Title', value: item.title || 'N/A' },
