@@ -24,7 +24,7 @@ import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
 import { eventTrack } from 'services/analytics.service';
-import { compareStrings } from 'services/sort.service';
+import { compareOrganizations } from 'services/sort.service';
 import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -57,12 +57,6 @@ const useStyles = makeStyles({
   },
 });
 
-const sortOrgs = (a, b) => {
-  if (a.retired && !b.retired) { return 1; }
-  if (!a.retired && b.retired) { return -1; }
-  return compareStrings(a.name, b.name);
-};
-
 function ChplOncOrganizations({ orgType = 'acb' }) {
   const { hasAnyRole } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
@@ -84,7 +78,7 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
   useEffect(() => {
     if (orgType !== 'acb') { return; }
     if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
-    setOrgs([...acbQuery.data.acbs].sort(sortOrgs));
+    setOrgs([...acbQuery.data.acbs].sort(compareOrganizations));
     if (acbQuery.data.acbs.length === 1) {
       setActiveId(acbQuery.data.acbs[0].id);
     }
@@ -93,7 +87,7 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
   useEffect(() => {
     if (orgType !== 'atl') { return; }
     if (atlQuery.isLoading || !atlQuery.isSuccess) { return; }
-    setOrgs([...atlQuery.data.atls].sort(sortOrgs));
+    setOrgs([...atlQuery.data.atls].sort(compareOrganizations));
     if (atlQuery.data.atls.length === 1) {
       setActiveId(atlQuery.data.atls[0].id);
     }

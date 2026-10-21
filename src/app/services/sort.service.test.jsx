@@ -1,4 +1,4 @@
-import { compareStrings } from './sort.service';
+import { compareOrganizations, compareStrings } from './sort.service';
 
 const sorted = (values) => [...values].sort(compareStrings);
 
@@ -25,5 +25,27 @@ describe('compareStrings', () => {
 
   it('can sort descending by negating it', () => {
     expect([...['A', 'c', 'B']].sort((a, b) => -compareStrings(a, b))).toEqual(['c', 'B', 'A']);
+  });
+});
+
+describe('compareOrganizations', () => {
+  const names = (orgs) => [...orgs].sort(compareOrganizations).map((org) => org.name);
+
+  it('puts active organizations before retired ones', () => {
+    expect(names([
+      { name: 'Alpha', retired: true },
+      { name: 'Zeta', retired: false },
+      { name: 'Beta' },
+    ])).toEqual(['Beta', 'Zeta', 'Alpha']);
+  });
+
+  it('orders by name within active and within retired, ignoring case', () => {
+    expect(names([
+      { name: 'leidos', retired: true },
+      { name: 'ICSA Labs' },
+      { name: 'Drummond', retired: true },
+      { name: 'drummond group' },
+      { name: 'SLI Compliance' },
+    ])).toEqual(['drummond group', 'ICSA Labs', 'SLI Compliance', 'Drummond', 'leidos']);
   });
 });
