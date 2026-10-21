@@ -24,6 +24,7 @@ import { useSnackbar } from 'notistack';
 import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { DeveloperContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -74,7 +75,7 @@ function ChplJoinDevelopers({ dispatch }) {
     if (isLoading) { return; }
     setDevelopers(data
       .filter((dev) => dev.id !== activeDeveloper.id)
-      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+      .sort((a, b) => compareStrings(a.name, b.name)));
   }, [data, isLoading]);
 
   const addDeveloper = (_, developer) => {
@@ -89,7 +90,7 @@ function ChplJoinDevelopers({ dispatch }) {
     if (developer.statuses?.length === 0) {
       return undefined;
     }
-    const current = developer.statuses
+    const current = [...developer.statuses]
       .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))[0];
     if (current.endDate) {
       return undefined;

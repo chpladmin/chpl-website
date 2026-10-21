@@ -439,7 +439,7 @@ function ChplQuarterEdit({ dispatch, report }) {
               { listings.length > 0
                 && (
                   <>
-                    { listings
+                    { [...listings]
                       .sort(sortListings)
                       .map((l) => (
                         <ChplQuarterEditListing

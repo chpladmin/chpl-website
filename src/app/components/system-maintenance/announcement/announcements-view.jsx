@@ -15,7 +15,7 @@ import { ChplSearchResultCard } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { announcement as announcementPropType } from 'shared/prop-types';
-import { theme, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const styles = {
   ...utilStyles,
@@ -35,7 +35,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
-    setAnnouncements(initialAnnouncements.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
+    setAnnouncements([...initialAnnouncements].sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
   }, [initialAnnouncements]);
 
   const handleActionBarDispatch = (action, payload) => {

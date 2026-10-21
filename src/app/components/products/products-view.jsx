@@ -6,11 +6,8 @@ import { arrayOf, func } from 'prop-types';
 
 import ChplProductView from './product-view';
 
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
+import { compareStrings } from 'services/sort.service';
 import { product as productPropType } from 'shared/prop-types';
 import { theme, utilStyles } from 'themes';
 
@@ -86,7 +83,7 @@ const includeListing = (listing, params) => {
   return include;
 };
 
-const sortProducts = (a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+const sortProducts = (a, b) => compareStrings(a.name, b.name);
 
 function ChplProductsView({ products = [], dispatch }) {
   const { queryParams } = useFilterContext();
@@ -140,7 +137,7 @@ function ChplProductsView({ products = [], dispatch }) {
               )}
             </Box>
           </Box>
-          { displayedProducts
+          { [...displayedProducts]
             .sort((a, b) => sortProducts(a, b))
             .map((product) => (
               <ChplProductView

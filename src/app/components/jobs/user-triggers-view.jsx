@@ -7,6 +7,7 @@ import { arrayOf, func } from 'prop-types';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
+import { compareStrings } from 'services/sort.service';
 import { acb as acbType, trigger as triggerType } from 'shared/prop-types';
 
 const sortOptions = [
@@ -51,7 +52,7 @@ function ChplUserTriggersView({
             .map((id) => parseInt(id, 10))
             .map((id) => acbs.find((acb) => acb.id === id))
             .map((acb) => `${acb.name}${acb.retired ? ' (Retired)' : ''}`)
-            .sort((a, b) => (a < b ? -1 : 1))
+            .sort((a, b) => compareStrings(a, b))
             .join(', ');
           response.acbNames = relevant;
         }

@@ -10,6 +10,7 @@ import * as yup from 'yup';
 
 import { ChplDialogTitle, ChplTooltip, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
 const styles = {
@@ -127,8 +128,8 @@ function ChplUserInvite({ dispatch, groupNames }) {
                 error={formik.touched.groupName && !!formik.errors.groupName}
                 helperText={formik.touched.groupName && formik.errors.groupName}
               >
-                { groupNames
-                  .sort((a, b) => (a < b ? -1 : 1))
+                { [...groupNames]
+                  .sort(compareStrings)
                   .map((item) => (
                     <MenuItem value={item} key={item}>{item}</MenuItem>
                   ))}

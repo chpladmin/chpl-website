@@ -71,7 +71,7 @@ function ChplQuarterEditListing({ listing, reportId }) {
       }}
       >
         <Box display="flex" width="100%" gap="32px" flexDirection="row" justifyContent="space-between">
-          { listing.surveillances
+          { [...listing.surveillances]
             .sort((a, b) => (a.friendlyId < b.friendlyId ? -1 : 1))
             .map((surv) => (
               <ChplQuarterEditListingSurveillance

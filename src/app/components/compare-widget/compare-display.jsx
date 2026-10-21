@@ -15,6 +15,7 @@ import { func } from 'prop-types';
 
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareListingsForDisplay } from 'services/listing.service';
 import { goToUrl } from 'services/navigation.service';
 import { CompareContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
@@ -129,7 +130,8 @@ function ChplCompareDisplay({ onClose }) {
   const { listings, removeListing } = useContext(CompareContext);
 
   const compareAll = () => {
-    goToUrl(`/compare/${listings.map((listing) => listing.id).join('&')}`);
+    // Ids in numeric order, so the same set of listings always gives the same URL
+    goToUrl(`/compare/${listings.map((listing) => listing.id).sort((a, b) => a - b).join('&')}`);
   };
 
   const removeAll = () => {
@@ -179,7 +181,7 @@ function ChplCompareDisplay({ onClose }) {
       </Box>
       <Typography sx={styles.sectionLabelFontWeight800}>Products Selected</Typography>
       <Box sx={styles.chipContainer}>
-        { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
+        { [...listings].sort(compareListingsForDisplay)
           .map((listing) => (
             <Chip
               sx={styles.productChips}

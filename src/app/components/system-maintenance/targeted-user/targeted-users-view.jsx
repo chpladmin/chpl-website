@@ -21,7 +21,6 @@ import { useSelector } from 'react-redux';
 
 import { useFetchTargetedUsers } from 'api/standards';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
-import { certificationStatuses as certificationStatusesFilter } from 'components/filter/filters';
 import {
   ChplPagination,
   ChplSearchResultCard,
@@ -30,7 +29,7 @@ import {
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { getStatusIcon } from 'services/listing.service';
+import { certificationStatusOrder, compareCertificationStatuses, getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
@@ -71,10 +70,6 @@ const styles = {
   },
 };
 
-// Same order as the certification status filter and the status icon legend;
-// anything the filter doesn't know about goes last
-const statusOrder = certificationStatusesFilter.values.map((value) => value.value);
-const getStatusOrder = (name) => (statusOrder.includes(name) ? statusOrder.indexOf(name) : statusOrder.length);
 const getStatusKey = (status) => `status-${status.id}`;
 
 function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
@@ -130,7 +125,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   }, [data?.recordCount, pageNumber, data?.results?.length, setPageNumber]);
 
   const statuses = useMemo(() => [...initialStatuses]
-    .sort((a, b) => getStatusOrder(a.name) - getStatusOrder(b.name) || (a.name < b.name ? -1 : 1)), [initialStatuses]);
+    .sort((a, b) => compareCertificationStatuses(a.name, b.name)), [initialStatuses]);
 
   const targetedUsers = useMemo(() => results.map((targetedUser) => {
     const usage = targetedUser.usage ?? [];
@@ -183,7 +178,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
       .map((status) => ({
         label: status.name,
         value: item[getStatusKey(status)],
-        iconButton: statusOrder.includes(status.name) ? getStatusIcon(status) : undefined,
+        iconButton: certificationStatusOrder.includes(status.name) ? getStatusIcon(status) : undefined,
       }));
     return fields.length > 0 ? [fields] : [];
   };

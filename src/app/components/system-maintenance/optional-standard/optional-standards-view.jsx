@@ -5,11 +5,7 @@ import InfoIcon from '@mui/icons-material/Info';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
 import { utilStyles } from 'themes';
 
@@ -37,7 +33,7 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
       ]))
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria
+        criteriaDisplay: [...item.criteria]
           .sort(sortCriteria)
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),

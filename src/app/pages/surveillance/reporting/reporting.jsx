@@ -7,6 +7,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useFetchAcbs } from 'api/acbs';
 import ChplReport from 'components/surveillance/reporting/report';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
+import { compareOrganizations } from 'services/sort.service';
 import { theme, utilStyles } from 'themes';
 
 const styles = {
@@ -41,7 +42,7 @@ function ChplSurveillanceReporting() {
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
-    setAcbs(acbQuery.data.acbs);
+    setAcbs([...acbQuery.data.acbs].sort(compareOrganizations));
     if (acbQuery.data.acbs.length === 1) {
       setActiveAcb(acbQuery.data.acbs[0]);
     }

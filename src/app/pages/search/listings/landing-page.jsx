@@ -275,7 +275,7 @@ function ChplLandingPage() {
     if (isLoading || !isSuccess) {
       return;
     }
-    setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
+    setAnnouncements([...data].sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess]);
 
   const handlePrevious = () => {

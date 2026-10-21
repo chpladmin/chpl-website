@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Dialog, DialogContent, Typography,
+  Button,
+  Dialog,
+  DialogContent,
+  Typography,
 } from '@mui/material';
-import {
-  Timeline,
-} from '@mui/lab';
+import { Timeline } from '@mui/lab';
 import TrackChangesOutlined from '@mui/icons-material/TrackChangesOutlined';
 import { func, object, string } from 'prop-types';
 
@@ -39,7 +40,7 @@ function ChplOrganizationActivity({ organization, type, interpret }) {
       setActivities([]);
       return;
     }
-    setActivities(data
+    setActivities([...data]
       .sort((a, b) => (a.date < b.date ? 1 : -1))
       .map((activity, idx, arr) => (
         <ChplActivityDetails
