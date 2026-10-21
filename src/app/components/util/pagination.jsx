@@ -1,5 +1,5 @@
 import React from 'react';
-import { TablePagination } from '@material-ui/core';
+import { TablePagination } from '@mui/material';
 import {
   arrayOf,
   func,
@@ -8,6 +8,20 @@ import {
 
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
+
+const styles = {
+  pagination: {
+    '& .MuiTablePagination-toolbar': {
+      px: 2,
+      pt: 2,
+      width: '100%',
+      maxHeight: '32px',
+      '& p': {
+        margin: 0,
+      },
+    },
+  },
+};
 
 function ChplPagination({
   count,
@@ -46,6 +60,7 @@ function ChplPagination({
   return (
     <TablePagination
       component="div"
+      sx={styles.pagination}
       labelRowsPerPage="Results per page:"
       onPageChange={handlePageChange}
       onRowsPerPageChange={handleRowsPerPageChange}

@@ -11,9 +11,8 @@ import {
   List,
   ListItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import { ArrowBack, ArrowForward } from '@material-ui/icons';
+} from '@mui/material';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { func, object } from 'prop-types';
 
@@ -24,7 +23,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   columnContainer: {
     display: 'flex',
@@ -64,7 +63,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gridGap: '32px',
   },
-});
+};
 
 function ChplProductSplit({ dispatch, product }) {
   const { analytics } = useAnalyticsContext();
@@ -73,7 +72,6 @@ function ChplProductSplit({ dispatch, product }) {
   const [versions, setVersions] = useState([]);
   const [movingVersions, setMovingVersions] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     setVersions(product.versions);
@@ -145,8 +143,8 @@ function ChplProductSplit({ dispatch, product }) {
   return (
     <>
       <Container disableGutters maxWidth="xl">
-        <Box className={classes.pageContainer}>
-          <Box className={classes.columnContainer}>
+        <Box sx={styles.pageContainer}>
+          <Box sx={styles.columnContainer}>
             <ChplProduct
               product={product}
               isSplitting
@@ -162,7 +160,7 @@ function ChplProductSplit({ dispatch, product }) {
               isProcessing={isProcessing}
             />
           </Box>
-          <Divider className={classes.fullWidthGridRow} />
+          <Divider sx={styles.fullWidthGridRow} />
           <Card>
             <CardHeader title="Versions staying with original Product" />
             <CardContent>
@@ -171,10 +169,10 @@ function ChplProductSplit({ dispatch, product }) {
                   No versions selected. At least one version must remain with the Product.
                 </Typography>
               ) : (
-                <List className={classes.productList}>
+                <List sx={styles.productList}>
                   {versions.map((version) => (
-                    <ListItem divider className={classes.listItem} dense key={version.id}>
-                      <Box className={classes.versionName}>
+                    <ListItem divider sx={styles.listItem} dense key={version.id}>
+                      <Box sx={styles.versionName}>
                         {version.version}
                       </Box>
                       <ChplTooltip
@@ -205,10 +203,10 @@ function ChplProductSplit({ dispatch, product }) {
                   No versions selected. At least one version must be selected to move.
                 </Typography>
               ) : (
-                <List className={classes.versionList}>
+                <List sx={styles.versionList}>
                   {movingVersions.map((version) => (
-                    <ListItem divider className={classes.listItem} dense key={version.id}>
-                      <Box className={classes.versionName}>
+                    <ListItem divider sx={styles.listItem} dense key={version.id}>
+                      <Box sx={styles.versionName}>
                         {version.version}
                       </Box>
                       <ChplTooltip

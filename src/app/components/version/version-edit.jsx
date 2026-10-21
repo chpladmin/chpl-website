@@ -1,11 +1,7 @@
 import React from 'react';
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardHeader, CardContent, Container,
+} from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -22,7 +18,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   content: {
     display: 'grid',
@@ -34,7 +30,7 @@ const useStyles = makeStyles({
     margin: '0',
     fontSize: '1.25em',
   },
-});
+};
 
 const validationSchema = yup.object({
   version: yup.string()
@@ -55,7 +51,6 @@ function ChplVersionEdit(props) {
     version,
   } = props;
   const { analytics } = useAnalyticsContext();
-  const classes = useStyles();
   let formik;
 
   const cancel = () => {
@@ -117,18 +112,18 @@ function ChplVersionEdit(props) {
             <CardHeader
               title="New Version"
               component="h5"
-              className={classes.header}
+              sx={styles.header}
             />
           )}
         { !isSplitting
           && (
             <CardHeader
               title={version.version}
-              className={classes.header}
+              sx={styles.header}
               component="h2"
             />
           )}
-        <CardContent className={classes.content}>
+        <CardContent sx={styles.content}>
           <ChplTextField
             id="version"
             name="version"

@@ -8,17 +8,16 @@ import {
   Dialog,
   DialogContent,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { number, object } from 'prop-types';
-import Edit from '@material-ui/icons/Edit';
+import Edit from '@mui/icons-material/Edit';
 
 import ChplQuarterEditListingSurveillanceData from './quarter-edit-listing-surveillance-data';
 
 import { getDisplayDateFormat } from 'services/date-util';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -66,12 +65,11 @@ const useStyles = makeStyles({
   editModal: {
     marginBottom: '60px',
   },
-});
+};
 
 function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
-  const classes = useStyles();
 
   useEffect(() => {
     setProgress(Math.round(((
@@ -111,13 +109,13 @@ function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
   return (
     <>
       <Card style={{ width: '100%' }}>
-        <div className={classes.idContainer}>
+        <Box sx={styles.idContainer}>
           <Typography>
             <strong>Surveillance ID:</strong>
             {' '}
             { surveillance.friendlyId }
           </Typography>
-          <Box display="flex" flexDirection="row" alignItems="center" gridGap="4px">
+          <Box display="flex" flexDirection="row" alignItems="center" gap="4px">
             <Box position="relative" display="inline-flex">
               <CircularProgress value={progress} variant="determinate" size={24} color="primary" />
               <Box
@@ -137,8 +135,8 @@ function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
             </Box>
             <Typography variant="body2">Completed</Typography>
           </Box>
-        </div>
-        <div className={classes.container}>
+        </Box>
+        <Box sx={styles.container}>
           <Typography>
             <strong>Start Day:</strong>
             {' '}
@@ -159,7 +157,7 @@ function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
             {' '}
             { surveillance.numOpenNonconformities }
           </Typography>
-        </div>
+        </Box>
         <Box style={{ padding: '8px 16px' }}>
           <Button
             variant="outlined"
@@ -173,16 +171,16 @@ function ChplQuarterEditListingSurveillance({ surveillance, reportId }) {
           </Button>
         </Box>
       </Card>
-      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth className={classes.editModal}>
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth sx={styles.editModal}>
         <CardHeader title="Surveillance Data" />
         <DialogContent>
-          <div className={classes.editContainer}>
+          <Box sx={styles.editContainer}>
             <ChplQuarterEditListingSurveillanceData
               surveillance={surveillance}
               dispatch={handleDispatch}
               reportId={reportId}
             />
-          </div>
+          </Box>
         </DialogContent>
       </Dialog>
     </>

@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+  Button, Card, CardHeader, CardContent, Typography,
+} from '@mui/material';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
@@ -25,7 +20,7 @@ import { palette } from 'themes';
 
 const zxcvbn = require('zxcvbn');
 
-const useStyles = makeStyles({
+const styles = {
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -35,7 +30,7 @@ const useStyles = makeStyles({
     backgroundColor: palette.secondary,
     padding: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   newPassword: yup.string()
@@ -61,7 +56,6 @@ function ChplResetForgottenPassword({ uuid }) {
   const { mutate } = usePostSetForgottenPassword();
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
-  const classes = useStyles();
 
   let formik;
 
@@ -125,8 +119,8 @@ function ChplResetForgottenPassword({ uuid }) {
 
   return (
     <Card>
-      <CardHeader className={classes.loginHeader} title="Reset forgotten password" />
-      <CardContent className={classes.grid}>
+      <CardHeader sx={styles.loginHeader} title="Reset forgotten password" />
+      <CardContent sx={styles.grid}>
         <Typography>
           Choose a strong, unique password that you will easily remember. Confirm your new password by entering it again to ensure both passwords match exactly. For added security, use a mix of letters, numbers, and symbols.
         </Typography>

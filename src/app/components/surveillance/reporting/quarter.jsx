@@ -6,13 +6,13 @@ import {
   CircularProgress,
   Typography,
   Box,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
-import BeenhereIcon from '@material-ui/icons/Beenhere';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import Edit from '@material-ui/icons/Edit';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import Edit from '@mui/icons-material/Edit';
+import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 
 import ChplQuarterEdit from './quarter-edit';
 import ChplQuarterView from './quarter-view';
@@ -118,7 +118,7 @@ function ChplQuarter({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Card>
+      <Card sx={{ minWidth: '250px', minHeight: '121px' }}>
         <CardContent>
           <Typography variant="h4">
             <strong>

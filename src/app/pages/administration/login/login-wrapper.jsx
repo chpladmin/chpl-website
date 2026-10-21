@@ -2,7 +2,7 @@ import React from 'react';
 import { func, shape } from 'prop-types';
 import {
   Container,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import ChplLoginPage from './login';
 
