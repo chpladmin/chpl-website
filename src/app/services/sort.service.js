@@ -17,4 +17,12 @@ const compareStrings = (a, b) => {
   return collator.compare(`${a}`, `${b}`);
 };
 
-export { compareStrings }; // eslint-disable-line import/prefer-default-export
+// Compares organizations (ONC-ACBs, ONC-ATLs) for sorting: active ones before
+// retired ones, then by name.
+const compareOrganizations = (a, b) => {
+  if (a.retired && !b.retired) { return 1; }
+  if (!a.retired && b.retired) { return -1; }
+  return compareStrings(a.name, b.name);
+};
+
+export { compareOrganizations, compareStrings };
