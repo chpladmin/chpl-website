@@ -53,7 +53,7 @@ function ChplAttestationsView({ developer: initialDeveloper, dispatch }) {
 
   useEffect(() => {
     if (initialDeveloper) {
-      setAttestations(initialDeveloper.attestations.sort((a, b) => (b.attestationPeriod.periodStart < a.attestationPeriod.periodStart ? -1 : 1)));
+      setAttestations([...initialDeveloper.attestations].sort((a, b) => (b.attestationPeriod.periodStart < a.attestationPeriod.periodStart ? -1 : 1)));
       setDeveloper(initialDeveloper);
     }
   }, [initialDeveloper]);

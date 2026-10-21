@@ -12,20 +12,21 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
-  func, number, object, oneOfType, string,
+  func,
+  number,
+  object,
+  oneOfType,
+  string,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import ChplNonConformityEdit from './non-conformity-edit';
 
-import {
-  useFetchRequirementGroupTypes,
-  useFetchRequirementTypes,
-  useFetchSurveillanceResultTypes,
-} from 'api/data';
+import { useFetchRequirementGroupTypes, useFetchRequirementTypes, useFetchSurveillanceResultTypes } from 'api/data';
 import { ChplTooltip, ChplTextField } from 'components/util';
 import { isDateBetweenInclusive } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import { getRequirementDisplay, sortRequirementTypes } from 'services/surveillance.service';
 
 const validationSchema = yup.object({
@@ -74,17 +75,17 @@ function ChplRequirementEdit({
 
   useEffect(() => {
     if (groupTypeQuery.isLoading || groupTypeQuery.isError) { return; }
-    setRequirementGroupTypes(groupTypeQuery.data.sort((a, b) => a.name.localeCompare(b.name)));
+    setRequirementGroupTypes([...groupTypeQuery.data].sort((a, b) => compareStrings(a.name, b.name)));
   }, [groupTypeQuery.data, groupTypeQuery.isLoading, groupTypeQuery.isError]);
 
   useEffect(() => {
     if (typeQuery.isLoading || typeQuery.isError) { return; }
-    setRequirementTypes(typeQuery.data.sort((a, b) => a.title.localeCompare(b.title)));
+    setRequirementTypes([...typeQuery.data].sort((a, b) => compareStrings(a.title, b.title)));
   }, [typeQuery.data, typeQuery.isLoading, typeQuery.isError]);
 
   useEffect(() => {
     if (resultQuery.isLoading || resultQuery.isError) { return; }
-    setResultTypes(resultQuery.data.sort((a, b) => a.name.localeCompare(b.name)));
+    setResultTypes([...resultQuery.data].sort((a, b) => compareStrings(a.name, b.name)));
   }, [resultQuery.data, resultQuery.isLoading, resultQuery.isError]);
 
   const addNc = () => {

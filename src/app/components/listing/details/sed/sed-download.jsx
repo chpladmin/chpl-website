@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
 import { ExportToCsv } from 'export-to-csv';
 
 import { listing as listingPropType } from 'shared/prop-types';
 import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
 const headers = [
@@ -61,7 +60,7 @@ function ChplSedDownload({ listing }) {
         .map((participant) => ({
           ...base,
           ...task,
-          criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}`).join(';'),
+          criteria: [...task.criteria].sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}`).join(';'),
           ...{
             ...participant,
             age: participant.age.name,
@@ -69,9 +68,10 @@ function ChplSedDownload({ listing }) {
           },
         })))
       .sort((a, b) => {
-        if (a.description !== b.description) { return a.description < b.description ? -1 : 1; }
-        if (a.occupation !== b.occupation) { return a.occupation < b.occupation ? -1 : 1; }
-        if (a.educationType.name !== b.educationType.name) { return a.educationType.name < b.educationType.name ? -1 : 1; }
+        const byText = compareStrings(a.description, b.description)
+          || compareStrings(a.occupation, b.occupation)
+          || compareStrings(a.educationType.name, b.educationType.name);
+        if (byText !== 0) { return byText; }
         if (a.productExperienceMonths !== b.productExperienceMonths) { return a.productExperienceMonths - b.productExperienceMonths; }
         if (a.professionalExperienceMonths !== b.professionalExperienceMonths) { return a.professionalExperienceMonths - b.professionalExperienceMonths; }
         if (a.computerExperienceMonths !== b.computerExperienceMonths) { return a.computerExperienceMonths - b.computerExperienceMonths; }

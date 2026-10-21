@@ -50,7 +50,7 @@ function ChplComplaintView(props) {
       criteria: initialComplaint.criteria
         .map((item) => (item.certificationCriterion))
         .sort(sortCriteria),
-      listings: initialComplaint.listings
+      listings: [...initialComplaint.listings]
         .sort(((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1))),
       surveillances: initialComplaint.surveillances
         .map((item) => (item.surveillance))
