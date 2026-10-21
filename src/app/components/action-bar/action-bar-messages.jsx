@@ -8,12 +8,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  arrayOf, string,
-} from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { ChplTooltip } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -115,7 +114,7 @@ const useStyles = makeStyles({
   },
 });
 
-const fixMessages = (msgs) => ([...new Set(msgs)].sort((a, b) => (a < b ? 1 : -1)));
+const fixMessages = (msgs) => ([...new Set(msgs)].sort((a, b) => compareStrings(b, a)));
 
 function ChplActionBarMessages({ errors = [], warnings = [] }) {
   const [open, setOpen] = useState(false);

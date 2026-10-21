@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Typography, makeStyles } from '@material-ui/core';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplSearchResultCard } from 'components/util';
@@ -23,7 +19,7 @@ function ChplTestDataView({ testData: initialTestData }) {
     setTestData(initialTestData
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria
+        criteriaDisplay: [...item.criteria]
           .sort(sortCriteria)
           .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
@@ -42,8 +38,7 @@ function ChplTestDataView({ testData: initialTestData }) {
             {`(${testData.length} Result${testData.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
-        </Box>
+        <Box display="flex" alignItems="center" gridGap={4} />
       </Box>
       <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
         { testData

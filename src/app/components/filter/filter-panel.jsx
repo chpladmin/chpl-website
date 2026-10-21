@@ -17,6 +17,7 @@ import { number } from 'prop-types';
 import { useFilterContext } from './filter-context';
 
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
@@ -127,12 +128,12 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
   const filterContext = useFilterContext();
 
   useEffect(() => {
-    setFilters(filterContext.filters
-      .sort((a, b) => (a.getFilterDisplay(a) < b.getFilterDisplay(b) ? -1 : 1))
+    setFilters([...filterContext.filters]
+      .sort((a, b) => compareStrings(a.getFilterDisplay(a), b.getFilterDisplay(b)))
       .filter((f) => f.values?.length > 0)
       .map((f) => ({
         ...f,
-        values: f.values.sort((a, b) => f.sortValues(f, a, b)),
+        values: [...f.values].sort((a, b) => f.sortValues(f, a, b)),
       })));
   }, [filterContext.filters]);
 

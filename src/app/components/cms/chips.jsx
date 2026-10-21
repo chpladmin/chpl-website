@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Chip,
-  makeStyles,
-} from '@material-ui/core';
+import { Chip, makeStyles } from '@material-ui/core';
 import { arrayOf, func, string } from 'prop-types';
 
 import theme from 'themes/theme';
@@ -36,7 +33,7 @@ function ChplChips(props) {
 
   return (
     <span className={classes.container} id="chips">
-      { cmsIds
+      { [...cmsIds]
         .sort((a, b) => (a < b ? -1 : 1))
         .map((id) => (
           <Chip

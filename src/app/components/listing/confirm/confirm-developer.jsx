@@ -26,6 +26,7 @@ import ChplConfirmDeveloperContact from './contact';
 
 import { useFetchDevelopers } from 'api/developer';
 import { ChplTextField } from 'components/util';
+import { compareStrings } from 'services/sort.service';
 import { developer as developerProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -153,7 +154,7 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
     if (isLoading || !isSuccess) { return; }
     setDevelopers(data
       .filter((d) => !d.deleted)
-      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+      .sort((a, b) => compareStrings(a.name, b.name)));
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {

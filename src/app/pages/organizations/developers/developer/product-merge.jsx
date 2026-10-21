@@ -20,6 +20,7 @@ import { usePutProduct } from 'api/product';
 import { ChplTooltip } from 'components/util';
 import ChplProduct from 'components/product/product';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext, DeveloperContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -153,7 +154,7 @@ function ChplProductMerge({ dispatch, product }) {
                 { developer.products
                   .filter((prod) => mergingProducts.every((p) => p.id !== prod.id))
                   .filter((prod) => prod.id !== product.id)
-                  .sort((a, b) => (a.name < b.name ? -1 : 1))
+                  .sort((a, b) => compareStrings(a.name, b.name))
                   .map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>
                       <Box className={classes.itemName}>
@@ -183,8 +184,8 @@ function ChplProductMerge({ dispatch, product }) {
             <CardContent>
               <List className={classes.itemList}>
                 <ListItem>{ product.name }</ListItem>
-                { mergingProducts
-                  .sort((a, b) => (a.name < b.name ? -1 : 1))
+                { [...mergingProducts]
+                  .sort((a, b) => compareStrings(a.name, b.name))
                   .map((item) => (
                     <ListItem divider className={classes.listItem} dense key={item.id}>
                       <Box className={classes.itemName}>
