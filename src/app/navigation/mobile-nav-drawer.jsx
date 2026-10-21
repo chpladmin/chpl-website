@@ -43,7 +43,8 @@ const styles = {
     color: '#fff',
   },
   drawer: {
-    // sit above the top nav (drawer + 1), environment banner (drawer + 2) and sticky page headers
+    // A temporary Drawer defaults to theme.zIndex.drawer (1200), under the top nav (drawer + 1),
+    // the environment banner (drawer + 2) and sticky page headers (up to 1299); modal + 1 (1301) clears all of them
     zIndex: theme.zIndex.modal + 1,
   },
   drawerPaper: {
