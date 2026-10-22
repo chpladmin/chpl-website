@@ -7,6 +7,7 @@ import {
 import ChplUploadListings from 'components/upload/upload-listings';
 import ChplUploadPromotingInteroperability from 'components/upload/upload-promoting-interoperability';
 import ChplUploadRealWorldTesting from 'components/upload/upload-real-world-testing';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -22,28 +23,33 @@ function ChplUpload() {
   const classes = useStyles();
 
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      flexWrap="wrap"
-      gridGap="8px"
-    >
-      { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
-        && (
+    <>
+      <ChplPageHeader text="Upload your files" />
+      <ChplPageBody>
+        <Box
+          display="flex"
+          flexDirection="row"
+          flexWrap="wrap"
+          gridGap="8px"
+        >
+          { hasAnyRole(['chpl-admin', 'chpl-onc-acb'])
+            && (
+              <Box className={classes.uploadCards}>
+                <ChplUploadListings />
+              </Box>
+            )}
           <Box className={classes.uploadCards}>
-            <ChplUploadListings />
+            <ChplUploadRealWorldTesting />
           </Box>
-        )}
-      <Box className={classes.uploadCards}>
-        <ChplUploadRealWorldTesting />
-      </Box>
-      { hasAnyRole(['chpl-admin', 'chpl-onc'])
-        && (
-          <Box className={classes.uploadCards}>
-            <ChplUploadPromotingInteroperability />
-          </Box>
-        )}
-    </Box>
+          { hasAnyRole(['chpl-admin', 'chpl-onc'])
+            && (
+              <Box className={classes.uploadCards}>
+                <ChplUploadPromotingInteroperability />
+              </Box>
+            )}
+        </Box>
+      </ChplPageBody>
+    </>
   );
 }
 

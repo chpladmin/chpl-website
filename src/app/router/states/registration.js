@@ -14,7 +14,7 @@ const states = [{
 }, {
   name: 'registration.create-user',
   url: '/create-user/{hash}',
-  component: lazy(() => import('pages/registration/register-user-wrapper')),
+  component: lazy(() => import('pages/registration/register-user')),
   params: {
     hash: { squash: true, value: null },
   },
@@ -23,7 +23,7 @@ const states = [{
 }, {
   name: 'registration.api-key',
   url: '/api-key/{hash}',
-  component: lazy(() => import('pages/registration/api-key-confirm-wrapper')),
+  component: lazy(() => import('components/api-key/api-key-confirm')),
   params: {
     hash: { squash: true, value: null },
   },

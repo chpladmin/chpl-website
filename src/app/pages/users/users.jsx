@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 
 import { useFetchUsers, usePostCreateInvitation } from 'api/users';
 import ChplUsers from 'components/user/users';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { UserContext } from 'shared/contexts';
 
 function ChplUsersPage() {
@@ -63,11 +64,16 @@ function ChplUsersPage() {
   }
 
   return (
-    <ChplUsers
-      dispatch={handleDispatch}
-      users={users}
-      groupNames={groupNames}
-    />
+    <>
+      <ChplPageHeader text="CHPL Users" />
+      <ChplPageBody>
+        <ChplUsers
+          dispatch={handleDispatch}
+          users={users}
+          groupNames={groupNames}
+        />
+      </ChplPageBody>
+    </>
   );
 }
 

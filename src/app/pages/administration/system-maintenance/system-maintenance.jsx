@@ -50,6 +50,7 @@ import ChplStandards from 'components/system-maintenance/standard/standards';
 import ChplSvaps from 'components/system-maintenance/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
 import ChplTargetedUsers from 'components/system-maintenance/targeted-user/targeted-users';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import ChplToolTip from 'components/util/chpl-tooltip';
 import ChplTestData from 'components/system-maintenance/test-data/test-data';
 import ChplTestTools from 'components/system-maintenance/test-tool/test-tools';
@@ -290,72 +291,77 @@ function ChplSystemMaintenance() {
   };
 
   return (
-    <AnalyticsContext.Provider value={data}>
-      <div className={classes.container}>
-        <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
-          <Card className={classes.navigationFlex}>
-            <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
-              <Button
-                onClick={() => setNavOpen((prev) => !prev)}
-                variant="text"
-                color="primary"
-                size="medium"
-                className={classes.menuItems}
-              >
-                { navOpen ? <MenuOpenIcon /> : <MenuIcon /> }
-              </Button>
-            </ChplToolTip>
-            { maintenanceItems
-              .filter((item) => !item.roles || hasAnyRole(item.roles))
-              .map((item) => getNavigationItem(item))}
-          </Card>
-        </div>
-        <Box width="100%">
-          { (active === '' || active === 'home')
-              && (
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6" component="h2" gutterBottom>
-                      <strong>System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.</strong>
-                    </Typography>
-                    <Divider />
-                    <List>
-                      { maintenanceItems
-                        .filter((item) => item.showInList !== false && (!item.roles || hasAnyRole(item.roles)))
-                        .map((item, index) => (
-                          <React.Fragment key={item.id}>
-                            <ListItem>
-                              <ListItemText className={classes.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
-                            </ListItem>
-                            { index < maintenanceItems.length - 1 && <Divider component="li" /> }
-                          </React.Fragment>
-                        )) }
-                    </List>
-                  </CardContent>
-                </Card>
-              )}
-          { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
-          { active === 'announcements' && <ChplAnnouncements /> }
-          { active === 'apiKeys' && <ChplApiKeys /> }
-          { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
-          { active === 'codeSets' && <ChplCodeSets /> }
-          { active === 'conformanceMethods' && <ChplConformanceMethods /> }
-          { active === 'cqms' && <ChplCqms /> }
-          { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
-          { active === 'g1g2' && <ChplG1g2 /> }
-          { active === 'optionalStandards' && <ChplOptionalStandards /> }
-          { active === 'qmsStandards' && <ChplQmsStandards /> }
-          { active === 'standards' && <ChplStandards /> }
-          { active === 'subscriptions' && <ChplManageSubscriptions /> }
-          { active === 'svaps' && <ChplSvaps /> }
-          { active === 'systemJobs' && <ChplSystemJobs /> }
-          { active === 'targetedUsers' && <ChplTargetedUsers /> }
-          { active === 'testData' && <ChplTestData /> }
-          { active === 'testTools' && <ChplTestTools /> }
-          { active === 'ucdProcesses' && <ChplUcdProcesses /> }
-        </Box>
-      </div>
-    </AnalyticsContext.Provider>
+    <>
+      <ChplPageHeader text="System Maintenance" />
+      <ChplPageBody>
+        <AnalyticsContext.Provider value={data}>
+          <div className={classes.container}>
+            <div className={`${classes.navigation} ${navOpen ? classes.navOpen : classes.navClosed}`}>
+              <Card className={classes.navigationFlex}>
+                <ChplToolTip title={navOpen ? 'Collapse Navigation' : 'Expand Navigation'}>
+                  <Button
+                    onClick={() => setNavOpen((prev) => !prev)}
+                    variant="text"
+                    color="primary"
+                    size="medium"
+                    className={classes.menuItems}
+                  >
+                    { navOpen ? <MenuOpenIcon /> : <MenuIcon /> }
+                  </Button>
+                </ChplToolTip>
+                { maintenanceItems
+                  .filter((item) => !item.roles || hasAnyRole(item.roles))
+                  .map((item) => getNavigationItem(item))}
+              </Card>
+            </div>
+            <Box width="100%">
+              { (active === '' || active === 'home')
+                  && (
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h6" component="h2" gutterBottom>
+                          <strong>System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.</strong>
+                        </Typography>
+                        <Divider />
+                        <List>
+                          { maintenanceItems
+                            .filter((item) => item.showInList !== false && (!item.roles || hasAnyRole(item.roles)))
+                            .map((item, index) => (
+                              <React.Fragment key={item.id}>
+                                <ListItem>
+                                  <ListItemText className={classes.maintenanceItemsText} primary={`${item.primary}:`} secondary={item.secondary} />
+                                </ListItem>
+                                { index < maintenanceItems.length - 1 && <Divider component="li" /> }
+                              </React.Fragment>
+                            )) }
+                        </List>
+                      </CardContent>
+                    </Card>
+                  )}
+              { active === 'accessibilityStandards' && <ChplAccessibilityStandards /> }
+              { active === 'announcements' && <ChplAnnouncements /> }
+              { active === 'apiKeys' && <ChplApiKeys /> }
+              { active === 'certificationCriteria' && <ChplCertificationCriteria /> }
+              { active === 'codeSets' && <ChplCodeSets /> }
+              { active === 'conformanceMethods' && <ChplConformanceMethods /> }
+              { active === 'cqms' && <ChplCqms /> }
+              { active === 'functionalitiesTested' && <ChplFunctionalitiesTested /> }
+              { active === 'g1g2' && <ChplG1g2 /> }
+              { active === 'optionalStandards' && <ChplOptionalStandards /> }
+              { active === 'qmsStandards' && <ChplQmsStandards /> }
+              { active === 'standards' && <ChplStandards /> }
+              { active === 'subscriptions' && <ChplManageSubscriptions /> }
+              { active === 'svaps' && <ChplSvaps /> }
+              { active === 'systemJobs' && <ChplSystemJobs /> }
+              { active === 'targetedUsers' && <ChplTargetedUsers /> }
+              { active === 'testData' && <ChplTestData /> }
+              { active === 'testTools' && <ChplTestTools /> }
+              { active === 'ucdProcesses' && <ChplUcdProcesses /> }
+            </Box>
+          </div>
+        </AnalyticsContext.Provider>
+      </ChplPageBody>
+    </>
   );
 }
 

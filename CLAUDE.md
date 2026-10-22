@@ -69,12 +69,13 @@ Things worth knowing before changing routes:
 - **Do not call `router.start()`.** The `<UIRouter>` component starts it, and starting twice throws.
 - `src/app/services/navigation.service.js` is the single seam for imperative navigation; prefer it (or the `@uirouter/react` hooks) over touching the router directly.
 
-### Per-page React file trio
+### Per-page React files
 
-Most pages/features under `src/app/pages/**` and `src/app/components/**` follow a three-file pattern:
-- `x-wrapper.jsx` — wraps the page in `AppWrapper` (global providers) and is what a route points at.
-- `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own.
+Most pages/features under `src/app/pages/**` and `src/app/components/**` split into two files:
+- `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own. A route points straight at it, and a page renders its own `ChplPageHeader` / `ChplPageBody`.
 - `x-view.jsx` — presentational component, receives data/handlers as props.
+
+Don't add a `x-wrapper.jsx` that only passes props through to `x.jsx`. Those existed to bridge AngularJS, and `AppWrapper` is mounted once in `router/app-root.jsx`, not per page. When a component is a page on its own route but is also embedded in other pages without the page frame, its route gets a `x-page.jsx` that adds the frame around it (e.g. `components/change-request/change-requests-page.jsx`). The remaining `*-wrapper.jsx` files are real providers (`app-wrapper`, `api-wrapper`, `flag-wrapper`, `user-wrapper`, `snackbar-wrapper`, `url-checker-wrapper`).
 
 ### Provider stack
 
