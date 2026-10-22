@@ -23,9 +23,7 @@ import {
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import {
-  Add, Close, Save,
-} from '@mui/icons-material';
+import { Add, Close, Save } from '@mui/icons-material';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
@@ -33,6 +31,8 @@ import { useFetchCertificationStatuses } from 'api/data';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareCertificationStatuses } from 'services/listing.service';
+import { compareStrings } from 'services/sort.service';
 import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -126,17 +126,17 @@ function ChplListingEdit({
 
   useEffect(() => {
     if (statusesIsLoading || !statusesIsSuccess) { return; }
-    setStatuses(statusesData.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setStatuses([...statusesData].sort((a, b) => compareCertificationStatuses(a.name, b.name)));
   }, [statusesData, statusesIsLoading, statusesIsSuccess]);
 
   useEffect(() => {
     if (acbsIsLoading || !acbsIsSuccess) { return; }
-    setAcbs(acbsData.acbs.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setAcbs([...acbsData.acbs].sort((a, b) => compareStrings(a.name, b.name)));
   }, [acbsData, acbsIsLoading, acbsIsSuccess]);
 
   useEffect(() => {
     if (atlsIsLoading || !atlsIsSuccess) { return; }
-    setAtls(atlsData.atls.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    setAtls([...atlsData.atls].sort((a, b) => compareStrings(a.name, b.name)));
   }, [atlsData, atlsIsLoading, atlsIsSuccess]);
 
   const handleDispatch = (action) => {
@@ -302,7 +302,7 @@ function ChplListingEdit({
                 Certification Status
               </Typography>
               <List>
-                { selectedStatuses
+                { [...selectedStatuses]
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                   .map((status, idx, arr) => (
                     <ListItem

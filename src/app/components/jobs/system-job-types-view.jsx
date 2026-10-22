@@ -35,7 +35,7 @@ function ChplSystemJobTypesView(props) {
   const [orderBy, setOrderBy] = useState('name');
 
   useEffect(() => {
-    setJobTypes(initialJobTypes
+    setJobTypes([...initialJobTypes]
       .sort(sortComparator('name')));
   }, []);
 

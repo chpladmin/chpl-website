@@ -302,7 +302,7 @@ function ChplListingHistory(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    { activity
+                    { [...activity]
                       .sort((a, b) => b.activityDate - a.activityDate)
                       .map((item) => (
                         <TableRow key={item.id}>

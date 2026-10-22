@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Chip, Divider, MenuItem,
+  Box,
+  Chip,
+  Divider,
+  MenuItem,
 } from '@mui/material';
 import {
-  arrayOf, bool, func, string,
+  arrayOf,
+  bool,
+  func,
+  string,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -11,11 +17,8 @@ import * as yup from 'yup';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import {
-  criterion as criterionPropType,
-  rule as rulePropType,
-  functionalityTested as functionalityTestedPropType,
-} from 'shared/prop-types';
+import { compareStrings } from 'services/sort.service';
+import { criterion as criterionPropType, rule as rulePropType, functionalityTested as functionalityTestedPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   value: yup.string()
@@ -74,7 +77,7 @@ function ChplFunctionalityTestedEdit({
   }, [initialFunctionalityTested]);
 
   useEffect(() => {
-    setRuleOptions(rules.map((rule) => rule.name).sort((a, b) => (a < b ? -1 : 1)));
+    setRuleOptions(rules.map((rule) => rule.name).sort(compareStrings));
   }, [rules]);
 
   const add = (item) => {
@@ -139,7 +142,7 @@ function ChplFunctionalityTestedEdit({
 
   useActionBar({
     canDelete: !!functionalityTested.id,
-    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    errors: [...propsErrors].sort(compareStrings),
     isDisabled: !isValid(),
     isProcessing,
   });
@@ -266,7 +269,7 @@ function ChplFunctionalityTestedEdit({
         onChange={(event) => add(event.target.value)}
         helperText={criteria.length === 0 && 'At least one Criteria must be selected'}
       >
-        { criterionOptions
+        { [...criterionOptions]
           .sort(sortCriteria)
           .map((item) => (
             <MenuItem
@@ -279,7 +282,7 @@ function ChplFunctionalityTestedEdit({
           ))}
       </ChplTextField>
       <Box sx={styles.chips}>
-        { criteria
+        { [...criteria]
           .sort(sortCriteria)
           .map((item) => (
             <Chip

@@ -21,6 +21,7 @@ import ChplSedTaskView from './sed-task-view';
 import { ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import { FlagContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme } from 'themes';
@@ -53,9 +54,9 @@ const styles = {
   },
 };
 
-const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
+const sortTestTasks = (a, b) => compareStrings(a.description, b.description);
 
-const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
+const sortUcdProcesses = (a, b) => compareStrings(a.name, b.name);
 
 function ChplSed({ listing }) {
   const {
@@ -146,13 +147,13 @@ function ChplSed({ listing }) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    { sed.ucdProcesses
+                    { [...sed.ucdProcesses]
                       .sort(sortUcdProcesses)
                       .map((ucd) => (
                         <TableRow key={ucd.id}>
                           <TableCell>
                             <List>
-                              {ucd.criteria
+                              {[...ucd.criteria]
                                 .sort(sortCriteria)
                                 .map((criterion) => (
                                   <ListItem key={criterion.id}>
@@ -183,7 +184,7 @@ function ChplSed({ listing }) {
                           listing={listing}
                         />
                       </Box>
-                      { sed.testTasks
+                      { [...sed.testTasks]
                         .sort(sortTestTasks)
                         .map((task) => (
                           <ChplSedTaskView
@@ -207,13 +208,13 @@ function ChplSed({ listing }) {
               </TableRow>
             </TableHead>
             <TableBody sx={styles.tableBody}>
-              { sed.ucdProcesses
+              { [...sed.ucdProcesses]
                 .sort(sortUcdProcesses)
                 .map((ucd) => (
                   <TableRow key={`${ucd.id} - ${ucd.name} - ${ucd.details}`}>
                     <TableCell>
                       <List>
-                        {ucd.criteria
+                        {[...ucd.criteria]
                           .sort(sortCriteria)
                           .map((criterion) => (
                             <ListItem key={criterion.id}>

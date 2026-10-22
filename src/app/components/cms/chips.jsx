@@ -32,7 +32,7 @@ function ChplChips(props) {
 
   return (
     <Box component="span" sx={styles.container} id="chips">
-      { cmsIds
+      { [...cmsIds]
         .sort((a, b) => (a < b ? -1 : 1))
         .map((id) => (
           <Chip

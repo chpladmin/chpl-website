@@ -65,6 +65,7 @@ function ChplEditableJobEdit(props) {
   };
 
   const add = () => {
+    if (!formik.values.email || formik.errors.email) { return; }
     setEmails([...new Set([...emails, formik.values.email])]);
     formik.resetForm();
   };
@@ -127,6 +128,7 @@ function ChplEditableJobEdit(props) {
                   onClick={() => add()}
                   variant="contained"
                   color="primary"
+                  disabled={!formik.values.email || !!formik.errors.email}
                 >
                   Add
                   <AddIcon sx={styles.iconSpacing} />

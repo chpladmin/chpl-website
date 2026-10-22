@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, Card, CardHeader, List, ListItem,
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  List,
+  ListItem,
 } from '@mui/material';
 import { shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -15,13 +20,10 @@ import {
   ChplSearchResultControls,
   ChplSortControls,
 } from 'components/util';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
@@ -238,8 +240,8 @@ function ChplManageSubscriptionsView({ analytics }) {
                                 label: 'Subscription Subjects',
                                 value: (
                                   <List sx={styles.listContainer}>
-                                    { item.subscriptionSubjects
-                                      .sort((a, b) => (a < b ? -1 : 1))
+                                    { [...item.subscriptionSubjects]
+                                      .sort(compareStrings)
                                       .map((sub) => (
                                         <ListItem sx={styles.listItem} key={sub}>{ sub }</ListItem>
                                       ))}

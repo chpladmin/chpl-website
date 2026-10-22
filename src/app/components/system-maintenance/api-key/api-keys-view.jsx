@@ -32,7 +32,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
   const [orderBy, setOrderBy] = useState('lastUsedDate', true);
 
   useEffect(() => {
-    setApiKeys(initialApiKeys.sort(sortComparator('lastUsedDate')));
+    setApiKeys([...initialApiKeys].sort(sortComparator('lastUsedDate')));
   }, [initialApiKeys]);
 
   const handleSort = (property, orderDirection) => {
@@ -108,7 +108,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
               >
                 Revoke key
               </Button>
-          )}
+            )}
           />
         ))}
       </Box>

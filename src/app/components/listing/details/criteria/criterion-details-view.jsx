@@ -28,11 +28,7 @@ import {
   ChplUpdateIndicator,
 } from 'components/util';
 import { ListingContext } from 'shared/contexts';
-import {
-  accessibilityStandard,
-  certificationResult,
-  qmsStandard,
-} from 'shared/prop-types';
+import { accessibilityStandard, certificationResult, qmsStandard } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
 const styles = {
@@ -344,7 +340,7 @@ function ChplCriterionDetailsView({
                   </TableCell>
                   <TableCell>
                     <List>
-                      { criterion.standards
+                      { [...criterion.standards]
                         .sort((a, b) => (a.standard.regulatoryTextCitation < b.standard.regulatoryTextCitation ? -1 : 1))
                         .map((std, index) => (
                           <ListItem key={std.id || std.key || index} sx={std.standard.retired ? utilStyles.removedText : undefined}>

@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Chip, FormControlLabel, MenuItem, Switch,
+  Box,
+  Chip,
+  FormControlLabel,
+  MenuItem,
+  Switch,
 } from '@mui/material';
 import {
-  arrayOf, bool, func, string,
+  arrayOf,
+  bool,
+  func,
+  string,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -11,6 +18,7 @@ import * as yup from 'yup';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { compareStrings } from 'services/sort.service';
 import { criterion as criterionPropType, svap as svapPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -99,7 +107,7 @@ function ChplSvapEdit({
 
   useActionBar({
     canDelete: !!svap.svapId,
-    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    errors: [...propsErrors].sort(compareStrings),
     isDisabled: !isValid(),
     isProcessing,
   });
@@ -138,7 +146,7 @@ function ChplSvapEdit({
         onChange={(event) => add(event.target.value)}
         helperText={criteria.length === 0 && 'At least one Criteria must be selected'}
       >
-        { criterionOptions
+        { [...criterionOptions]
           .sort(sortCriteria)
           .map((item) => (
             <MenuItem
@@ -151,7 +159,7 @@ function ChplSvapEdit({
           ))}
       </ChplTextField>
       <Box sx={styles.chips}>
-        { criteria
+        { [...criteria]
           .sort(sortCriteria)
           .map((item) => (
             <Chip
