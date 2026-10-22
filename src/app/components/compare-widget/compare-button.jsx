@@ -1,13 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Button,
   makeStyles,
 } from '@material-ui/core';
 import CompareArrows from '@material-ui/icons/CompareArrows';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { openWidget } from 'components/action-widget/widget.slice';
+import { addCompareListing, removeCompareListing } from 'components/browser/browserInfo.slice';
 import { eventTrack } from 'services/analytics.service';
-import { CmsContext, CompareContext, useAnalyticsContext } from 'shared/contexts';
+import { useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -17,39 +20,29 @@ const useStyles = makeStyles({
 
 function ChplCompareButton({ listing }) {
   const { analytics } = useAnalyticsContext();
-  const { setIsOpen: setCmsIsOpen } = useContext(CmsContext);
-  const {
-    addListing,
-    isInWidget,
-    removeListing,
-    setIsOpen,
-  } = useContext(CompareContext);
+  const dispatch = useDispatch();
+  const inWidget = useSelector((state) => state.browserInfo.compare.some((l) => l.id === listing.id));
   const classes = useStyles();
 
   const handleClick = () => {
     eventTrack({
       ...analytics,
-      event: isInWidget(listing) ? 'Remove Listing from Compare Widget' : 'Add Listing to Compare Widget',
+      event: inWidget ? 'Remove Listing from Compare Widget' : 'Add Listing to Compare Widget',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
     });
-    if (isInWidget(listing)) {
-      removeListing(listing);
-    } else {
-      addListing(listing);
-    }
-    setIsOpen(true);
-    setCmsIsOpen(false);
+    dispatch(inWidget ? removeCompareListing(listing) : addCompareListing(listing));
+    dispatch(openWidget('compare'));
   };
 
   return (
     <Button
       color="secondary"
-      className={isInWidget(listing) ? classes.deleteButtonOutlined : ''}
+      className={inWidget ? classes.deleteButtonOutlined : ''}
       variant="contained"
       id={`toggle-compare-${listing.id}`}
       onClick={handleClick}
-      endIcon={isInWidget(listing) ? <RemoveIcon /> : <CompareArrows />}
+      endIcon={inWidget ? <RemoveIcon /> : <CompareArrows />}
     >
       Compare
     </Button>

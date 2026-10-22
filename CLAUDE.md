@@ -78,11 +78,17 @@ Most pages/features under `src/app/pages/**` and `src/app/components/**` follow 
 
 ### Provider stack
 
-`src/app/app-wrapper.jsx` composes the global provider tree every page mounts into (Redux `Provider` → `CookiesProvider` → MUI `ThemeProvider` → Snackbar → `ApiWrapper` (axios + react-query) → `UserWrapper` → `FlagWrapper` (feature flags) → `CompareWrapper` → `CmsWrapper` → analytics/hash contexts → `ChplAppLayout`). When adding a new cross-cutting concern, it likely belongs as another layer here rather than threaded through props.
+`src/app/app-wrapper.jsx` composes the global provider tree every page mounts into (Redux `Provider` → `CookiesProvider` → MUI `ThemeProvider` → Snackbar → `ApiWrapper` (axios + react-query) → `UserWrapper` → `FlagWrapper` (feature flags) → analytics/hash contexts → `ChplAppLayout`). When adding a new cross-cutting concern, it likely belongs as another layer here rather than threaded through props.
 
-- **Redux** (`@reduxjs/toolkit`, `src/app/store.js`): only two slices exist — `browserInfo` and `userInfo` — persisted to `localStorage` under key `chplState` via custom middleware. Most other shared state uses React Context instead of Redux; check `src/app/shared/contexts/` before adding a new Redux slice.
+- **Redux** (`@reduxjs/toolkit`, `src/app/store.js`): four slices, three of them persisted to `localStorage` under key `chplState` via custom middleware.
+  - `browserInfo` (persisted): the API location and key, previously compared and viewed listing ids, favorited listing ids, the CMS IDs entered on the CMS ID Reverse Lookup page, and the listings in the compare and CMS ID widgets. The widget lists hold `summarizeListing` summaries (`services/listing.service`), not whole listings.
+  - `userInfo` (persisted): the logged-in user.
+  - `widget` (persisted): which widget panel is open, `'cms'`, `'compare'` or `null`; opening one closes the other.
+  - `actionBar` (never persisted): the page's action bar.
+
+  Keep browser-side state that should survive a reload in a slice, not in a separate `localStorage` key. When moving an existing key into a slice, carry its value over once in `store.js` and then delete the key, as `LEGACY_KEYS` does. Most other shared state uses React Context instead of Redux; check `src/app/shared/contexts/` before adding a new Redux slice.
 - **Data fetching**: `@tanstack/react-query`, with hooks defined per-domain in `src/app/api/*.jsx` (e.g. `useFetchAcbs`, `useFetchCriteria`). `src/app/api/api-wrapper.jsx` sets up the shared `QueryClient` and axios provider; devtools show automatically in dev mode.
-- **Contexts**: `src/app/shared/contexts/` holds domain contexts (analytics, compare, developer, flags, hash, listing, pending-listing, user, etc.) re-exported from `contexts/index.js`.
+- **Contexts**: `src/app/shared/contexts/` holds domain contexts (analytics, developer, flags, hash, listing, pending-listing, user, etc.) re-exported from `contexts/index.js`.
 - **Shared PropTypes shapes**: `src/app/shared/prop-types/` — reuse these shapes for domain objects (listing, developer, acb, criterion, ...) instead of redefining inline.
 
 ### Module resolution
