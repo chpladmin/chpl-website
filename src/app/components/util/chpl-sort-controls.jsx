@@ -1,6 +1,16 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
-  Box, Button, ButtonGroup, Card, Menu, MenuItem,
+  Button,
+  ButtonGroup,
+  Card,
+  CircularProgress,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import {
   arrayOf,
@@ -50,9 +60,26 @@ function ChplSortControls({
   orderBy,
   order,
   onSort,
+  isUpdating = false,
 }) {
   const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
+  // The sort this control asked for, until its results are on screen, so the
+  // spinner shows for a re-sort and not for a change of page or filter
+  const [requestedSort, setRequestedSort] = useState(null);
   const currentOrderRef = useRef(order);
+
+  useEffect(() => {
+    // Done once the page has the requested sort and isn't waiting for it. That
+    // covers a sort answered from the cache too, which never updates at all
+    if (requestedSort
+        && requestedSort.orderBy === orderBy
+        && requestedSort.order === order
+        && !isUpdating) {
+      setRequestedSort(null);
+    }
+  }, [isUpdating, order, orderBy, requestedSort]);
+
+  const showSpinner = !!requestedSort && isUpdating;
 
   // Keep ref in sync with prop
   currentOrderRef.current = order;
@@ -68,6 +95,7 @@ function ChplSortControls({
     }
 
     currentOrderRef.current = newOrder;
+    setRequestedSort({ orderBy: property, order: newOrder });
     onSort(property, newOrder);
     setSortMenuAnchor(null);
   };
@@ -76,6 +104,7 @@ function ChplSortControls({
     // Always toggle based on the ref, which has the most recent value
     const newOrder = currentOrderRef.current === 'asc' ? 'desc' : 'asc';
     currentOrderRef.current = newOrder;
+    setRequestedSort({ orderBy, order: newOrder });
     onSort(orderBy, newOrder);
   }, [orderBy, onSort]);
 
@@ -90,7 +119,7 @@ function ChplSortControls({
         <Button
           sx={styles.primaryButton}
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
-          startIcon={<SortIcon />}
+          startIcon={showSpinner ? <CircularProgress size={16} aria-label="Sorting results" /> : <SortIcon />}
           color="primary"
           style={{ padding: '0 16px', fontSize: '12px' }}
         >
@@ -136,4 +165,5 @@ ChplSortControls.propTypes = {
   orderBy: string.isRequired,
   order: oneOf(['asc', 'desc']).isRequired,
   onSort: func.isRequired,
+  isUpdating: bool,
 };
