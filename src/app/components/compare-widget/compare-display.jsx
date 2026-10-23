@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Button,
   CardContent,
@@ -12,12 +12,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { func, objectOf, string } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { clearCompareListings, removeCompareListing } from 'components/browser/browserInfo.slice';
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareListingsForDisplay } from 'services/listing.service';
 import { goToUrl } from 'services/navigation.service';
-import { CompareContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 function ChplCompareEmptyStateIcon() {
@@ -130,7 +131,8 @@ const useStyles = makeStyles({
 });
 
 function ChplCompareDisplay({ onClose }) {
-  const { listings, removeListing } = useContext(CompareContext);
+  const listings = useSelector((state) => state.browserInfo.compare);
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   const compareAll = () => {
@@ -143,7 +145,7 @@ function ChplCompareDisplay({ onClose }) {
       event: 'Remove all Listings',
       category: 'Compare Widget',
     });
-    listings.forEach((l) => removeListing(l));
+    dispatch(clearCompareListings());
   };
 
   if (!listings || listings.length === 0) {
@@ -193,7 +195,7 @@ function ChplCompareDisplay({ onClose }) {
               variant="outlined"
               key={listing.id}
               label={<ChplEllipsis text={listing.name} />}
-              onDelete={() => removeListing(listing)}
+              onDelete={() => dispatch(removeCompareListing(listing))}
             />
           ))}
       </div>

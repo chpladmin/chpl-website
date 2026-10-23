@@ -6,6 +6,7 @@ import {
   Toolbar,
   makeStyles,
 } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 
 import ChplLogo from '../../assets/images/Certified-HealthIT-Product-List-Upper-Left-Logo.svg';
 
@@ -15,6 +16,7 @@ import ChplMobileNavDrawer from './mobile-nav-drawer';
 
 import ChplAnnouncementsFab from 'components/announcements/announcements-fab';
 import ChplToggle from 'components/login/toggle';
+import { clearPageState } from 'components/page-state';
 import { eventTrack } from 'services/analytics.service';
 import { getCurrentUrl, goToState, reloadState } from 'services/navigation.service';
 import {
@@ -108,6 +110,7 @@ const useStyles = makeStyles({
 function ChplNavigationTop() {
   const { analytics } = useAnalyticsContext();
   const { isProduction } = useContext(FlagContext);
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   const home = () => {
@@ -116,7 +119,7 @@ function ChplNavigationTop() {
       event: 'Go to Home Page',
       category: 'Navigation',
     });
-    sessionStorage.removeItem('storageKey-listingsPage-hasSearched');
+    dispatch(clearPageState('storageKey-listingsPage-hasSearched'));
     if (getCurrentUrl() === '/search') {
       reloadState();
     } else {

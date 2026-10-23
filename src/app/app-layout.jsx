@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Box,
   Paper,
   makeStyles,
 } from '@material-ui/core';
 import { node } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { CmsContext, CompareContext } from 'shared/contexts';
+import { closeWidget } from 'components/action-widget/widget.slice';
 import ChplCmsDisplay from 'components/cms-widget/cms-display';
 import ChplCompareDisplay from 'components/compare-widget/compare-display';
 import ChplNavigationBottom from 'navigation/navigation-bottom';
@@ -102,24 +103,21 @@ const useStyles = makeStyles({
 });
 
 function ChplWidgetWorkspacePanel() {
-  const { isOpen: cmsIsOpen, setIsOpen: setCmsIsOpen } = useContext(CmsContext);
-  const { isOpen: compareIsOpen, setIsOpen: setCompareIsOpen } = useContext(CompareContext);
+  const openWidget = useSelector((state) => state.widget.open);
+  const dispatch = useDispatch();
   const classes = useStyles();
 
-  if (!cmsIsOpen && !compareIsOpen) {
+  if (openWidget !== 'cms' && openWidget !== 'compare') {
     return null;
   }
 
-  const closeWidgetPanel = () => {
-    setCmsIsOpen(false);
-    setCompareIsOpen(false);
-  };
+  const closeWidgetPanel = () => dispatch(closeWidget());
 
   return (
     <Box className={classes.widgetRail}>
       <Paper className={classes.widgetRailPaper} elevation={0} square>
-        { cmsIsOpen && (<ChplCmsDisplay onClose={closeWidgetPanel} />)}
-        { compareIsOpen && (<ChplCompareDisplay onClose={closeWidgetPanel} />)}
+        { openWidget === 'cms' && (<ChplCmsDisplay onClose={closeWidgetPanel} />)}
+        { openWidget === 'compare' && (<ChplCompareDisplay onClose={closeWidgetPanel} />)}
       </Paper>
     </Box>
   );

@@ -13,6 +13,7 @@ import { useSnackbar } from 'notistack';
 import { NotificationsOutlined, SubscriptionsOutlined } from '@material-ui/icons';
 
 import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
+import { usePageState } from 'components/page-state';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -25,7 +26,6 @@ import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'compone
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { compareStrings } from 'services/sort.service';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
 const sortOptions = [
@@ -102,10 +102,10 @@ const useStyles = makeStyles({
 function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
   const { enqueueSnackbar } = useSnackbar();
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'creation_date');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'creation_date');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = usePageState(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const [subscriptions, setSubscriptions] = useState([]);
   const { mutate } = usePostGetDeliveredNotifications();

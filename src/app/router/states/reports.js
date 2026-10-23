@@ -14,7 +14,7 @@ const states = [{
 }, {
   name: 'reports.activity',
   url: '/activity',
-  component: lazy(() => import('pages/reports/activity/activity-wrapper')),
+  component: lazy(() => import('pages/reports/activity/activity')),
   data: {
     title: 'CHPL Activity',
     roles: ['chpl-admin', 'chpl-onc'],
@@ -22,7 +22,7 @@ const states = [{
 }, {
   name: 'reports.questionable-activity',
   url: '/questionable-activity',
-  component: lazy(() => import('pages/reports/questionable-activity/questionable-activity-wrapper')),
+  component: lazy(() => import('pages/reports/questionable-activity/questionable-activity')),
   data: {
     title: 'CHPL Activity - Questionable Activity',
     roles: ['chpl-admin', 'chpl-onc'],

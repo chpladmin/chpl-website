@@ -11,7 +11,7 @@ const states = [
   }, {
     name: 'resources.api',
     url: '/api',
-    component: lazy(() => import('pages/resources/api/api-wrapper')),
+    component: lazy(() => import('pages/resources/api/api')),
     data: { title: 'CHPL API' },
   }, {
     name: 'resources.chpl-api',
@@ -24,22 +24,22 @@ const states = [
   }, {
     name: 'resources.cms-lookup',
     url: '/cms-lookup',
-    component: lazy(() => import('pages/resources/cms-lookup/cms-lookup-wrapper')),
+    component: lazy(() => import('pages/resources/cms-lookup/cms-lookup')),
     data: { title: 'CMS ID Reverse Lookup' },
   }, {
     name: 'resources.download',
     url: '/download',
-    component: lazy(() => import('pages/resources/download/download-wrapper')),
+    component: lazy(() => import('pages/resources/download/download')),
     data: { title: 'Download the CHPL' },
   }, {
     name: 'resources.overview',
     url: '/overview',
-    component: lazy(() => import('pages/resources/overview/overview-wrapper')),
+    component: lazy(() => import('pages/resources/overview/overview')),
     data: { title: 'CHPL Overview' },
   }, {
     name: 'forgot-password',
     url: '/forgot-password/{uuid}',
-    component: lazy(() => import('pages/resources/forgot-password/forgot-password-wrapper')),
+    component: lazy(() => import('pages/resources/forgot-password/forgot-password')),
     params: {
       uuid: { squash: true, value: null },
     },

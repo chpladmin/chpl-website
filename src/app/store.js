@@ -1,22 +1,34 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import actionBarReducer from 'components/action-bar/actionBar.slice';
+import widgetReducer from 'components/action-widget/widget.slice';
 import browserInfoReducer, { MAX_REMEMBERED, initialState as browserInfoDefaults } from 'components/browser/browserInfo.slice';
 import userInfoReducer from 'components/login/userInfo.slice';
+import pageStateReducer from 'components/page-state/pageState.slice';
+import { summarizeListing } from 'services/listing.service';
 
 const LEGACY_USER_KEY = 'ngStorage-currentUser';
 const LEGACY_COMPARED_KEY = 'ngStorage-previouslyCompared';
 const LEGACY_VIEWED_KEY = 'ngStorage-previouslyViewed';
+// The lists that had keys of their own before moving into `browserInfo`
+const LEGACY_LIST_KEYS = {
+  cms: 'cms',
+  cmsLookupIds: 'storageKey-cmsLookupIds',
+  compare: 'compare',
+  favorites: 'favorites',
+};
 
-// Everything the AngularJS era wrote to its own localStorage keys. The user and
-// the compare/viewed lists are carried over once; the tokens are dropped
-// outright, since `axios-jwt` owns token storage now.
+// Everything written to localStorage outside `chplState`: the AngularJS era's
+// keys, and the widget, favorites and CMS ID lookup lists. The user and the lists are carried
+// over once; the tokens are dropped outright, since `axios-jwt` owns token
+// storage now.
 const LEGACY_KEYS = [
   LEGACY_USER_KEY,
   LEGACY_COMPARED_KEY,
   LEGACY_VIEWED_KEY,
   'ngStorage-jwtToken',
   'ngStorage-refreshToken',
+  ...Object.values(LEGACY_LIST_KEYS),
 ];
 
 const loadLegacyUserInfo = () => {
@@ -38,14 +50,49 @@ const loadLegacyIds = (key) => {
   }
 };
 
+const loadLegacyListings = (key) => {
+  try {
+    const listings = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(listings) ? listings.filter((listing) => listing?.id !== undefined) : undefined;
+  } catch (err) {
+    return undefined;
+  }
+};
+
+const loadLegacyStrings = (key) => {
+  try {
+    const values = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(values) ? values.filter((value) => typeof value === 'string') : undefined;
+  } catch (err) {
+    return undefined;
+  }
+};
+
+// The widget lists keep summaries, and favorites keep ids, rather than the whole
+// listings their old keys held. Only lists the old keys actually hold are returned.
+const loadLegacyLists = () => {
+  const cms = loadLegacyListings(LEGACY_LIST_KEYS.cms);
+  const cmsLookupIds = loadLegacyStrings(LEGACY_LIST_KEYS.cmsLookupIds);
+  const compare = loadLegacyListings(LEGACY_LIST_KEYS.compare);
+  const favorites = loadLegacyListings(LEGACY_LIST_KEYS.favorites);
+  return {
+    ...(cms ? { cms: cms.map(summarizeListing) } : {}),
+    ...(cmsLookupIds ? { cmsLookupIds } : {}),
+    ...(compare ? { compare: compare.map(summarizeListing) } : {}),
+    ...(favorites ? { favorites: favorites.map((listing) => listing.id) } : {}),
+  };
+};
+
 const loadLegacyBrowserInfo = () => {
   const previouslyCompared = loadLegacyIds(LEGACY_COMPARED_KEY);
   const previouslyViewed = loadLegacyIds(LEGACY_VIEWED_KEY);
-  if (!previouslyCompared && !previouslyViewed) return undefined;
+  const lists = loadLegacyLists();
+  if (!previouslyCompared && !previouslyViewed && Object.keys(lists).length === 0) return undefined;
   return {
     ...browserInfoDefaults,
     ...(previouslyCompared ? { previouslyCompared } : {}),
     ...(previouslyViewed ? { previouslyViewed } : {}),
+    ...lists,
   };
 };
 
@@ -72,6 +119,8 @@ const loadState = () => {
       ...persisted,
       browserInfo: {
         ...browserInfoDefaults,
+        // A `chplState` from before the lists moved in gets them from their old keys
+        ...loadLegacyLists(),
         ...persisted.browserInfo,
         // Configuration always comes from this build, never from a past visit.
         api: browserInfoDefaults.api,
@@ -83,11 +132,12 @@ const loadState = () => {
   }
 };
 
-// The action bar is per-page UI state, so it is never written: a reload would
-// otherwise restore whatever bar was showing beforehand.
-const saveState = ({ browserInfo, userInfo }) => {
+// The action bar and the page state are per-page UI state, so they are never
+// written: a reload starts them afresh rather than restoring what was showing.
+// The open widget is written, so its panel stays open across a reload.
+const saveState = ({ browserInfo, userInfo, widget }) => {
   try {
-    const serializedState = JSON.stringify({ browserInfo, userInfo });
+    const serializedState = JSON.stringify({ browserInfo, userInfo, widget });
     localStorage.setItem('chplState', serializedState);
   } catch (err) {
     // Ignore write errors or log them
@@ -105,7 +155,9 @@ const createStore = () => {
     reducer: {
       actionBar: actionBarReducer,
       browserInfo: browserInfoReducer,
+      pageState: pageStateReducer,
       userInfo: userInfoReducer,
+      widget: widgetReducer,
     },
     preloadedState: loadState(),
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware),

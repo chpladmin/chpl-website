@@ -9,6 +9,7 @@ import {
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 
 const useStyles = makeStyles({
   reportCard: {
@@ -100,18 +101,26 @@ function ChplComplianceDashboard() {
   };
 
   return (
-    <Grid container spacing={4} alignItems="flex-start">
-      <Grid item xs={12} md={4}>
-        <Grid container spacing={4}>
-          { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+    <>
+      <ChplPageHeader
+        text="Compliance Dashboard"
+        subtitle="A comprehensive view of compliance reports and metrics"
+      />
+      <ChplPageBody>
+        <Grid container spacing={4} alignItems="flex-start">
+          <Grid item xs={12} md={4}>
+            <Grid container spacing={4}>
+              { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Grid container spacing={4}>
+              { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} md={8}>
-        <Grid container spacing={4}>
-          { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
-        </Grid>
-      </Grid>
-    </Grid>
+      </ChplPageBody>
+    </>
   );
 }
 

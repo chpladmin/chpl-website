@@ -1,9 +1,12 @@
 import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 import ChplTestToolsView from './test-tools-view';
 
 import { FilterProvider } from 'components/filter';
+import pageStateReducer from 'components/page-state/pageState.slice';
 
 const deepFreeze = (value) => {
   if (value && typeof value === 'object') {
@@ -30,9 +33,11 @@ const testTools = deepFreeze([
 describe('the test tools list', () => {
   it('sorts the tools by value, ignoring case, and lists each one\'s criteria in order, without reordering them', () => {
     render(
-      <FilterProvider filters={[]} storageKey="test-testTools">
-        <ChplTestToolsView testTools={testTools} dispatch={jest.fn()} />
-      </FilterProvider>,
+      <Provider store={configureStore({ reducer: { pageState: pageStateReducer } })}>
+        <FilterProvider filters={[]} storageKey="test-testTools">
+          <ChplTestToolsView testTools={testTools} dispatch={jest.fn()} />
+        </FilterProvider>
+      </Provider>,
     );
     expect(screen.getAllByText(/ tool$/).map((el) => el.textContent)).toEqual(['Alpha tool', 'beta tool']);
     expect(screen.getByText('170.315 (a)(1), 170.315 (b)(1)')).toBeInTheDocument();

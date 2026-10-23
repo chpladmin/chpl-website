@@ -85,7 +85,7 @@ const usePutJob = () => {
   return useMutation(async (data) => axios.put('schedules/jobs', data)
     .then((response) => response), {
     onSuccess: () => {
-      queryClient.invalidateQueries('schedules/jobs');
+      queryClient.invalidateQueries(['schedules/jobs']);
     },
   });
 };
@@ -96,7 +96,7 @@ const usePutTrigger = () => {
   return useMutation(async (data) => axios.put('schedules/triggers', data)
     .then((response) => response), {
     onSuccess: () => {
-      queryClient.invalidateQueries('schedules/triggers');
+      queryClient.invalidateQueries(['schedules/triggers']);
     },
   });
 };

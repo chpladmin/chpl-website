@@ -25,15 +25,18 @@ import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import { func, objectOf, string } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ChplCmsDisplayProgressBar from './cms-display-progress-bar';
 import createPdf from './cms-pdf';
 
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
+import { openWidget } from 'components/action-widget/widget.slice';
+import { clearCmsListings, removeCmsListing, setCompareListings } from 'components/browser/browserInfo.slice';
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareStrings } from 'services/sort.service';
-import { CmsContext, CompareContext, FlagContext } from 'shared/contexts';
+import { FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 function ChplCmsEmptyStateIcon() {
@@ -251,13 +254,8 @@ const useStyles = makeStyles({
 });
 
 function ChplCmsDisplay({ onClose }) {
-  const { listings, removeListing, setIsOpen } = useContext(CmsContext);
-  const {
-    listings: compareListings,
-    addListing: addCompareListing,
-    removeListing: removeCompareListing,
-    setIsOpen: setCompareIsOpen,
-  } = useContext(CompareContext);
+  const listings = useSelector((state) => state.browserInfo.cms);
+  const dispatch = useDispatch();
   const { cmsDisabledIsOn } = useContext(FlagContext);
   const [activeYear, setActiveYear] = useState('');
   const [idAnalysis, setIdAnalysis] = useState({});
@@ -295,10 +293,8 @@ function ChplCmsDisplay({ onClose }) {
       event: 'Compare Listings',
       category: 'CMS Widget',
     });
-    compareListings.forEach((l) => removeCompareListing(l));
-    listings.forEach((l) => addCompareListing(l));
-    setIsOpen(false);
-    setCompareIsOpen(true);
+    dispatch(setCompareListings(listings));
+    dispatch(openWidget('compare'));
   };
 
   const copyToClipboard = () => {
@@ -339,7 +335,7 @@ function ChplCmsDisplay({ onClose }) {
       event: 'Remove all Listings',
       category: 'CMS Widget',
     });
-    listings.forEach((l) => removeListing(l));
+    dispatch(clearCmsListings());
   };
 
   if (cmsDisabledIsOn) {
@@ -546,7 +542,7 @@ function ChplCmsDisplay({ onClose }) {
               variant="outlined"
               key={listing.id}
               label={<ChplEllipsis text={listing.name} />}
-              onDelete={() => removeListing(listing)}
+              onDelete={() => dispatch(removeCmsListing(listing))}
             />
           ))}
       </div>

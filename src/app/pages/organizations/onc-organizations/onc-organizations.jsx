@@ -23,6 +23,7 @@ import {
 import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareOrganizations } from 'services/sort.service';
 import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -165,93 +166,98 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
   };
 
   return (
-    <AnalyticsContext.Provider value={analyticsData}>
-      <div className={orgs.length > 1 ? classes.container : ''}>
-        { orgs.length > 1
-          && (
-            <div className={classes.navigation}>
-              <Card>
-                { orgs.map((org) => (
-                  <Button
-                    key={org.name}
-                    onClick={() => navigate(org)}
-                    disabled={orgs.find((o) => o.id === activeId)?.name === org.name}
-                    id={`onc-organizations-navigation-${org.name}`}
-                    fullWidth
-                    variant="text"
-                    color="primary"
-                    endIcon={<ArrowForwardIcon />}
-                    className={classes.menuItems}
-                  >
-                    <Box display="flex" flexDirection="row" gridGap={4}>
-                      { org.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
-                      { org.name }
-                    </Box>
-                  </Button>
-                ))}
-              </Card>
-            </div>
-          )}
-        <Box display="flex" flexDirection="column" gridGap={16}>
-          { activeId
-            && (
-              <>
-                { isEditing !== 'user'
-                  && (
-                    <ChplOncOrganization
-                      dispatch={handleDispatch}
-                      organization={orgs.find((org) => org.id === activeId)}
-                      orgType={orgType}
-                    />
-                  )}
-                { isEditing !== 'org' && orgType === 'acb'
-                  && (
-                    <ChplUsers
-                      users={users}
-                      groupNames={roles}
-                      dispatch={handleDispatch}
-                      organizationId={activeId}
-                      isLoading={userQuery.isLoading}
-                    />
-                  )}
-              </>
-            )}
-          { !activeId && !isCreating
-            && (
-              <Card>
-                <CardContent>
-                  <Typography>
-                    ONC Organization maintenance
-                  </Typography>
-                </CardContent>
-                { hasAnyRole(['chpl-admin', 'chpl-onc'])
-                  && (
-                    <CardActions>
+    <>
+      <ChplPageHeader text={orgType === 'acb' ? 'ONC-ACBs' : 'ONC-ATLs'} />
+      <ChplPageBody>
+        <AnalyticsContext.Provider value={analyticsData}>
+          <div className={orgs.length > 1 ? classes.container : ''}>
+            { orgs.length > 1
+              && (
+                <div className={classes.navigation}>
+                  <Card>
+                    { orgs.map((org) => (
                       <Button
-                        variant="contained"
+                        key={org.name}
+                        onClick={() => navigate(org)}
+                        disabled={orgs.find((o) => o.id === activeId)?.name === org.name}
+                        id={`onc-organizations-navigation-${org.name}`}
+                        fullWidth
+                        variant="text"
                         color="primary"
-                        onClick={() => setIsCreating(true)}
-                        endIcon={<AddIcon />}
-                        id="create-new-organization"
+                        endIcon={<ArrowForwardIcon />}
+                        className={classes.menuItems}
                       >
-                        Create
+                        <Box display="flex" flexDirection="row" gridGap={4}>
+                          { org.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
+                          { org.name }
+                        </Box>
                       </Button>
-                    </CardActions>
-                  )}
-              </Card>
-            )}
-          { isCreating && hasAnyRole(['chpl-admin', 'chpl-onc'])
-            && (
-              <ChplOncOrganization
-                dispatch={handleDispatch}
-                organization={{}}
-                orgType={orgType}
-                isCreating
-              />
-            )}
-        </Box>
-      </div>
-    </AnalyticsContext.Provider>
+                    ))}
+                  </Card>
+                </div>
+              )}
+            <Box display="flex" flexDirection="column" gridGap={16}>
+              { activeId
+                && (
+                  <>
+                    { isEditing !== 'user'
+                      && (
+                        <ChplOncOrganization
+                          dispatch={handleDispatch}
+                          organization={orgs.find((org) => org.id === activeId)}
+                          orgType={orgType}
+                        />
+                      )}
+                    { isEditing !== 'org' && orgType === 'acb'
+                      && (
+                        <ChplUsers
+                          users={users}
+                          groupNames={roles}
+                          dispatch={handleDispatch}
+                          organizationId={activeId}
+                          isLoading={userQuery.isLoading}
+                        />
+                      )}
+                  </>
+                )}
+              { !activeId && !isCreating
+                && (
+                  <Card>
+                    <CardContent>
+                      <Typography>
+                        ONC Organization maintenance
+                      </Typography>
+                    </CardContent>
+                    { hasAnyRole(['chpl-admin', 'chpl-onc'])
+                      && (
+                        <CardActions>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => setIsCreating(true)}
+                            endIcon={<AddIcon />}
+                            id="create-new-organization"
+                          >
+                            Create
+                          </Button>
+                        </CardActions>
+                      )}
+                  </Card>
+                )}
+              { isCreating && hasAnyRole(['chpl-admin', 'chpl-onc'])
+                && (
+                  <ChplOncOrganization
+                    dispatch={handleDispatch}
+                    organization={{}}
+                    orgType={orgType}
+                    isCreating
+                  />
+                )}
+            </Box>
+          </div>
+        </AnalyticsContext.Provider>
+      </ChplPageBody>
+    </>
   );
 }
 

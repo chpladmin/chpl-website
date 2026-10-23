@@ -6,14 +6,13 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { oneOf } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { openWidget } from 'components/action-widget/widget.slice';
+import { addCmsListing, removeCmsListing } from 'components/browser/browserInfo.slice';
 import { eventTrack } from 'services/analytics.service';
-import {
-  CmsContext,
-  CompareContext,
-  FlagContext,
-  useAnalyticsContext,
-} from 'shared/contexts';
+import { canAddToCms } from 'services/listing.service';
+import { FlagContext, useAnalyticsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -24,37 +23,24 @@ const useStyles = makeStyles({
 function ChplCmsButton({ listing, size = 'medium' }) {
   const classes = useStyles();
   const { analytics } = useAnalyticsContext();
-  const {
-    addListing,
-    canDisplayButton,
-    isInWidget,
-    removeListing,
-    setIsOpen,
-  } = useContext(CmsContext);
-  const { setIsOpen: setCompareIsOpen } = useContext(CompareContext);
   const { cmsDisabledIsOn } = useContext(FlagContext);
+  const dispatch = useDispatch();
+  const inWidget = useSelector((state) => state.browserInfo.cms.some((l) => l.id === listing.id));
 
   const handleClick = () => {
     eventTrack({
       ...analytics,
-      event: isInWidget(listing) ? 'Remove Listing from CMS ID Widget' : 'Add Listing to CMS ID Widget',
+      event: inWidget ? 'Remove Listing from CMS ID Widget' : 'Add Listing to CMS ID Widget',
       label: listing.chplProductNumber,
       aggregationName: listing.product.name,
     });
-    if (isInWidget(listing)) {
-      removeListing(listing);
-    } else {
-      addListing(listing);
-    }
-    setIsOpen(true);
-    setCompareIsOpen(false);
+    dispatch(inWidget ? removeCmsListing(listing) : addCmsListing(listing));
+    dispatch(openWidget('cms'));
   };
 
-  if (!canDisplayButton(listing) || cmsDisabledIsOn) {
+  if (!canAddToCms(listing) || cmsDisabledIsOn) {
     return null;
   }
-
-  const inWidget = isInWidget(listing);
 
   return (
     <Button
