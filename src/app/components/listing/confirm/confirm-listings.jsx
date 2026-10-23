@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { func } from 'prop-types';
 import {
+  Box,
   Button,
   Checkbox,
   Chip,
@@ -15,6 +16,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CircularProgress from '@mui/material/CircularProgress';
 import FeedbackIcon from '@mui/icons-material/Feedback';
+import Skeleton from '@mui/material/Skeleton';
 import { useSnackbar } from 'notistack';
 
 import {
@@ -23,6 +25,7 @@ import {
   useRejectPendingListing,
 } from 'api/pending-listings';
 import ChplActionBarMessages from 'components/action-bar/action-bar-messages';
+import { ChplLoadingTable } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { palette, utilStyles } from 'themes';
@@ -46,6 +49,36 @@ const styles = {
     padding: '16px 32px',
   },
 };
+
+// Same footer and table margins as the loaded queue, so the rows fill in where they will appear
+const loadingStyles = {
+  rejectFooter: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    padding: '16px 32px',
+  },
+  table: {
+    margin: '0px 32px',
+  },
+};
+
+// The queue as the page shows it: the Reject selected button over a table with
+// one column for each header
+function ChplConfirmListingsLoading() {
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading products in the process of upload</Box>
+      <Box aria-hidden="true">
+        <Box sx={loadingStyles.rejectFooter}>
+          <Skeleton variant="rectangular" width={170} height={36} sx={{ borderRadius: '4px' }} />
+        </Box>
+        <Box sx={loadingStyles.table}>
+          <ChplLoadingTable columns={8} rows={5} showControls={false} />
+        </Box>
+      </Box>
+    </Box>
+  );
+}
 
 const getStatus = (listing) => {
   if (listing.status === 'UPLOAD_PROCESSING') {
@@ -77,7 +110,7 @@ function ChplConfirmListings({ onProcess }) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('chplProductNumber');
   const [warnings, setWarnings] = useState([]);
-  const { data: modernData } = useFetchPendingListings();
+  const { data: modernData, isLoading } = useFetchPendingListings();
   const { data: processingListing } = useFetchPendingListing({ id: listingIdToLoad });
   const { mutate: rejectListing } = useRejectPendingListing();
 
@@ -159,6 +192,12 @@ function ChplConfirmListings({ onProcess }) {
     setOrderBy(property);
     setOrder(orderDirection);
   };
+
+  // Until the effect above has copied the queue into state, the table would be
+  // empty, so the skeleton covers that render too
+  if (isLoading || (modernData?.length > 0 && listings.length === 0)) {
+    return <ChplConfirmListingsLoading />;
+  }
 
   const headers = [
     { text: 'Action', invisible: true },

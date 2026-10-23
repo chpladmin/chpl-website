@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Container,
   Divider,
   FormControlLabel,
@@ -23,6 +22,7 @@ import * as yup from 'yup';
 import ChplCompareUploadedAndSystemDevelopers from './compare-uploaded-and-system-developers';
 import ChplConfirmDeveloperAddress from './address';
 import ChplConfirmDeveloperContact from './contact';
+import ChplConfirmStepLoading from './confirm-step-loading';
 
 import { useFetchDevelopers } from 'api/developer';
 import { ChplTextField } from 'components/util';
@@ -234,7 +234,13 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
     validationSchema,
   });
 
-  if (developers.length === 0 || isLoading || !isSuccess) { return <CircularProgress />; }
+  // Until the effect above has copied the developers into state, the select
+  // would be empty, so the skeleton covers that render too
+  if (isLoading || (isSuccess && developers.length === 0 && data.some((d) => !d.deleted))) {
+    // A listing with an existing developer opens on the select; otherwise on
+    // the create form, with its name, website, address and contact fields
+    return <ChplConfirmStepLoading fields={isCreating ? 10 : 1} label="Loading developers" />;
+  }
 
   return (
     <Container maxWidth="md">
