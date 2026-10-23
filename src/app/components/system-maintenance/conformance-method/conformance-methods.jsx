@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
+} from '@mui/material';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplConformanceMethodEdit from './conformance-method-edit';
@@ -19,6 +19,7 @@ import {
   usePostConformanceMethod,
   usePutConformanceMethod,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplConformanceMethods() {
   const { data, isLoading, isSuccess } = useFetchConformanceMethods();
@@ -115,7 +116,8 @@ function ChplConformanceMethods() {
             <AccountBalanceOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeConformanceMethod.id ? 'Edit' : 'Add'} Conformance Method`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplConformanceMethodEdit
             conformanceMethod={activeConformanceMethod}
@@ -131,7 +133,12 @@ function ChplConformanceMethods() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        controls={2}
+        editable
+        fieldGroups={[2]}
+        label="Loading conformance methods"
+      />
     );
   }
 

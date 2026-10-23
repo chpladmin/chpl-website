@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -11,12 +11,14 @@ import ChplDownloadListings from 'components/download-listings/download-listings
 import {
   ChplLink,
   ChplLoadingCards,
-  ChplPagination,
   ChplPageBody,
   ChplPageHeader,
+  ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import {
   ChplFilterLayout,
@@ -48,13 +50,22 @@ function ChplDecisionSupportInterventionsSearchView() {
   const toggledCsvDefaults = ['riskManagementSummaryInformation'];
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchListings({
+  const {
+    data,
+    isError,
+    isFetching,
+    isLoading,
+    isPreviousData,
+  } = useFetchListings({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query: filterContext.queryString(),
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -112,7 +123,7 @@ function ChplDecisionSupportInterventionsSearchView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3, [{ lines: 2 }]]} />)}
           { !isLoading
           && (
             <>
@@ -126,109 +137,112 @@ function ChplDecisionSupportInterventionsSearchView() {
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
                 <ChplDownloadListings
                   listings={listings}
                   toggled={toggledCsvDefaults}
                 />
               </ChplSearchResultControls>
-              { listings.length > 0
-              && (
-                <>
-                  <Box>
-                    { listings.map((item) => (
-                      <ChplSearchResultCard
-                        key={item.id}
-                        fieldGroups={[
-                          [
-                            {
-                              label: 'Developer',
-                              style: { flex: '2 1 320px' },
-                              value: (
-                                <ChplLink
-                                  href={`#/organizations/developers/${item.developer.id}`}
-                                  text={item.developer.name}
-                                  analytics={{
-                                    ...analytics,
-                                    event: 'Navigate to Developer Page',
-                                    label: item.developer.name,
-                                  }}
-                                  external={false}
-                                  router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
-                                />
-                              ),
-                            },
-                            {
-                              label: 'Product',
-                              value: item.product.name,
-                            },
-                            {
-                              label: 'Version',
-                              value: item.version.name,
-                            },
-                          ],
-                          [
-                            {
-                              label: 'CHPL ID',
-                              style: { flex: '2 1 320px' },
-                              value: (
-                                <ChplLink
-                                  href={`#/listing/${item.id}`}
-                                  text={item.chplProductNumber}
-                                  analytics={{
-                                    ...analytics,
-                                    event: 'Navigate to Listing Details Page',
-                                    label: item.chplProductNumber,
-                                    aggregationName: item.product.name,
-                                  }}
-                                  external={false}
-                                  router={{ sref: 'listing', params: { id: item.id } }}
-                                />
-                              ),
-                            },
-                            {
-                              label: 'Certification Date',
-                              value: getDisplayDateFormat(item.certificationDate),
-                            },
-                            {
-                              label: 'Status',
-                              value: getStatusIcon(item.certificationStatus),
-                              iconButton: <ChplCertificationStatusLegend />,
-                            },
-                          ],
-                          [
-                            {
-                              label: 'Risk Management Summary Information',
-                              value: item.riskManagementSummaryInformationValue
-                                ? (
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { listings.length > 0
+                && (
+                  <>
+                    <Box>
+                      { listings.map((item) => (
+                        <ChplSearchResultCard
+                          key={item.id}
+                          fieldGroups={[
+                            [
+                              {
+                                label: 'Developer',
+                                style: { flex: '2 1 320px' },
+                                value: (
                                   <ChplLink
-                                    href={item.riskManagementSummaryInformationValue}
+                                    href={`#/organizations/developers/${item.developer.id}`}
+                                    text={item.developer.name}
                                     analytics={{
                                       ...analytics,
-                                      event: 'Go to Risk Management Summary Information',
+                                      event: 'Navigate to Developer Page',
+                                      label: item.developer.name,
+                                    }}
+                                    external={false}
+                                    router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
+                                  />
+                                ),
+                              },
+                              {
+                                label: 'Product',
+                                value: item.product.name,
+                              },
+                              {
+                                label: 'Version',
+                                value: item.version.name,
+                              },
+                            ],
+                            [
+                              {
+                                label: 'CHPL ID',
+                                style: { flex: '2 1 320px' },
+                                value: (
+                                  <ChplLink
+                                    href={`#/listing/${item.id}`}
+                                    text={item.chplProductNumber}
+                                    analytics={{
+                                      ...analytics,
+                                      event: 'Navigate to Listing Details Page',
                                       label: item.chplProductNumber,
                                       aggregationName: item.product.name,
                                     }}
+                                    external={false}
+                                    router={{ sref: 'listing', params: { id: item.id } }}
                                   />
-                                )
-                                : 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module',
-                            },
-                          ],
-                        ]}
-                        actions={<ChplActionButton listing={item} />}
-                      />
-                    ))}
-                  </Box>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                  />
-                </>
-              )}
+                                ),
+                              },
+                              {
+                                label: 'Certification Date',
+                                value: getDisplayDateFormat(item.certificationDate),
+                              },
+                              {
+                                label: 'Status',
+                                value: getStatusIcon(item.certificationStatus),
+                                iconButton: <ChplCertificationStatusLegend />,
+                              },
+                            ],
+                            [
+                              {
+                                label: 'Risk Management Summary Information',
+                                value: item.riskManagementSummaryInformationValue
+                                  ? (
+                                    <ChplLink
+                                      href={item.riskManagementSummaryInformationValue}
+                                      analytics={{
+                                        ...analytics,
+                                        event: 'Go to Risk Management Summary Information',
+                                        label: item.chplProductNumber,
+                                        aggregationName: item.product.name,
+                                      }}
+                                    />
+                                  )
+                                  : 'The certified health IT developer does not currently supply a Predictive DSI as part of its Health IT Module',
+                              },
+                            ],
+                          ]}
+                          actions={<ChplActionButton listing={item} />}
+                        />
+                      ))}
+                    </Box>
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                    />
+                  </>
+                )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>

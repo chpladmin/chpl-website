@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 
 import { useFetchBannedDevelopers } from 'api/search';
 import {
   ChplLink,
   ChplLoadingCards,
-  ChplPagination,
   ChplPageBody,
   ChplPageHeader,
+  ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
@@ -34,13 +36,22 @@ function ChplBannedDevelopersSearchView() {
   const [recordCount, setRecordCount] = useState(0);
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchBannedDevelopers({
+  const {
+    data,
+    isError,
+    isFetching,
+    isLoading,
+    isPreviousData,
+  } = useFetchBannedDevelopers({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query: filterContext.queryString(),
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -124,7 +135,7 @@ function ChplBannedDevelopersSearchView() {
           sticky
         />
         <ChplFilterLayout>
-          {isLoading && (<ChplLoadingCards />)}
+          {isLoading && (<ChplLoadingCards title fieldGroups={[2]} actions={0} controls={1} />)}
           {!isLoading
           && (
             <>
@@ -138,55 +149,58 @@ function ChplBannedDevelopersSearchView() {
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
               </ChplSearchResultControls>
-              {developers.length > 0
-                && (
-                  <>
-                    <Box>
-                      {developers.map((item) => (
-                        <ChplSearchResultCard
-                          key={item.id}
-                          cardTitle="Developer"
-                          cardTitleValue={(
-                            <ChplLink
-                              href={`#/organizations/developers/${item.id}`}
-                              text={item.name}
-                              analytics={{
-                                ...analytics,
-                                event: 'Navigate to Developer Page',
-                                label: item.name,
-                              }}
-                              external={false}
-                              router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
-                            />
-                          )}
-                          fieldGroups={[
-                            [
-                              {
-                                label: 'Decertification Date',
-                                style: { flex: '2 1 320px' },
-                                value: item.decertificationDate,
-                              },
-                              {
-                                label: 'ONC-ACB',
-                                value: item.oncAcbDisplay,
-                              },
-                            ],
-                          ]}
-                        />
-                      ))}
-                    </Box>
-                    <ChplPagination
-                      count={recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[25, 50, 100]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
-                    />
-                  </>
-                )}
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                {developers.length > 0
+                  && (
+                    <>
+                      <Box>
+                        {developers.map((item) => (
+                          <ChplSearchResultCard
+                            key={item.id}
+                            cardTitle="Developer"
+                            cardTitleValue={(
+                              <ChplLink
+                                href={`#/organizations/developers/${item.id}`}
+                                text={item.name}
+                                analytics={{
+                                  ...analytics,
+                                  event: 'Navigate to Developer Page',
+                                  label: item.name,
+                                }}
+                                external={false}
+                                router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
+                              />
+                            )}
+                            fieldGroups={[
+                              [
+                                {
+                                  label: 'Decertification Date',
+                                  style: { flex: '2 1 320px' },
+                                  value: item.decertificationDate,
+                                },
+                                {
+                                  label: 'ONC-ACB',
+                                  value: item.oncAcbDisplay,
+                                },
+                              ],
+                            ]}
+                          />
+                        ))}
+                      </Box>
+                      <ChplPagination
+                        count={recordCount}
+                        page={pageNumber}
+                        rowsPerPage={pageSize}
+                        rowsPerPageOptions={[25, 50, 100]}
+                        setPage={setPageNumber}
+                        setRowsPerPage={setPageSize}
+                      />
+                    </>
+                  )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>

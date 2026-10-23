@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
-  CircularProgress,
   Typography,
-  Box,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
-import BeenhereIcon from '@material-ui/icons/Beenhere';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import Edit from '@material-ui/icons/Edit';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import Edit from '@mui/icons-material/Edit';
+import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
 
 import ChplQuarterEdit from './quarter-edit';
 import ChplQuarterView from './quarter-view';
@@ -27,7 +26,7 @@ function ChplQuarter({
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: doDownload } = usePostQuarterlyReportRequest();
   const { mutate: doInitiate } = usePostInitiateQuarterlyReport();
-  const [report, setReport] = useState(undefined);
+  const [report, setReport] = useState(() => initialReport ?? {});
   const [state, setState] = useState('summary');
 
   // Default here rather than in the signature: a `= {}` default is a new object
@@ -94,10 +93,6 @@ function ChplQuarter({
     dispatch({ action: `focus-quarter-${quarter.name}` });
   };
 
-  if (!report) {
-    return <CircularProgress />;
-  }
-
   if (state === 'edit') {
     return (
       <ChplQuarterEdit
@@ -118,7 +113,7 @@ function ChplQuarter({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Card>
+      <Card sx={{ minWidth: '250px', minHeight: '121px' }}>
         <CardContent>
           <Typography variant="h4">
             <strong>

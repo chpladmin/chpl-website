@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-} from '@material-ui/core';
-import PeopleOutlinedIcon from '@material-ui/icons/PeopleOutlined';
+import { Card, CardContent, CardHeader } from '@mui/material';
+import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 
 import ChplTargetedUsersView from './targeted-users-view';
 
@@ -17,6 +12,7 @@ import {
   getDateEntry,
 } from 'components/filter';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 // Searched on the server, so each filter only has to build its query parameters
 const filters = [{
@@ -56,13 +52,19 @@ function ChplTargetedUsers() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        controls={2}
+        fieldGroups={[4]}
+        filter
+        label="Loading targeted users"
+      />
     );
   }
 
   return (
     <FilterProvider
       filters={filters}
+      isLoading={isLoading}
       storageKey="storageKey-targetedUsers"
     >
       <Card style={{ overflow: 'visible' }}>

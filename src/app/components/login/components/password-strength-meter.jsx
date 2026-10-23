@@ -3,7 +3,7 @@ import {
   Box,
   LinearProgress,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { number } from 'prop-types';
 
 function PasswordStrengthMeter(props) {

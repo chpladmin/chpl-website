@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-} from '@material-ui/core';
-import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
+import { Card, CardContent, CardHeader } from '@mui/material';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 
 import ChplG1g2View from './g1g2-view';
 
@@ -16,6 +11,7 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -65,15 +61,24 @@ function ChplG1g2() { // to delete when hti520270101IsOn is turned on
       }));
   }, [criteriaQuery.data, criteriaQuery.isLoading, criteriaQuery.isSuccess]);
 
-  if (isLoading) {
+  // The filter search bar's criteria options come from criteriaQuery, so the
+  // skeleton waits for them as well as for the list
+  const filtersLoading = criteriaQuery.isLoading;
+
+  if (isLoading || filtersLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        fieldGroups={[4]}
+        filter
+        label="Loading G1/G2 measures"
+      />
     );
   }
 
   return (
     <FilterProvider
       filters={filters}
+      isLoading={filtersLoading}
       storageKey="storageKey-g1g2Management"
     >
       <Card style={{ overflow: 'visible' }}>

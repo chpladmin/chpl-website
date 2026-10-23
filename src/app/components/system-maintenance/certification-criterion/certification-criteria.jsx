@@ -4,9 +4,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
-} from '@material-ui/core';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
+} from '@mui/material';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 
 import ChplCertificationCriteriaView from './certification-criteria-view';
 
@@ -19,6 +18,7 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -97,13 +97,18 @@ function ChplCertificationCriteria() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        fieldGroups={[3, 3]}
+        filter
+        label="Loading certification criteria"
+      />
     );
   }
 
   return (
     <FilterProvider
       filters={filters}
+      isLoading={isLoading}
       storageKey="storageKey-certificationCriteriaManagement"
     >
       <Card style={{ overflow: 'visible' }}>

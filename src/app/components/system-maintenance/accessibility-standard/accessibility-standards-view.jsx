@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, IconButton, Typography,
+} from '@mui/material';
 import { arrayOf, func } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@mui/icons-material/Add';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
@@ -21,20 +17,19 @@ const sortOptions = [
   { property: 'name', text: 'Name' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-});
+};
 
 function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: initialAccessibilityStandards }) {
   const { hasAnyRole } = useContext(UserContext);
   const [accessibilityStandards, setAccessibilityStandards] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
-  const classes = useStyles();
 
   useEffect(() => {
     setAccessibilityStandards(initialAccessibilityStandards
@@ -53,8 +48,8 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
 
   return (
     <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
           <Typography variant="subtitle2">
             Accessibility Standards
           </Typography>
@@ -62,7 +57,7 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
             {`(${accessibilityStandards.length} Result${accessibilityStandards.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
+        <Box display="flex" alignItems="center" gap="4px">
           <ChplSortControls
             sortOptions={sortOptions}
             orderBy={orderBy}
@@ -70,15 +65,15 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
             onSort={handleSort}
           />
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-            <Button
-              onClick={() => dispatch({ action: 'edit', payload: {} })}
-              id="add-new-accessibility-standard"
-              variant="contained"
-              color="primary"
-              endIcon={<AddIcon />}
-            >
-              Add
-            </Button>
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-accessibility-standard"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
           )}
         </Box>
       </Box>
@@ -95,21 +90,21 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
                     <InfoIcon fontSize="small" />
                   </IconButton>
                 </ChplTooltip>
-              )}
+            )}
               actions={
-                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <Button
-                    onClick={() => dispatch({ action: 'edit', payload: item })}
-                    id={`edit-accessibility-standard-${item.id}`}
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    endIcon={<EditOutlinedIcon />}
-                  >
-                    Edit
-                  </Button>
-                )
-              }
+              hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                <Button
+                  onClick={() => dispatch({ action: 'edit', payload: item })}
+                  id={`edit-accessibility-standard-${item.id}`}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  endIcon={<EditOutlinedIcon />}
+                >
+                  Edit
+                </Button>
+              )
+            }
             />
           ))}
       </Box>

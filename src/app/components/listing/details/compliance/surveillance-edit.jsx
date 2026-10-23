@@ -5,13 +5,12 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Container,
   MenuItem,
+  Skeleton,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -21,21 +20,21 @@ import ChplRequirementEdit from './requirement-edit';
 import { useFetchSurveillanceTypes } from 'api/data';
 import { useDeleteSurveillance, usePostSurveillance, usePutSurveillance } from 'api/listing';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
-import { ChplTextField } from 'components/util';
+import { ChplLoadingSection, ChplTextField } from 'components/util';
 import { compareStrings } from 'services/sort.service';
 import { getSurveillanceTitle } from 'services/surveillance.service';
 import { ListingContext } from 'shared/contexts';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   background: {
     backgroundColor: palette.background,
     minHeight: '50vh',
     paddingBottom: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   startDay: yup.date()
@@ -54,6 +53,25 @@ const validationSchema = yup.object({
   reason: yup.string(),
 });
 
+// The surveillance's title in the page header, over the activity's form card
+function ChplSurveillanceEditLoading() {
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading surveillance activity</Box>
+      <Box aria-hidden="true">
+        <Container sx={styles.pageHeader} maxWidth="md">
+          <Skeleton variant="text" width="60%" height={56} />
+        </Container>
+        <Box pt={4} sx={styles.background}>
+          <Container maxWidth="lg">
+            <ChplLoadingSection announce={false} rows={6} variant="form" />
+          </Container>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { listing } = useContext(ListingContext);
   const { data, isLoading, isError } = useFetchSurveillanceTypes();
@@ -62,7 +80,6 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { mutate: update } = usePutSurveillance();
   const [requirements, setRequirements] = useState([]);
   const [surveillanceTypes, setSurveillanceTypes] = useState([]);
-  const classes = useStyles();
   let formik;
   let updateActionBar;
 
@@ -178,13 +195,15 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   updateActionBar = useActionBar({
     canDelete: !!surveillance.id,
     isDeleteDisabled: formik.values.reason === '',
-  }, surveillanceTypes.length > 0);
+  }, !isLoading);
 
-  if (surveillanceTypes.length === 0) { return <CircularProgress />; }
+  // Wait on the query rather than its data, so an empty list or a failed
+  // request still opens the form
+  if (isLoading) { return <ChplSurveillanceEditLoading />; }
 
   return (
     <>
-      <Container className={classes.pageHeader} maxWidth="md">
+      <Container sx={styles.pageHeader} maxWidth="md">
         <Typography variant="h1">
           { getSurveillanceTitle({
             ...surveillance,
@@ -193,22 +212,22 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
           }) }
         </Typography>
       </Container>
-      <Box pt={4} className={classes.background}>
+      <Box pt={4} sx={styles.background}>
         <Container maxWidth="lg">
-          <Box display="flex" gridGap="16px" flexDirection="column">
+          <Box display="flex" gap="16px" flexDirection="column">
             <Card>
               <CardHeader title={`${surveillance.id ? 'Edit' : 'Initiate'} Surveillance Activity`} />
               <CardContent>
-                <Box display="flex" gridGap="8px" flexDirection="column" justifyContent="space-between" pb={2}>
+                <Box display="flex" gap="8px" flexDirection="column" justifyContent="space-between" pb={2}>
                   { surveillance.id
-                    && (
-                      <Typography gutterBottom>
-                        <strong>Surveillance ID:</strong>
-                        {' '}
-                        { surveillance.friendlyId }
-                      </Typography>
-                    )}
-                  <Box display="flex" gridGap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
+                  && (
+                    <Typography gutterBottom>
+                      <strong>Surveillance ID:</strong>
+                      {' '}
+                      { surveillance.friendlyId }
+                    </Typography>
+                  )}
+                  <Box display="flex" gap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
                     <ChplTextField
                       type="date"
                       id="start-day"
@@ -233,7 +252,7 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
                       helperText={formik.touched.endDay && formik.errors.endDay}
                     />
                   </Box>
-                  <Box display="flex" gridGap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
+                  <Box display="flex" gap="8px" flexDirection="row" justifyContent="space-between" pb={2}>
                     <ChplTextField
                       select
                       id="type"
@@ -286,26 +305,26 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
               />
             ))}
             { !!surveillance.id
-              && (
-                <Card>
-                  <CardHeader title="Reason for Change" />
-                  <CardContent>
-                    <ChplTextField
-                      id="reason"
-                      name="reason"
-                      label="Reason For Change"
-                      value={formik.values.reason}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.reason && !!formik.errors.reason}
-                      helperText={formik.touched.reason && formik.errors.reason}
-                    />
-                    <Typography style={{ marginTop: '4px' }} variant="body2">
-                      Reason for Change is required if the Surveillance is being deleted
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
+            && (
+              <Card>
+                <CardHeader title="Reason for Change" />
+                <CardContent>
+                  <ChplTextField
+                    id="reason"
+                    name="reason"
+                    label="Reason For Change"
+                    value={formik.values.reason}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.reason && !!formik.errors.reason}
+                    helperText={formik.touched.reason && formik.errors.reason}
+                  />
+                  <Typography style={{ marginTop: '4px' }} variant="body2">
+                    Reason for Change is required if the Surveillance is being deleted
+                  </Typography>
+                </CardContent>
+              </Card>
+            )}
           </Box>
         </Container>
       </Box>

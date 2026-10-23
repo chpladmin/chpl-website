@@ -1,15 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  MenuItem,
-  MenuList,
-  makeStyles,
-} from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+  Box, Button, Card, CardContent, CardHeader, MenuItem, MenuList,
+} from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Moment from 'react-moment';
 import {
   arrayOf, bool, func, string,
@@ -29,9 +22,11 @@ import {
   ChplLink,
   ChplLoadingCards,
   ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -39,13 +34,10 @@ import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   card: {
     overflow: 'visible',
-  },
-  resultsContainer: {
-    padding: ({ embedded }) => (embedded ? '0' : '0 32px'),
   },
   developerTitle: {
     display: 'flex',
@@ -55,6 +47,10 @@ const useStyles = makeStyles({
   noResultsContainer: {
     padding: '16px 32px',
   },
+};
+
+const getResultsContainerStyles = (embedded) => ({
+  padding: embedded ? 0 : '0 32px',
 });
 
 function ChplChangeRequestsView({
@@ -69,9 +65,11 @@ function ChplChangeRequestsView({
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'current_status_change_date_time');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
-  const { queryParams, queryString } = useFilterContext();
+  const { isLoading: filtersAreLoading, queryParams, queryString } = useFilterContext();
   const {
     data, error, isError, isLoading, isSuccess,
+    isFetching,
+    isPreviousData,
   } = useFetchChangeRequests({
     orderBy,
     pageNumber,
@@ -79,7 +77,9 @@ function ChplChangeRequestsView({
     sortDescending: order === 'desc',
     query: `${queryString()}${bonusQuery}`,
   });
-  const classes = useStyles({ embedded });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${order}` });
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -152,6 +152,8 @@ function ChplChangeRequestsView({
     );
   }
 
+  // The filter bar and chips show their own skeletons while the filters load, so the results wait with them
+  const showLoading = isLoading || filtersAreLoading;
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
   const recordCount = data?.recordCount ?? 0;
@@ -165,16 +167,25 @@ function ChplChangeRequestsView({
         hideSearchTerm={disallowedFilters.includes('searchTerm')}
       />
       <ChplFilterLayout mobileOnly={embedded}>
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        { showLoading
+          && (
+            <ChplLoadingCards
+              title={!isDeveloper}
+              fieldGroups={isDeveloper
+                ? [[{}, {}, {}]]
+                : [[{}, {}, {}], [{ flex: '0 1 calc((100% - 56px) / 3)' }, { flex: '0 1 calc((100% - 56px) / 3)' }]]}
+              actions={1}
+            />
+          )}
+        { !showLoading
         && (
           <>
             { isError
               && (
                 <>
-                  <div className={classes.noResultsContainer}>
+                  <Box sx={styles.noResultsContainer}>
                     No results were found, due to invalid parameters:
-                  </div>
+                  </Box>
                   <MenuList>
                     {error.response.data.errorMessages?.map((msg) => (
                       <MenuItem key={msg}>{msg}</MenuItem>
@@ -197,6 +208,7 @@ function ChplChangeRequestsView({
                       orderBy={orderBy}
                       order={order}
                       onSort={handleSort}
+                      isUpdating={isUpdating}
                     />
                     { changeRequests.length > 0
                       && (
@@ -207,100 +219,102 @@ function ChplChangeRequestsView({
                         />
                       )}
                   </ChplSearchResultControls>
-                  { changeRequests.length > 0
-                    && (
-                      <>
-                        <Box className={classes.resultsContainer}>
-                          { changeRequests.map((item) => (
-                            <ChplSearchResultCard
-                              key={item.id}
-                              cardTitle={isDeveloper ? undefined : 'Developer'}
-                              cardTitleValue={isDeveloper ? undefined : (
-                                <Box className={classes.developerTitle}>
-                                  <ChplAvatar text={item.developer.name} />
-                                  <ChplLink
-                                    href={`#/organizations/developers/${item.developer.id}`}
-                                    text={item.developer.name}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Navigate to Developer Page',
-                                    }}
-                                    external={false}
-                                    router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
-                                  />
-                                </Box>
-                              )}
-                              fieldGroups={isDeveloper ? [
-                                [
-                                  { label: 'Request Type', value: item.changeRequestType.name },
-                                  { label: 'Request Status', value: item.currentStatus.name },
-                                  {
-                                    label: 'Time Since Last Status Change',
-                                    value: (
-                                      <Moment
-                                        withTitle
-                                        titleFormat="DD MMM yyyy"
-                                        fromNow
-                                      >
-                                        {item.currentStatus.statusChangeDateTime}
-                                      </Moment>
-                                    ),
-                                  },
-                                ],
-                              ] : [
-                                [
-                                  { label: 'Request Type', value: item.changeRequestType.name },
-                                  { label: 'Creation Date', value: getDisplayDateFormat(item.submittedDateTime) },
-                                  { label: 'Request Status', value: item.currentStatus.name },
-                                ],
-                                [
-                                  {
-                                    label: 'Time Since Last Status Change',
-                                    style: { flex: '0 1 calc((100% - 56px) / 3)' },
-                                    value: (
-                                      <Moment
-                                        withTitle
-                                        titleFormat="DD MMM yyyy"
-                                        fromNow
-                                      >
-                                        {item.currentStatus.statusChangeDateTime}
-                                      </Moment>
-                                    ),
-                                  },
-                                  {
-                                    label: 'Associated ONC-ACBs',
-                                    style: { flex: '0 1 calc((100% - 56px) / 3)' },
-                                    value: item.certificationBodies.length === 0
-                                      ? 'None'
-                                      : item.certificationBodies.map((acb) => acb.name).join('; '),
-                                  },
-                                ],
-                              ]}
-                              actions={(
-                                <Button
-                                  onClick={() => viewChangeRequest(item)}
-                                  variant="outlined"
-                                  color="primary"
-                                >
-                                  View
-                                  {' '}
-                                  <VisibilityIcon className={classes.iconSpacing} />
-                                </Button>
-                              )}
-                            />
-                          ))}
-                        </Box>
-                        <ChplPagination
-                          count={recordCount}
-                          page={pageNumber}
-                          rowsPerPage={pageSize}
-                          rowsPerPageOptions={[10, 50, 100, 250]}
-                          setPage={setPageNumber}
-                          setRowsPerPage={setPageSize}
-                          sticky={!embedded}
-                        />
-                      </>
-                    )}
+                  <ChplResultsUpdating isUpdating={isUpdating}>
+                    { changeRequests.length > 0
+                      && (
+                        <>
+                          <Box sx={getResultsContainerStyles(embedded)}>
+                            { changeRequests.map((item) => (
+                              <ChplSearchResultCard
+                                key={item.id}
+                                cardTitle={isDeveloper ? undefined : 'Developer'}
+                                cardTitleValue={isDeveloper ? undefined : (
+                                  <Box sx={styles.developerTitle}>
+                                    <ChplAvatar text={item.developer.name} />
+                                    <ChplLink
+                                      href={`#/organizations/developers/${item.developer.id}`}
+                                      text={item.developer.name}
+                                      analytics={{
+                                        ...analytics,
+                                        event: 'Navigate to Developer Page',
+                                      }}
+                                      external={false}
+                                      router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
+                                    />
+                                  </Box>
+                                )}
+                                fieldGroups={isDeveloper ? [
+                                  [
+                                    { label: 'Request Type', value: item.changeRequestType.name },
+                                    { label: 'Request Status', value: item.currentStatus.name },
+                                    {
+                                      label: 'Time Since Last Status Change',
+                                      value: (
+                                        <Moment
+                                          withTitle
+                                          titleFormat="DD MMM yyyy"
+                                          fromNow
+                                        >
+                                          {item.currentStatus.statusChangeDateTime}
+                                        </Moment>
+                                      ),
+                                    },
+                                  ],
+                                ] : [
+                                  [
+                                    { label: 'Request Type', value: item.changeRequestType.name },
+                                    { label: 'Creation Date', value: getDisplayDateFormat(item.submittedDateTime) },
+                                    { label: 'Request Status', value: item.currentStatus.name },
+                                  ],
+                                  [
+                                    {
+                                      label: 'Time Since Last Status Change',
+                                      style: { flex: '0 1 calc((100% - 56px) / 3)' },
+                                      value: (
+                                        <Moment
+                                          withTitle
+                                          titleFormat="DD MMM yyyy"
+                                          fromNow
+                                        >
+                                          {item.currentStatus.statusChangeDateTime}
+                                        </Moment>
+                                      ),
+                                    },
+                                    {
+                                      label: 'Associated ONC-ACBs',
+                                      style: { flex: '0 1 calc((100% - 56px) / 3)' },
+                                      value: item.certificationBodies.length === 0
+                                        ? 'None'
+                                        : item.certificationBodies.map((acb) => acb.name).join('; '),
+                                    },
+                                  ],
+                                ]}
+                                actions={(
+                                  <Button
+                                    onClick={() => viewChangeRequest(item)}
+                                    variant="outlined"
+                                    color="primary"
+                                  >
+                                    View
+                                    {' '}
+                                    <VisibilityIcon sx={styles.iconSpacing} />
+                                  </Button>
+                                )}
+                              />
+                            ))}
+                          </Box>
+                          <ChplPagination
+                            count={recordCount}
+                            page={pageNumber}
+                            rowsPerPage={pageSize}
+                            rowsPerPageOptions={[10, 50, 100, 250]}
+                            setPage={setPageNumber}
+                            setRowsPerPage={setPageSize}
+                            sticky={!embedded}
+                          />
+                        </>
+                      )}
+                  </ChplResultsUpdating>
                 </>
               )}
           </>
@@ -310,7 +324,7 @@ function ChplChangeRequestsView({
   );
 
   return (
-    <Card className={classes.card}>
+    <Card sx={styles.card}>
       { bonusQuery
         && (
           <CardHeader title="Change Requests" />

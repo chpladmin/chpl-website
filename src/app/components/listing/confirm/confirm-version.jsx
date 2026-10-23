@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -8,20 +9,21 @@ import {
   Divider,
   MenuItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { func, object } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
+import ChplConfirmStepLoading from './confirm-step-loading';
 
 import { useFetchVersionsByProduct } from 'api/version';
 import { ChplTextField } from 'components/util';
 import { compareStrings } from 'services/sort.service';
 import { version as versionProp } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   buttonCard: {
     padding: '32px',
     display: 'flex',
@@ -97,7 +99,7 @@ const useStyles = makeStyles({
   verticalDivider: {
     height: '25%',
   },
-});
+};
 
 const validationSchema = yup.object({
   version: yup.string()
@@ -105,11 +107,15 @@ const validationSchema = yup.object({
 });
 
 function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
-  const { data, isLoading, isSuccess } = useFetchVersionsByProduct({ id: product.id });
+  const {
+    data,
+    isInitialLoading,
+    isLoading,
+    isSuccess,
+  } = useFetchVersionsByProduct({ id: product.id });
   const [selectedVersion, setSelectedVersion] = useState('');
   const [versions, setVersions] = useState([]);
   const [isCreating, setIsCreating] = useState(true);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -163,20 +169,26 @@ function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
     validationSchema,
   });
 
+  // The query is disabled when the product is new, so wait on isInitialLoading.
+  // Until the effect above has copied the versions into state, the step would
+  // open on the create form and then jump to the select
+  if (isInitialLoading || (data?.length > 0 && versions.length === 0)) {
+    return <ChplConfirmStepLoading label="Loading versions" />;
+  }
+
   return (
     <Container maxWidth="md">
-      <div className={classes.developerConfirm}>
-        <div className={classes.developerSubContainer}>
+      <Box sx={styles.developerConfirm}>
+        <Box sx={styles.developerSubContainer}>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
             disabled={versions?.length === 0}
-            className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+            sx={[styles.buttonCard, !isCreating && styles.buttonCardFocused]}
             onClick={() => handleCreationToggle(false)}
           >
-            <span className={classes.buttonContent}>
-              <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+            <Box component="span" sx={styles.buttonContent}>
+              <CheckCircleIcon color="primary" sx={styles.extraLargeIcons} />
               { selectedVersion
                 ? (
                   <>
@@ -187,26 +199,25 @@ function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
                     Choose A Version To Use
                   </>
                 )}
-            </span>
+            </Box>
           </Button>
-          <div className={classes.orContainer}>
+          <Box sx={styles.orContainer}>
             <Divider />
             <Typography>OR</Typography>
             <Divider />
-          </div>
+          </Box>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
-            className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+            sx={[styles.buttonCard, isCreating && styles.buttonCardFocused]}
             onClick={() => handleCreationToggle(true)}
           >
-            <span className={classes.buttonContent}>
-              <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+            <Box component="span" sx={styles.buttonContent}>
+              <AddCircleIcon color="primary" sx={styles.extraLargeIcons} />
               Create A Version
-            </span>
+            </Box>
           </Button>
-        </div>
+        </Box>
         <Divider />
         { isCreating
           ? (
@@ -247,7 +258,7 @@ function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
               </CardContent>
             </Card>
           )}
-      </div>
+      </Box>
     </Container>
   );
 }

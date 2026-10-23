@@ -69,7 +69,7 @@ const renderView = () => render(
 );
 
 const openSelect = (name) => {
-  fireEvent.mouseDown(screen.getByRole('button', { name }));
+  fireEvent.mouseDown(screen.getByRole('combobox', { name }));
   return within(screen.getByRole('listbox')).getAllByRole('option').map((option) => option.textContent);
 };
 
@@ -106,5 +106,22 @@ describe('the listing edit form', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Add ONC-ATL' }));
 
     expect(openSelect(/^ONC-ATL/)).toEqual(['drummond', 'ICSA Labs', 'SLI Compliance']);
+  });
+
+  describe('while its options load', () => {
+    it('shows a skeleton of the form, and none of the form itself', () => {
+      useFetchAtls.mockReturnValue({ data: undefined, isLoading: true, isSuccess: false });
+      renderView();
+
+      expect(screen.getByRole('status')).toHaveTextContent('Loading listing edit form');
+      expect(screen.queryByText('Edit Listing')).not.toBeInTheDocument();
+    });
+
+    it('shows the form once they have loaded', () => {
+      renderView();
+
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+      expect(screen.getByText('Edit Listing')).toBeInTheDocument();
+    });
   });
 });

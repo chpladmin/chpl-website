@@ -4,8 +4,7 @@ import {
   Chip,
   Divider,
   MenuItem,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -35,7 +34,7 @@ const validationSchema = yup.object({
   startDay: yup.date(),
 });
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -52,7 +51,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '16px',
   },
-});
+};
 
 function ChplFunctionalityTestedEdit({
   criterionOptions,
@@ -68,7 +67,6 @@ function ChplFunctionalityTestedEdit({
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [functionalityTested, setFunctionalityTested] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -152,8 +150,8 @@ function ChplFunctionalityTestedEdit({
   if (ruleOptions.length === 0) { return null; }
 
   return (
-    <div className={classes.container}>
-      <Box className={classes.horizontalInput}>
+    <Box sx={styles.container}>
+      <Box sx={styles.horizontalInput}>
         <ChplTextField
           id="value"
           name="value"
@@ -177,7 +175,7 @@ function ChplFunctionalityTestedEdit({
           helperText={formik.touched.regulatoryTextCitation && formik.errors.regulatoryTextCitation}
         />
       </Box>
-      <Box className={classes.horizontalInput}>
+      <Box sx={styles.horizontalInput}>
         <ChplTextField
           id="start-day"
           name="startDay"
@@ -283,7 +281,7 @@ function ChplFunctionalityTestedEdit({
             </MenuItem>
           ))}
       </ChplTextField>
-      <div className={classes.chips}>
+      <Box sx={styles.chips}>
         { [...criteria]
           .sort(sortCriteria)
           .map((item) => (
@@ -295,7 +293,7 @@ function ChplFunctionalityTestedEdit({
               variant="outlined"
             />
           ))}
-      </div>
+      </Box>
       <ChplTextField
         id="additional-information"
         name="additionalInformation"
@@ -305,7 +303,7 @@ function ChplFunctionalityTestedEdit({
         onBlur={formik.handleBlur}
       />
       <ChplActionBar dispatch={handleDispatch} />
-    </div>
+    </Box>
   );
 }
 

@@ -5,12 +5,11 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   IconButton,
   MenuItem,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   func,
   number,
@@ -23,8 +22,12 @@ import * as yup from 'yup';
 
 import ChplNonConformityEdit from './non-conformity-edit';
 
-import { useFetchRequirementGroupTypes, useFetchRequirementTypes, useFetchSurveillanceResultTypes } from 'api/data';
-import { ChplTooltip, ChplTextField } from 'components/util';
+import {
+  useFetchRequirementGroupTypes,
+  useFetchRequirementTypes,
+  useFetchSurveillanceResultTypes,
+} from 'api/data';
+import { ChplLoadingSection, ChplTextField, ChplTooltip } from 'components/util';
 import { isDateBetweenInclusive } from 'services/date-util';
 import { compareStrings } from 'services/sort.service';
 import { getRequirementDisplay, sortRequirementTypes } from 'services/surveillance.service';
@@ -156,7 +159,11 @@ function ChplRequirementEdit({
     validationSchema,
   });
 
-  if (requirementGroupTypes.length === 0 || requirementTypes.length === 0 || resultTypes.length === 0) { return <CircularProgress />; }
+  // Wait on the queries rather than their data, so an empty list or a failed
+  // request still opens the form
+  if (groupTypeQuery.isLoading || typeQuery.isLoading || resultQuery.isLoading) {
+    return <ChplLoadingSection label="Loading requirement" rows={3} variant="form" />;
+  }
 
   return (
     <Card>
@@ -164,15 +171,15 @@ function ChplRequirementEdit({
         title={`Requirement: ${getRequirementDisplay(requirement)}`}
         action={(
           <ChplTooltip placement="left" title="Remove Requirement">
-            <IconButton onClick={remove}>
+            <IconButton onClick={remove} size="large">
               <DeleteIcon color="error" />
             </IconButton>
           </ChplTooltip>
         )}
       />
       <CardContent>
-        <Box display="flex" gridGap="16px" flexWrap="wrap" flexDirection="column" justifyContent="space-between" pb={4}>
-          <Box display="flex" justifyContent="space-between" gridGap="16px" flexDirection="row">
+        <Box display="flex" gap="16px" flexWrap="wrap" flexDirection="column" justifyContent="space-between" pb={4}>
+          <Box display="flex" justifyContent="space-between" gap="16px" flexDirection="row">
             <ChplTextField
               select
               id="requirement-group-type"
@@ -215,7 +222,7 @@ function ChplRequirementEdit({
                 ))}
             </ChplTextField>
           </Box>
-          <Box display="flex" justifyContent="space-between" gridGap="16px" flexDirection="row">
+          <Box display="flex" justifyContent="space-between" gap="16px" flexDirection="row">
             <ChplTextField
               type="text"
               id="requirement-type-other"

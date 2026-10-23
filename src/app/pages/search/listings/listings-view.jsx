@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import FindReplaceIcon from '@material-ui/icons/FindReplace';
+import { Box, Button, Typography } from '@mui/material';
+import FindReplaceIcon from '@mui/icons-material/FindReplace';
 
 import ChplLandingPage from './landing-page';
 
@@ -16,12 +11,14 @@ import ChplDownloadListings from 'components/download-listings/download-listings
 import {
   ChplLink,
   ChplLoadingCards,
-  ChplPagination,
   ChplPageBody,
   ChplPageHeader,
+  ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import {
   ChplFilterLayout,
@@ -44,7 +41,7 @@ const sortOptions = [
   { property: 'certification_date', text: 'Certification Date', sortable: true, reverseDefault: true },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   cantFindContent: {
     display: 'flex',
     alignItems: 'center',
@@ -61,7 +58,7 @@ const useStyles = makeStyles({
     borderRadius: '4px',
     border: `1px solid ${palette.greyMain}`,
   },
-});
+};
 
 function ChplListingsView() {
   const storageKey = 'storageKey-listingsView';
@@ -75,9 +72,14 @@ function ChplListingsView() {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const { dispatch, hasSearched, queryString } = useFilterContext();
-  const classes = useStyles();
 
-  const { data, isError, isLoading } = useFetchListings({
+  const {
+    data,
+    isError,
+    isFetching,
+    isLoading,
+    isPreviousData,
+  } = useFetchListings({
     orderBy,
     pageNumber,
     pageSize,
@@ -124,6 +126,10 @@ function ChplListingsView() {
     setSortDescending(orderDirection === 'desc');
   };
 
+  // Old results stay on screen while a new sort, page or filter loads, and a
+  // sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
@@ -140,7 +146,7 @@ function ChplListingsView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3]} />)}
           { !isLoading
           && (
             <>
@@ -154,111 +160,114 @@ function ChplListingsView() {
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
                 <ChplDownloadListings
                   listings={listings}
                 />
               </ChplSearchResultControls>
-              { listings.length === 0 && searchTermRecordCount > 0
-                && (
-                  <Box className={classes.cantFindContainer}>
-                    <FindReplaceIcon htmlColor={palette.primaryLight} style={{ fontSize: '64px' }} />
-                    <Box className={classes.cantFindContent}>
-                      <Typography>Can&apos;t find what you&apos;re looking for?</Typography>
-                      <Button
-                        onClick={seeAllResults}
-                        variant="text"
-                        color="primary"
-                        style={{ paddingLeft: '4px',
-                          paddingRight: '4px',
-                          textTransform: 'none' }}
-                      >
-                        { `Clear filters to see ${searchTermRecordCount} more` }
-                      </Button>
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { listings.length === 0 && searchTermRecordCount > 0
+                  && (
+                    <Box sx={styles.cantFindContainer}>
+                      <FindReplaceIcon htmlColor={palette.primaryLight} style={{ fontSize: '64px' }} />
+                      <Box sx={styles.cantFindContent}>
+                        <Typography>Can&apos;t find what you&apos;re looking for?</Typography>
+                        <Button
+                          onClick={seeAllResults}
+                          variant="text"
+                          color="primary"
+                          style={{ paddingLeft: '4px',
+                            paddingRight: '4px',
+                            textTransform: 'none' }}
+                        >
+                          { `Clear filters to see ${searchTermRecordCount} more` }
+                        </Button>
+                      </Box>
                     </Box>
-                  </Box>
-                )}
-              { listings.length > 0
-                && (
-                  <>
-                    <Box>
-                      { listings.map((item) => (
-                        <ChplSearchResultCard
-                          key={item.id}
-                          fieldGroups={[
-                            [
-                              {
-                                label: 'Developer',
-                                style: { flex: '2 1 320px' },
-                                value: (
-                                  <ChplLink
-                                    href={`#/organizations/developers/${item.developer.id}`}
-                                    text={item.developer.name}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Navigate to Developer Page',
-                                      label: item.developer.name,
-                                    }}
-                                    external={false}
-                                    inline
-                                    router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
-                                  />
-                                ),
-                              },
-                              {
-                                label: 'Product',
-                                value: item.product.name,
-                              },
-                              {
-                                label: 'Version',
-                                value: item.version.name,
-                              },
-                            ],
-                            [
-                              {
-                                label: 'CHPL ID',
-                                style: { flex: '2 1 320px' },
-                                value: (
-                                  <ChplLink
-                                    href={`#/listing/${item.id}`}
-                                    text={item.chplProductNumber}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Navigate to Listing Details Page',
-                                      label: item.chplProductNumber,
-                                      aggregationName: item.product.name,
-                                    }}
-                                    external={false}
-                                    inline
-                                    router={{ sref: 'listing', params: { id: item.id } }}
-                                  />
-                                ),
-                              },
-                              {
-                                label: 'Certification Date',
-                                value: getDisplayDateFormat(item.certificationDate),
-                              },
-                              {
-                                label: 'Status',
-                                value: getStatusIcon(item.certificationStatus),
-                                iconButton: <ChplCertificationStatusLegend />,
-                              },
-                            ],
-                          ]}
-                          actions={<ChplActionButton listing={item} />}
-                        />
-                      ))}
-                    </Box>
-                    <ChplPagination
-                      count={recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[25, 50, 100]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
-                    />
-                  </>
-                )}
+                  )}
+                { listings.length > 0
+                  && (
+                    <>
+                      <Box>
+                        { listings.map((item) => (
+                          <ChplSearchResultCard
+                            key={item.id}
+                            fieldGroups={[
+                              [
+                                {
+                                  label: 'Developer',
+                                  style: { flex: '2 1 320px' },
+                                  value: (
+                                    <ChplLink
+                                      href={`#/organizations/developers/${item.developer.id}`}
+                                      text={item.developer.name}
+                                      analytics={{
+                                        ...analytics,
+                                        event: 'Navigate to Developer Page',
+                                        label: item.developer.name,
+                                      }}
+                                      external={false}
+                                      inline
+                                      router={{ sref: 'organizations.developers.developer', params: { id: item.developer.id } }}
+                                    />
+                                  ),
+                                },
+                                {
+                                  label: 'Product',
+                                  value: item.product.name,
+                                },
+                                {
+                                  label: 'Version',
+                                  value: item.version.name,
+                                },
+                              ],
+                              [
+                                {
+                                  label: 'CHPL ID',
+                                  style: { flex: '2 1 320px' },
+                                  value: (
+                                    <ChplLink
+                                      href={`#/listing/${item.id}`}
+                                      text={item.chplProductNumber}
+                                      analytics={{
+                                        ...analytics,
+                                        event: 'Navigate to Listing Details Page',
+                                        label: item.chplProductNumber,
+                                        aggregationName: item.product.name,
+                                      }}
+                                      external={false}
+                                      inline
+                                      router={{ sref: 'listing', params: { id: item.id } }}
+                                    />
+                                  ),
+                                },
+                                {
+                                  label: 'Certification Date',
+                                  value: getDisplayDateFormat(item.certificationDate),
+                                },
+                                {
+                                  label: 'Status',
+                                  value: getStatusIcon(item.certificationStatus),
+                                  iconButton: <ChplCertificationStatusLegend />,
+                                },
+                              ],
+                            ]}
+                            actions={<ChplActionButton listing={item} />}
+                          />
+                        ))}
+                      </Box>
+                      <ChplPagination
+                        count={recordCount}
+                        page={pageNumber}
+                        rowsPerPage={pageSize}
+                        rowsPerPageOptions={[25, 50, 100]}
+                        setPage={setPageNumber}
+                        setRowsPerPage={setPageSize}
+                      />
+                    </>
+                  )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>

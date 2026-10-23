@@ -1,28 +1,22 @@
 import React from 'react';
-import {
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Divider, Typography } from '@mui/material';
 import { bool, func } from 'prop-types';
 
 import { contact as contactProp, formik as formikProp } from '../../../shared/prop-types';
 import { ChplTextField } from '../../util';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   formSubContainer: {
     display: 'grid',
     gap: '16px',
     flexDirection: 'row',
     gridTemplateColumns: 'auto auto',
   },
-}));
+};
 
 function ChplConfirmDeveloperContact({
   contact, editing, formik, handleChange = () => {},
 }) {
-  const classes = useStyles();
-
   return (
     <>
       { (contact || !editing)
@@ -34,7 +28,7 @@ function ChplConfirmDeveloperContact({
           <Divider />
         </div>
         )}
-      <div className={classes.formSubContainer}>
+      <Box sx={styles.formSubContainer}>
         { editing
           ? (
             <div>
@@ -75,8 +69,8 @@ function ChplConfirmDeveloperContact({
               <Typography variant="body1">{ contact?.title }</Typography>
             </div>
           )}
-      </div>
-      <div className={classes.formSubContainer}>
+      </Box>
+      <Box sx={styles.formSubContainer}>
         { editing
           ? (
             <div>
@@ -119,7 +113,7 @@ function ChplConfirmDeveloperContact({
               <Typography variant="body1">{ contact?.phoneNumber }</Typography>
             </div>
           )}
-      </div>
+      </Box>
     </>
   );
 }

@@ -3,12 +3,12 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { useFetchDirectReviews } from 'api/developer';
 import ChplDirectReviewsView from 'components/listing/details/compliance/direct-reviews';
+import { ChplLoadingSection } from 'components/util';
 import { AnalyticsContext, DeveloperContext, useAnalyticsContext } from 'shared/contexts';
 
 function ChplDirectReviews() {
@@ -32,19 +32,23 @@ function ChplDirectReviews() {
     },
   };
 
+  // Stands in for the whole card, title included, rather than sitting inside it
+  if (isLoading) {
+    return <ChplLoadingSection variant="table" columns={5} rows={3} />;
+  }
+
   return (
     <AnalyticsContext.Provider value={analyticsData}>
       <Card>
         <CardHeader title="Direct Review Activities" />
         <CardContent>
-          { isLoading && <CircularProgress /> }
-          { !isLoading && !isSuccess
+          { !isSuccess
             && (
               <Typography>
                 Direct Review information is not currently available, please check back later
               </Typography>
             )}
-          { !isLoading && isSuccess
+          { isSuccess
             && (
               <>
                 { directReviews.length > 0

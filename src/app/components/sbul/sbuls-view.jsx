@@ -5,7 +5,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -13,22 +12,21 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func } from 'prop-types';
 
 import { useFetchSbuls } from 'api/developer';
-import { ChplLink } from 'components/util';
+import { ChplLink, ChplLoadingSection } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '16px',
   },
-});
+};
 
 function ChplSbulsView({ developer, dispatch }) {
   const { analytics } = useAnalyticsContext();
@@ -36,7 +34,6 @@ function ChplSbulsView({ developer, dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [sbuls, setSbuls] = useState([]);
   const { data, isError, isLoading } = useFetchSbuls({ developer });
-  const classes = useStyles();
 
   useEffect(() => {
     if (isError || isLoading) { return; }
@@ -52,13 +49,13 @@ function ChplSbulsView({ developer, dispatch }) {
   };
 
   if (isError || isLoading) {
-    return <CircularProgress />;
+    return <ChplLoadingSection rows={3} />;
   }
 
   return (
     <Card>
       <CardHeader title="Service Base URL List" />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <>
           <Typography variant="body1">
             Service Base URL List information is displayed here if a health IT developer has listings certified to (g)(10) and therefore must comply with

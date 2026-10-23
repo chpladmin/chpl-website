@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
+} from '@mui/material';
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplTestToolEdit from './test-tool-edit';
@@ -27,6 +27,7 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -182,7 +183,8 @@ function ChplTestTools() {
             <BuildOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeTestTool.id ? 'Edit' : 'Add'} Test Tool`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplTestToolEdit
             testTool={activeTestTool}
@@ -196,15 +198,25 @@ function ChplTestTools() {
     );
   }
 
-  if (isLoading) {
+  // The filter search bar's criteria options come from criterionOptionsQuery, so the
+  // skeleton waits for them as well as for the list
+  const filtersLoading = criterionOptionsQuery.isLoading;
+
+  if (isLoading || filtersLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        fieldGroups={[3]}
+        filter
+        label="Loading test tools"
+      />
     );
   }
 
   return (
     <FilterProvider
       filters={filters}
+      isLoading={filtersLoading}
       storageKey="storageKey-testToolsManagement"
     >
       <Card>

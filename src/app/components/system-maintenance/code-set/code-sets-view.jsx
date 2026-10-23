@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, IconButton, Typography,
+} from '@mui/material';
 import { arrayOf, func, shape } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@mui/icons-material/Add';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { useFetchCodeSetsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
@@ -19,14 +15,13 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
-});
+};
 
 function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
   const { hasAnyRole } = useContext(UserContext);
   const [codeSets, setCodeSets] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     setCodeSets(initialCodeSets
@@ -41,8 +36,8 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
 
   return (
     <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
           <Typography variant="subtitle2">
             Code Sets
           </Typography>
@@ -50,21 +45,21 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
             {`(${codeSets.length} Result${codeSets.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
+        <Box display="flex" alignItems="center" gap="4px">
           <ChplSystemMaintenanceActivity
             fetch={useFetchCodeSetsActivity}
             title="Code Sets"
           />
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-            <Button
-              onClick={() => dispatch({ action: 'edit', payload: {} })}
-              id="add-new-code-set"
-              variant="contained"
-              color="primary"
-              endIcon={<AddIcon />}
-            >
-              Add
-            </Button>
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-code-set"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
           )}
         </Box>
       </Box>
@@ -81,13 +76,13 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
                     <InfoIcon fontSize="small" />
                   </IconButton>
                 </ChplTooltip>
-              )}
+            )}
               additionalTitleContent={(
                 <ChplUpdateIndicator
                   endDay={item.requiredDay}
                   additionalInformation="Contact the developer for more information."
                 />
-              )}
+            )}
               fieldGroups={[
                 [
                   {
@@ -111,19 +106,19 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
                 ],
               ]}
               actions={
-                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <Button
-                    onClick={() => dispatch({ action: 'edit', payload: item })}
-                    id={`edit-code-set-${item.name}`}
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    endIcon={<EditOutlinedIcon />}
-                  >
-                    Edit
-                  </Button>
-                )
-              }
+              hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                <Button
+                  onClick={() => dispatch({ action: 'edit', payload: item })}
+                  id={`edit-code-set-${item.name}`}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  endIcon={<EditOutlinedIcon />}
+                >
+                  Edit
+                </Button>
+              )
+            }
             />
           ))}
       </Box>

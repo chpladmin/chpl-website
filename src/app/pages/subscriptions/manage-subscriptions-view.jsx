@@ -6,20 +6,21 @@ import {
   CardHeader,
   List,
   ListItem,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
-import { NotificationsOutlined, SubscriptionsOutlined } from '@material-ui/icons';
+import { NotificationsOutlined, SubscriptionsOutlined } from '@mui/icons-material';
 
 import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
 import {
   ChplLink,
   ChplLoadingCards,
   ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
@@ -34,7 +35,7 @@ const sortOptions = [
   { property: 'subscriber_role', text: 'Role' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   card: {
     overflow: 'visible',
   },
@@ -97,7 +98,7 @@ const useStyles = makeStyles({
   notificationsButton: {
     fontSize: '14px',
   },
-});
+};
 
 function ChplManageSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
@@ -109,16 +110,24 @@ function ChplManageSubscriptionsView({ analytics }) {
   const [recordCount, setRecordCount] = useState(0);
   const [subscriptions, setSubscriptions] = useState([]);
   const { mutate } = usePostGetDeliveredNotifications();
-  const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchAllSubscriptions({
+  const {
+    data,
+    isError,
+    isFetching,
+    isLoading,
+    isPreviousData,
+  } = useFetchAllSubscriptions({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query: filterContext.queryString(),
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -166,7 +175,7 @@ function ChplManageSubscriptionsView({ analytics }) {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <Card className={classes.card}>
+    <Card sx={styles.card}>
       <CardHeader
         style={{ paddingLeft: '16px' }}
         title={(
@@ -179,7 +188,7 @@ function ChplManageSubscriptionsView({ analytics }) {
               color="secondary"
               variant="contained"
               onClick={getDeliveredMessages}
-              className={classes.notificationsButton}
+              sx={styles.notificationsButton}
               endIcon={<NotificationsOutlined fontSize="small" />}
             >
               Get Delivered Notifications
@@ -187,14 +196,14 @@ function ChplManageSubscriptionsView({ analytics }) {
           </Box>
         )}
       />
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+      <Box sx={styles.pageBody} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
           sticky
           fadeBackground={palette.white}
           placeholder="Search by Subscriber Email or CHPL Product Number..."
         />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards title fieldGroups={[2, [{ flex: '2 1 320px' }, { lines: 3 }]]} actions={0} controls={1} />)}
           { !isLoading
           && (
             <>
@@ -211,65 +220,68 @@ function ChplManageSubscriptionsView({ analytics }) {
                       orderBy={orderBy}
                       order={sortDescending ? 'desc' : 'asc'}
                       onSort={handleTableSort}
+                      isUpdating={isUpdating}
                     />
                   )}
               </ChplSearchResultControls>
-              { subscriptions.length > 0
-                && (
-                  <>
-                    <Box className={classes.resultsContainer}>
-                      { subscriptions.map((item) => (
-                        <ChplSearchResultCard
-                          key={`${item.subscriberId}-${item.subscribedObjectId}`}
-                          cardTitle="CHPL Product"
-                          cardTitleValue={(
-                            <ChplLink
-                              href={`#/listing/${item.subscribedObjectId}`}
-                              text={item.subscribedObjectName}
-                              analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.subscribedObjectName }}
-                              external={false}
-                              router={{ sref: 'listing', params: { id: item.subscribedObjectId } }}
-                            />
-                          )}
-                          fieldGroups={[
-                            [
-                              { label: 'Email', style: { flex: '2 1 320px' }, value: item.subscriberEmail },
-                              { label: 'Creation Date', value: getDisplayDateFormat(item.creationDate) },
-                            ],
-                            [
-                              { label: 'Role', style: { flex: '2 1 320px' }, value: item.subscriberRole },
-                              {
-                                label: 'Subscription Subjects',
-                                value: (
-                                  <List className={classes.listContainer}>
-                                    { [...item.subscriptionSubjects]
-                                      .sort(compareStrings)
-                                      .map((sub) => (
-                                        <ListItem className={classes.listItem} key={sub}>{ sub }</ListItem>
-                                      ))}
-                                  </List>
-                                ),
-                              },
-                            ],
-                          ]}
-                        />
-                      ))}
-                    </Box>
-                    <ChplPagination
-                      count={recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[25, 50, 100]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
-                      analytics={analytics}
-                    />
-                  </>
-                )}
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { subscriptions.length > 0
+                  && (
+                    <>
+                      <Box sx={styles.resultsContainer}>
+                        { subscriptions.map((item) => (
+                          <ChplSearchResultCard
+                            key={`${item.subscriberId}-${item.subscribedObjectId}`}
+                            cardTitle="CHPL Product"
+                            cardTitleValue={(
+                              <ChplLink
+                                href={`#/listing/${item.subscribedObjectId}`}
+                                text={item.subscribedObjectName}
+                                analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.subscribedObjectName }}
+                                external={false}
+                                router={{ sref: 'listing', params: { id: item.subscribedObjectId } }}
+                              />
+                            )}
+                            fieldGroups={[
+                              [
+                                { label: 'Email', style: { flex: '2 1 320px' }, value: item.subscriberEmail },
+                                { label: 'Creation Date', value: getDisplayDateFormat(item.creationDate) },
+                              ],
+                              [
+                                { label: 'Role', style: { flex: '2 1 320px' }, value: item.subscriberRole },
+                                {
+                                  label: 'Subscription Subjects',
+                                  value: (
+                                    <List sx={styles.listContainer}>
+                                      { [...item.subscriptionSubjects]
+                                        .sort(compareStrings)
+                                        .map((sub) => (
+                                          <ListItem sx={styles.listItem} key={sub}>{ sub }</ListItem>
+                                        ))}
+                                    </List>
+                                  ),
+                                },
+                              ],
+                            ]}
+                          />
+                        ))}
+                      </Box>
+                      <ChplPagination
+                        count={recordCount}
+                        page={pageNumber}
+                        rowsPerPage={pageSize}
+                        rowsPerPageOptions={[25, 50, 100]}
+                        setPage={setPageNumber}
+                        setRowsPerPage={setPageSize}
+                        analytics={analytics}
+                      />
+                    </>
+                  )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>
-      </div>
+      </Box>
     </Card>
   );
 }

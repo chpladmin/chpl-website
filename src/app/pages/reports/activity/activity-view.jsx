@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 
 import ChplActivityDetails from './activity-details';
 
@@ -7,12 +7,14 @@ import { useFetchActivity } from 'api/questionable-activity';
 import {
   ChplLink,
   ChplLoadingCards,
-  ChplPagination,
   ChplPageBody,
   ChplPageHeader,
+  ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import {
   ChplFilterLayout,
@@ -35,13 +37,22 @@ function ChplActivityView() {
   const [recordCount, setRecordCount] = useState(0);
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchActivity({
+  const {
+    data,
+    isError,
+    isFetching,
+    isLoading,
+    isPreviousData,
+  } = useFetchActivity({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query: filterContext.queryString(),
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -156,6 +167,9 @@ function ChplActivityView() {
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
+  // The filter bar and chips show their own skeletons while the filters load, so the results wait with them
+  const showLoading = isLoading || filterContext.isLoading;
+
   return (
     <>
       <ChplPageHeader text="Activity" />
@@ -165,8 +179,8 @@ function ChplActivityView() {
           placeholder="Search by Description or Reason..."
         />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
-          { !isLoading
+          { showLoading && (<ChplLoadingCards title fieldGroups={[[{}, {}, {}], [{ flex: '2 1 320px' }, { flex: '2 1 320px' }]]} actions={1} controls={1} />)}
+          { !showLoading
           && (
             <>
               <ChplSearchResultControls
@@ -179,50 +193,53 @@ function ChplActivityView() {
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
               </ChplSearchResultControls>
-              { activities.length > 0
-                && (
-                  <>
-                    <Box>
-                      { activities.map((item) => (
-                        <ChplSearchResultCard
-                          key={item.id}
-                          cardTitle="User"
-                          cardTitleValue={item.username}
-                          fieldGroups={[
-                            [
-                              { label: 'Concept', value: item.concept },
-                              { label: 'Activity Date', value: getDisplayDateFormat(item.activityDate) },
-                              { label: 'CHPL Link', value: getLink(item) || 'N/A' },
-                            ],
-                            [
-                              {
-                                label: 'Description',
-                                style: { flex: '2 1 320px' },
-                                value: item.description || 'N/A',
-                              },
-                              {
-                                label: 'Reason',
-                                style: { flex: '2 1 320px' },
-                                value: item.reason || 'N/A',
-                              },
-                            ],
-                          ]}
-                          actions={<ChplActivityDetails activity={item} />}
-                        />
-                      ))}
-                    </Box>
-                    <ChplPagination
-                      count={recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[25, 50, 100]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
-                    />
-                  </>
-                )}
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { activities.length > 0
+                  && (
+                    <>
+                      <Box>
+                        { activities.map((item) => (
+                          <ChplSearchResultCard
+                            key={item.id}
+                            cardTitle="User"
+                            cardTitleValue={item.username}
+                            fieldGroups={[
+                              [
+                                { label: 'Concept', value: item.concept },
+                                { label: 'Activity Date', value: getDisplayDateFormat(item.activityDate) },
+                                { label: 'CHPL Link', value: getLink(item) || 'N/A' },
+                              ],
+                              [
+                                {
+                                  label: 'Description',
+                                  style: { flex: '2 1 320px' },
+                                  value: item.description || 'N/A',
+                                },
+                                {
+                                  label: 'Reason',
+                                  style: { flex: '2 1 320px' },
+                                  value: item.reason || 'N/A',
+                                },
+                              ],
+                            ]}
+                            actions={<ChplActivityDetails activity={item} />}
+                          />
+                        ))}
+                      </Box>
+                      <ChplPagination
+                        count={recordCount}
+                        page={pageNumber}
+                        rowsPerPage={pageSize}
+                        rowsPerPageOptions={[25, 50, 100]}
+                        setPage={setPageNumber}
+                        setRowsPerPage={setPageSize}
+                      />
+                    </>
+                  )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>

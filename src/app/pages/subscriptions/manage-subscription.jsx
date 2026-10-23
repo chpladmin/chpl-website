@@ -10,11 +10,11 @@ import {
   Container,
   FormControlLabel,
   IconButton,
+  Skeleton,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -26,10 +26,10 @@ import {
   useFetchSubscriber,
   useFetchSubscriptions,
 } from 'api/subscriptions';
-import { ChplLink, ChplTooltip } from 'components/util';
+import { ChplLink, ChplSkeletonCard, ChplTooltip } from 'components/util';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   chplAccordion: {
     borderRadius: '4px',
@@ -145,7 +145,113 @@ const useStyles = makeStyles({
     paddingBottom: '16px',
     alignItems: 'center',
   },
-});
+};
+
+// Same layout as ChplManageSubscription, which has its own header rather than a
+// ChplPageHeader: the welcome card beside the total and the row per product
+const loadingStyles = {
+  page: {
+    backgroundColor: palette.background,
+    width: '100%',
+  },
+  header: {
+    padding: '16px 0',
+    marginTop: '-8px',
+  },
+  headerContent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '16px',
+  },
+  layout: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: '16px',
+    padding: '32px 0',
+    [theme.breakpoints.up('md')]: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 3fr',
+      alignItems: 'start',
+    },
+  },
+  welcome: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    padding: '16px',
+  },
+  total: {
+    paddingBottom: '16px',
+  },
+  rows: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '16px',
+    padding: '12px 16px',
+  },
+  rowData: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '32px',
+    flex: 1,
+  },
+};
+
+const rowWidths = ['30%', '25%', '35%', '28%'];
+
+function ChplManageSubscriptionLoading() {
+  return (
+    <Box sx={loadingStyles.page} role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading your subscriptions</Box>
+      <Box aria-hidden="true">
+        <Box sx={loadingStyles.header}>
+          <Container sx={loadingStyles.headerContent}>
+            <Skeleton variant="text" width="35%" height={56} />
+            <Skeleton variant="text" width="25%" height={24} />
+          </Container>
+        </Box>
+        <Container>
+          <Box sx={loadingStyles.layout}>
+            <ChplSkeletonCard>
+              <Skeleton variant="rectangular" height={164} />
+              <Box sx={loadingStyles.welcome}>
+                <Skeleton variant="text" width="85%" height={36} />
+                <Skeleton variant="text" width="95%" height={22} />
+                <Skeleton variant="text" width="60%" height={22} />
+              </Box>
+            </ChplSkeletonCard>
+            <Box>
+              <Box sx={loadingStyles.total}>
+                <Skeleton variant="text" width="30%" height={32} />
+              </Box>
+              <Box sx={loadingStyles.rows}>
+                { rowWidths.map((width) => (
+                  <ChplSkeletonCard key={width}>
+                    <Box sx={loadingStyles.row}>
+                      <Box sx={loadingStyles.rowData}>
+                        <Skeleton variant="text" width={width} height={24} />
+                        <Skeleton variant="text" width="15%" height={22} />
+                      </Box>
+                      <Skeleton variant="circular" width={24} height={24} />
+                    </Box>
+                  </ChplSkeletonCard>
+                ))}
+              </Box>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
+  );
+}
 
 function ChplManageSubscription({ hash }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -155,7 +261,6 @@ function ChplManageSubscription({ hash }) {
   const { mutate: deleteObjectSubscription } = useDeleteObjectSubscription();
   const subscriberQuery = useFetchSubscriber(hash);
   const subscriptionQuery = useFetchSubscriptions(hash);
-  const classes = useStyles();
 
   useEffect(() => {
     if (subscriberQuery.isLoading) {
@@ -206,7 +311,7 @@ function ChplManageSubscription({ hash }) {
     ? (
       <>
         <Typography color="primary" variant="body2">Hide Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+        <ExpandMoreIcon color="primary" fontSize="large" sx={styles.rotate} />
       </>
     )
     : (
@@ -223,10 +328,16 @@ function ChplManageSubscription({ hash }) {
     })));
   };
 
+  // Without this, "You have no current subscriptions" shows until they arrive.
+  // isInitialLoading, since a query disabled for want of a hash stays isLoading
+  if (subscriberQuery.isInitialLoading || subscriptionQuery.isInitialLoading) {
+    return <ChplManageSubscriptionLoading />;
+  }
+
   return (
-    <Box className={classes.page}>
-      <Box className={classes.header}>
-        <Container className={classes.headerContent}>
+    <Box sx={styles.page}>
+      <Box sx={styles.header}>
+        <Container sx={styles.headerContent}>
           <Typography variant="h1">
             My Subscriptions
           </Typography>
@@ -241,9 +352,9 @@ function ChplManageSubscription({ hash }) {
         </Container>
       </Box>
       <Container>
-        <Box className={classes.chplLeftHandFormat}>
+        <Box sx={styles.chplLeftHandFormat}>
           <Card>
-            <Box className={classes.mySubsciptionImagery} />
+            <Box sx={styles.mySubsciptionImagery} />
             <CardContent>
               <Typography gutterBottom variant="h4" component="h2"><strong>Welcome to your subscription page!</strong></Typography>
               <Typography>Here, you can easily view and manage your subscriptions.</Typography>
@@ -251,7 +362,7 @@ function ChplManageSubscription({ hash }) {
           </Card>
           { subscriptions.length === 0
             && (
-              <Box className={classes.subscriptionTotalContainer}>
+              <Box sx={styles.subscriptionTotalContainer}>
                 <Typography variant="h5" component="h3">
                   <strong>
                     You have no current subscriptions
@@ -262,7 +373,7 @@ function ChplManageSubscription({ hash }) {
           { subscriptions.length > 0
             && (
               <Box>
-                <Box className={classes.subscriptionTotalContainer}>
+                <Box sx={styles.subscriptionTotalContainer}>
                   <Typography variant="h5" component="h3">
                     <strong>
                       {subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0)}
@@ -273,24 +384,24 @@ function ChplManageSubscription({ hash }) {
                 </Box>
                 { subscriptions.map((subscription) => (
                   <Accordion
-                    className={classes.chplAccordion}
+                    sx={styles.chplAccordion}
                     onChange={() => handleAccordionChange(subscription)}
                     id={`subscription-${subscription.certifiedProductId}`}
                     key={`subscription-${subscription.certifiedProductId}`}
                   >
                     <AccordionSummary
-                      className={classes.chplAccordionSummary}
+                      sx={styles.chplAccordionSummary}
                       expandIcon={getIcon(subscription)}
                       id={`subscription-id-${subscription.certifiedProductId}-header`}
                     >
-                      <Box className={classes.chplAccordionSummaryHeader}>
-                        <Box className={classes.chplAccordionSummarySubBox}>
-                          <Box className={classes.chplAccordionSummaryData}>
+                      <Box sx={styles.chplAccordionSummaryHeader}>
+                        <Box sx={styles.chplAccordionSummarySubBox}>
+                          <Box sx={styles.chplAccordionSummaryData}>
                             <Typography variant="subtitle1">
                               {subscription.chplProductNumber}
                             </Typography>
                           </Box>
-                          <Box className={classes.chplAccordionSummaryData}>
+                          <Box sx={styles.chplAccordionSummaryData}>
                             <Typography variant="body1">
                               {subscription.subscriptions.length}
                               {' '}
@@ -299,14 +410,14 @@ function ChplManageSubscription({ hash }) {
                             </Typography>
                           </Box>
                         </Box>
-                        <Box className={classes.chplAccordionSummaryData}>
+                        <Box sx={styles.chplAccordionSummaryData}>
                           <FormControlLabel
                             onClick={(event) => event.stopPropagation()}
                             onFocus={(event) => event.stopPropagation()}
                             control={(
                               <Button
                                 variant="text"
-                                className={classes.deleteTextButton}
+                                sx={styles.deleteTextButton}
                                 onClick={() => deleteSubscriptions(subscription)}
                               >
                                 Unsubscribe from listing
@@ -317,12 +428,12 @@ function ChplManageSubscription({ hash }) {
                       </Box>
                     </AccordionSummary>
                     <AccordionDetails
-                      className={classes.chplAccordionDetails}
+                      sx={styles.chplAccordionDetails}
                       id={`subscription-id-${subscription.certifiedProductId}-details`}
                     >
-                      <Box className={classes.subscriptionMetaDataContainer}>
-                        <Box className={classes.metaDataRow}>
-                          <Box className={classes.metaDataBox}>
+                      <Box sx={styles.subscriptionMetaDataContainer}>
+                        <Box sx={styles.metaDataRow}>
+                          <Box sx={styles.metaDataBox}>
                             <Typography variant="subtitle1">
                               Developer
                             </Typography>
@@ -333,7 +444,7 @@ function ChplManageSubscription({ hash }) {
                               router={{ sref: 'organizations.developers.developer', params: { id: subscription.developerId } }}
                             />
                           </Box>
-                          <Box className={classes.metaDataBox}>
+                          <Box sx={styles.metaDataBox}>
                             <Typography variant="subtitle1">
                               Product
                             </Typography>
@@ -342,8 +453,8 @@ function ChplManageSubscription({ hash }) {
                             </Typography>
                           </Box>
                         </Box>
-                        <Box className={classes.metaDataRow}>
-                          <Box className={classes.metaDataBox}>
+                        <Box sx={styles.metaDataRow}>
+                          <Box sx={styles.metaDataBox}>
                             <Typography variant="subtitle1">
                               CHPL ID
                             </Typography>
@@ -354,7 +465,7 @@ function ChplManageSubscription({ hash }) {
                               router={{ sref: 'listing', params: { id: subscription.certifiedProductId } }}
                             />
                           </Box>
-                          <Box className={classes.metaDataBox}>
+                          <Box sx={styles.metaDataBox}>
                             <Typography variant="subtitle1">
                               Version
                             </Typography>
@@ -373,7 +484,7 @@ function ChplManageSubscription({ hash }) {
                         >
                           <CardContent>
                             <Box
-                              className={classes.subscriptionTypeContainer}
+                              sx={styles.subscriptionTypeContainer}
                             >
                               <Typography>
                                 {s.subject.type.name}
@@ -381,10 +492,8 @@ function ChplManageSubscription({ hash }) {
                                 {s.subject.subject}
                               </Typography>
                               <ChplTooltip title="Unsubscribe from subscription type">
-                                <IconButton
-                                  onClick={() => deleteSubscription(s)}
-                                >
-                                  <DeleteIcon className={classes.deleteTextButton} />
+                                <IconButton onClick={() => deleteSubscription(s)} size="large">
+                                  <DeleteIcon sx={styles.deleteTextButton} />
                                 </IconButton>
                               </ChplTooltip>
                             </Box>

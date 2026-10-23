@@ -9,27 +9,34 @@ import {
   ListItem,
   ListItemIcon,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import WarningIcon from '@material-ui/icons/Warning';
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import WarningIcon from '@mui/icons-material/Warning';
 import { ExportToCsv } from 'export-to-csv';
+import { number } from 'prop-types';
 
 import { useFetchListings } from 'api/cms';
 import ChplChips from 'components/cms/chips';
 import ChplSearchTerm from 'components/cms/search-term';
-import { ChplLink, ChplPageBody, ChplPageHeader } from 'components/util';
+import {
+  ChplLink,
+  ChplLoadingTable,
+  ChplPageBody,
+  ChplPageHeader,
+  ChplSkeletonCard,
+} from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { eventTrack } from 'services/analytics.service';
 import { useLocalStorage as useStorage } from 'services/storage.service';
 import { FlagContext, useAnalyticsContext } from 'shared/contexts';
-import { palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const csvOptions = {
   filename: 'cms-id-data',
@@ -45,7 +52,7 @@ const csvOptions = {
 
 const headers = csvOptions.headers.map((h) => ({ text: h.headerName }));
 
-const useStyles = makeStyles({
+const styles = {
   tableContainer: {
     overflowWrap: 'normal',
     border: '.5px solid #c2c6ca',
@@ -63,7 +70,44 @@ const useStyles = makeStyles({
   wrap: {
     flexFlow: 'wrap',
   },
-});
+};
+
+const loadingStyles = {
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    padding: '16px',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+};
+
+// The results card while the CMS IDs are looked up: the download button above
+// a table of the same columns. The lookup form above it stays real, since it
+// does not wait on anything
+function ChplCmsLookupLoading({ columns, rows }) {
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading CMS ID results</Box>
+      <ChplSkeletonCard>
+        <Box sx={loadingStyles.content} aria-hidden="true">
+          <Box sx={loadingStyles.header}>
+            <Skeleton variant="rectangular" width={180} height={32} sx={{ borderRadius: '4px' }} />
+          </Box>
+          <ChplLoadingTable columns={columns} rows={rows} showControls={false} />
+        </Box>
+      </ChplSkeletonCard>
+    </Box>
+  );
+}
+
+ChplCmsLookupLoading.propTypes = {
+  columns: number.isRequired,
+  rows: number.isRequired,
+};
 
 function ChplCmsLookup() {
   const storageKey = 'storageKey-cmsLookupIds';
@@ -76,7 +120,6 @@ function ChplCmsLookup() {
   const [listings, setListings] = useState([]);
   const [cmsIds, setCmsIds] = useStorage(storageKey, []);
   const queries = useFetchListings({ cmsIds });
-  const classes = useStyles();
 
   const finishedLoading = queries.every((query) => !query.isLoading);
 
@@ -148,10 +191,10 @@ function ChplCmsLookup() {
     <>
       <ChplPageHeader text="CMS ID Reverse Lookup" />
       <ChplPageBody>
-        <Box display="flex" flexDirection="column" gridGap={16}>
+        <Box display="flex" flexDirection="column" gap="16px">
           <Card>
             <CardContent>
-              <Box display="flex" flexDirection="column" gridGap={16}>
+              <Box display="flex" flexDirection="column" gap="16px">
                 <Typography variant="h2">Lookup CMS EHR Certification IDs</Typography>
                 <Typography variant="body1">
                   Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter a CMS EHR Certification ID to display the products which were used to create the associated CMS EHR Certification ID. Additional IDs may be added individually.
@@ -164,84 +207,88 @@ function ChplCmsLookup() {
                   dispatch={handleDispatch}
                 />
                 { errors.length > 0
-                  && (
-                    <Box bgcolor={palette.errorLight} borderRadius="4px" border={`1px solid ${palette.error}`} p={2}>
-                      <List>
-                        { errors
-                          .map((msg) => (
-                            <ListItem key={msg}>
-                              <ListItemIcon className={classes.errorListIcon}>
-                                <WarningIcon color="error" />
-                              </ListItemIcon>
-                              {msg}
-                            </ListItem>
-                          ))}
-                      </List>
-                    </Box>
-                  )}
+                && (
+                  <Box bgcolor={palette.errorLight} borderRadius="4px" border={`1px solid ${palette.error}`} p={2}>
+                    <List>
+                      { errors
+                        .map((msg) => (
+                          <ListItem key={msg}>
+                            <ListItemIcon sx={styles.errorListIcon}>
+                              <WarningIcon color="error" />
+                            </ListItemIcon>
+                            {msg}
+                          </ListItem>
+                        ))}
+                    </List>
+                  </Box>
+                )}
               </Box>
             </CardContent>
           </Card>
-          { listings.length > 0
+          { !finishedLoading
             && (
-              <Card>
-                <CardContent>
-                  <Box display="flex" flexDirection="column" gridGap={16}>
-                    <div className={classes.tableResultsHeaderContainer}>
-                      <ButtonGroup size="small" className={classes.wrap}>
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          fullWidth
-                          id="download-listing-data"
-                          onClick={downloadListingData}
-                          endIcon={<CloudDownloadOutlinedIcon />}
-                        >
-                          Download Result
-                          { listings.length !== 1 ? 's' : '' }
-                        </Button>
-                      </ButtonGroup>
-                    </div>
-                    <TableContainer className={classes.tableContainer} component={Paper}>
-                      <Table
-                        stickyHeader
-                        aria-label="CMS ID Listing Data table"
-                      >
-                        <ChplSortableHeaders
-                          headers={headers}
-                          stickyHeader
-                        />
-                        <TableBody>
-                          { listings
-                            .map((item) => (
-                              <TableRow key={`${item.certificationId}-${item.id}`}>
-                                <TableCell>{ item.certificationId }</TableCell>
-                                <TableCell>{ item.name }</TableCell>
-                                <TableCell>{ item.version }</TableCell>
-                                <TableCell>{ item.vendor }</TableCell>
-                                <TableCell>
-                                  <ChplLink
-                                    href={`#/listing/${item.id}`}
-                                    text={item.chplProductNumber}
-                                    analytics={{
-                                      ...analytics,
-                                      event: 'Go to Listing Details Page',
-                                      label: item.chplProductNumber,
-                                      aggregationName: item.name,
-                                    }}
-                                    external={false}
-                                    router={{ sref: 'listing', params: { id: item.id } }}
-                                  />
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </Box>
-                </CardContent>
-              </Card>
+              <ChplCmsLookupLoading columns={headers.length} rows={Math.max(cmsIds.length, 3)} />
             )}
+          { finishedLoading && listings.length > 0
+          && (
+            <Card>
+              <CardContent>
+                <Box display="flex" flexDirection="column" gap="16px">
+                  <Box sx={styles.tableResultsHeaderContainer}>
+                    <ButtonGroup size="small" sx={styles.wrap}>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        fullWidth
+                        id="download-listing-data"
+                        onClick={downloadListingData}
+                        endIcon={<CloudDownloadOutlinedIcon />}
+                      >
+                        Download Result
+                        { listings.length !== 1 ? 's' : '' }
+                      </Button>
+                    </ButtonGroup>
+                  </Box>
+                  <TableContainer sx={styles.tableContainer} component={Paper}>
+                    <Table
+                      stickyHeader
+                      aria-label="CMS ID Listing Data table"
+                    >
+                      <ChplSortableHeaders
+                        headers={headers}
+                        stickyHeader
+                      />
+                      <TableBody>
+                        { listings
+                          .map((item) => (
+                            <TableRow key={`${item.certificationId}-${item.id}`}>
+                              <TableCell>{ item.certificationId }</TableCell>
+                              <TableCell>{ item.name }</TableCell>
+                              <TableCell>{ item.version }</TableCell>
+                              <TableCell>{ item.vendor }</TableCell>
+                              <TableCell>
+                                <ChplLink
+                                  href={`#/listing/${item.id}`}
+                                  text={item.chplProductNumber}
+                                  analytics={{
+                                    ...analytics,
+                                    event: 'Go to Listing Details Page',
+                                    label: item.chplProductNumber,
+                                    aggregationName: item.name,
+                                  }}
+                                  external={false}
+                                  router={{ sref: 'listing', params: { id: item.id } }}
+                                />
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+              </CardContent>
+            </Card>
+          )}
         </Box>
       </ChplPageBody>
     </>

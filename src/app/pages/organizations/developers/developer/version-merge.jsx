@@ -10,9 +10,8 @@ import {
   Divider,
   List,
   ListItem,
-  makeStyles,
-} from '@material-ui/core';
-import { ArrowBack, ArrowForward } from '@material-ui/icons';
+} from '@mui/material';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { func, object } from 'prop-types';
 
@@ -24,7 +23,7 @@ import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   columnContainer: {
     display: 'flex',
@@ -63,7 +62,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gridGap: '32px',
   },
-});
+};
 
 function ChplVersionMerge({ dispatch, product, version }) {
   const { analytics } = useAnalyticsContext();
@@ -71,7 +70,6 @@ function ChplVersionMerge({ dispatch, product, version }) {
   const { mutate } = usePutVersion();
   const [mergingVersions, setMergingVersions] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -135,7 +133,7 @@ function ChplVersionMerge({ dispatch, product, version }) {
   return (
     <>
       <Container disableGutters maxWidth="xl">
-        <Box className={classes.pageContainer}>
+        <Box sx={styles.pageContainer}>
           <Box>
             <ChplVersion
               version={version}
@@ -145,18 +143,18 @@ function ChplVersionMerge({ dispatch, product, version }) {
               isProcessing={isProcessing}
             />
           </Box>
-          <Divider className={classes.fullWidthGridRow} />
+          <Divider sx={styles.fullWidthGridRow} />
           <Card>
             <CardHeader title="Add Versions to merge" />
             <CardContent>
-              <List className={classes.productList}>
+              <List sx={styles.productList}>
                 { product.versions
                   .filter((ver) => mergingVersions.every((v) => v.id !== ver.id))
                   .filter((ver) => ver.id !== version.id)
                   .sort((a, b) => compareStrings(a.version, b.version))
                   .map((item) => (
-                    <ListItem divider className={classes.listItem} dense key={item.id}>
-                      <Box className={classes.itemName}>
+                    <ListItem divider sx={styles.listItem} dense key={item.id}>
+                      <Box sx={styles.itemName}>
                         {item.version}
                       </Box>
                       <ChplTooltip
@@ -181,13 +179,13 @@ function ChplVersionMerge({ dispatch, product, version }) {
           <Card>
             <CardHeader title="Versions to Merge" />
             <CardContent>
-              <List className={classes.listingList}>
+              <List sx={styles.listingList}>
                 <ListItem>{ version.version }</ListItem>
                 { [...mergingVersions]
                   .sort((a, b) => compareStrings(a.version, b.version))
                   .map((item) => (
-                    <ListItem divider className={classes.listItem} dense key={item.id}>
-                      <Box className={classes.itemName}>
+                    <ListItem divider sx={styles.listItem} dense key={item.id}>
+                      <Box sx={styles.itemName}>
                         {item.version}
                       </Box>
                       <ChplTooltip

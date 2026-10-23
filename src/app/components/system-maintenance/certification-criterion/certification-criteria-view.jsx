@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { arrayOf } from 'prop-types';
 
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';

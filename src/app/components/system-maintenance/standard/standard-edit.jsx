@@ -4,8 +4,7 @@ import {
   Chip,
   Divider,
   MenuItem,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -35,7 +34,7 @@ const validationSchema = yup.object({
   groupName: yup.string(),
 });
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -52,7 +51,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '16px',
   },
-});
+};
 
 function ChplStandardEdit({
   criterionOptions,
@@ -66,7 +65,6 @@ function ChplStandardEdit({
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [standard, setStandard] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -150,8 +148,8 @@ function ChplStandardEdit({
   if (ruleOptions.length === 0) { return null; }
 
   return (
-    <div className={classes.container}>
-      <Box className={classes.horizontalInput}>
+    <Box sx={styles.container}>
+      <Box sx={styles.horizontalInput}>
         <ChplTextField
           id="value"
           name="value"
@@ -175,7 +173,7 @@ function ChplStandardEdit({
           helperText={formik.touched.regulatoryTextCitation && formik.errors.regulatoryTextCitation}
         />
       </Box>
-      <Box className={classes.horizontalInput}>
+      <Box sx={styles.horizontalInput}>
         <ChplTextField
           id="start-day"
           name="startDay"
@@ -262,7 +260,7 @@ function ChplStandardEdit({
             </MenuItem>
           ))}
       </ChplTextField>
-      <div className={classes.chips}>
+      <Box sx={styles.chips}>
         { [...criteria]
           .sort(sortCriteria)
           .map((item) => (
@@ -274,7 +272,7 @@ function ChplStandardEdit({
               variant="outlined"
             />
           ))}
-      </div>
+      </Box>
       <ChplTextField
         id="additional-information"
         name="additionalInformation"
@@ -292,7 +290,7 @@ function ChplStandardEdit({
         onBlur={formik.handleBlur}
       />
       <ChplActionBar dispatch={handleDispatch} />
-    </div>
+    </Box>
   );
 }
 

@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -12,20 +11,19 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { useFetchInsights } from 'api/developer';
-import { ChplLink } from 'components/util';
+import { ChplLink, ChplLoadingSection } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '16px',
   },
-});
+};
 
 function ChplInsightsView({ developer }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
@@ -36,17 +34,21 @@ function ChplInsightsView({ developer }) {
     isLoading,
   } = useFetchInsights({ developer });
   const [insights, setInsights] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     if (isError || isLoading || !data) { return; }
     setInsights(data);
   }, [data, isError, isLoading]);
 
+  // Stands in for the whole card, title included, rather than sitting inside it
+  if (isLoading) {
+    return <ChplLoadingSection variant="table" columns={4} rows={3} />;
+  }
+
   return (
     <Card>
       <CardHeader title="Access Insights" />
-      <CardContent className={classes.content}>
+      <CardContent sx={styles.content}>
         <Typography variant="body1">
           Insights information is displayed here. For more information, please visit the
           {' '}
@@ -58,7 +60,6 @@ function ChplInsightsView({ developer }) {
           />
           .
         </Typography>
-        { isLoading && <CircularProgress /> }
         { isError
           && (
             <Typography>

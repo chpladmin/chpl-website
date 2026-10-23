@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
+} from '@mui/material';
+import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplAccessibilityStandardEdit from './accessibility-standard-edit';
@@ -18,6 +18,7 @@ import {
   usePostAccessibilityStandard,
   usePutAccessibilityStandard,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplAccessibilityStandards() {
   const { data, isLoading, isSuccess } = useFetchAccessibilityStandards();
@@ -108,7 +109,8 @@ function ChplAccessibilityStandards() {
             <AccessibilityNewOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeAccessibilityStandard.id ? 'Edit' : 'Add'} Accessibility Standard`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplAccessibilityStandardEdit
             accessibilityStandard={activeAccessibilityStandard}
@@ -123,7 +125,10 @@ function ChplAccessibilityStandards() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        label="Loading accessibility standards"
+      />
     );
   }
 

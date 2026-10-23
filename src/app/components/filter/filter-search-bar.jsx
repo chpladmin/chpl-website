@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Box,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Skeleton } from '@mui/material';
 import {
   arrayOf,
   bool,
-  number,
   object,
   string,
 } from 'prop-types';
@@ -17,9 +13,10 @@ import ChplFilterQuickFilters from './filter-quick-filters';
 import ChplFilterSearchTerm from './filter-search-term';
 import { useFilterContext } from './filter-context';
 
-import { palette, theme } from 'themes';
+import { ChplSkeletonCard } from 'components/util';
+import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   searchContainer: {
     backgroundColor: palette.grey,
     padding: '16px 32px',
@@ -28,7 +25,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '16px',
     },
     [theme.breakpoints.up('md')]: {
@@ -39,7 +36,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     gridGap: '8px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'flex-start',
@@ -54,31 +51,32 @@ const useStyles = makeStyles({
     top: '8px',
     zIndex: 3,
   },
-  stuck: {
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: '100%',
-      height: '100px',
-      background: ({ fadeBackground }) => `linear-gradient(to top, ${fadeBackground} 55%, transparent)`,
-      pointerEvents: 'none',
-    },
+};
+
+const skeletonButton = { borderRadius: '4px' };
+
+const getStuckStyles = (fadeBackground) => ({
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: '100%',
+    height: '100px',
+    background: `linear-gradient(to top, ${fadeBackground} 55%, transparent)`,
+    pointerEvents: 'none',
   },
 });
 
 function ChplFilterSearchBar({
   fadeBackground = palette.backgroundPage,
-  filterGridMinColWidth = 200,
   hideAdvancedSearch = false,
   hideSearchTerm = false,
   placeholder = 'Search by Developer, Product, or CHPL ID...',
   sticky = false,
   toggleMultipleFilters = undefined,
 }) {
-  const { filters } = useFilterContext();
-  const classes = useStyles({ fadeBackground });
+  const { filters, isLoading } = useFilterContext();
   const sentinelRef = useRef(null);
   const [isStuck, setIsStuck] = useState(false);
 
@@ -94,9 +92,31 @@ function ChplFilterSearchBar({
     return () => observer.disconnect();
   }, [sticky]);
 
-  const searchBar = (
-    <div
-      className={sticky ? `${classes.searchContainer} ${classes.sticky} ${isStuck ? classes.stuck : ''}` : classes.searchContainer}
+  // The same layout as the search bar, in a skeleton frame instead of its grey box
+  const searchBarLoading = (
+    <ChplSkeletonCard sx={[styles.searchContainer]}>
+      <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading search</Box>
+      { !hideSearchTerm
+        && (
+          <Skeleton variant="rectangular" height={48} sx={skeletonButton} aria-hidden="true" />
+        )}
+      <Box sx={styles.searchButtonContainer} aria-hidden="true">
+        <Skeleton variant="rectangular" width={96} height={40} sx={skeletonButton} />
+        { !hideAdvancedSearch
+          && (
+            <Skeleton variant="rectangular" width={96} height={40} sx={skeletonButton} />
+          )}
+        { filters.some((f) => f.key === 'quickFilters')
+          && (
+            <Skeleton variant="circular" width={40} height={40} />
+          )}
+      </Box>
+    </ChplSkeletonCard>
+  );
+
+  const searchBar = isLoading ? searchBarLoading : (
+    <Box
+      sx={[styles.searchContainer, sticky && styles.sticky, isStuck && getStuckStyles(fadeBackground)]}
       data-filter-search-bar="true"
     >
       { !hideSearchTerm
@@ -105,11 +125,11 @@ function ChplFilterSearchBar({
             placeholder={placeholder}
           />
         )}
-      <Box className={classes.searchButtonContainer}>
+      <Box sx={styles.searchButtonContainer}>
         <ChplFilterBrowse />
         { !hideAdvancedSearch
           && (
-            <ChplFilterPanel filterGridMinColWidth={filterGridMinColWidth} />
+            <ChplFilterPanel />
           )}
         { filters.some((f) => f.key === 'quickFilters')
           && (
@@ -118,7 +138,7 @@ function ChplFilterSearchBar({
             />
           )}
       </Box>
-    </div>
+    </Box>
   );
 
   if (!sticky) {
@@ -127,7 +147,7 @@ function ChplFilterSearchBar({
 
   return (
     <>
-      <div ref={sentinelRef} />
+      <Box ref={sentinelRef} />
       {searchBar}
     </>
   );
@@ -137,7 +157,6 @@ export default ChplFilterSearchBar;
 
 ChplFilterSearchBar.propTypes = {
   fadeBackground: string,
-  filterGridMinColWidth: number,
   hideAdvancedSearch: bool,
   hideSearchTerm: bool,
   placeholder: string,

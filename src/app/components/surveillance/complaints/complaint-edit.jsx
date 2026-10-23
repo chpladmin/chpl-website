@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
-  Chip,
-  CircularProgress,
   Checkbox,
+  Chip,
   FormControlLabel,
   InputAdornment,
   ListItemText,
   MenuItem,
   Select,
+  Skeleton,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+} from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -27,13 +27,13 @@ import { useFetchListings as useFetchListingsBasic } from 'api/listing';
 import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
-import { ChplTextField } from 'components/util';
+import { ChplSkeletonCard, ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { compareStrings } from 'services/sort.service';
 import { complaint as complaintPropType } from 'shared/prop-types';
-import { theme } from 'themes';
+import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const styles = {
   content: {
     display: 'grid',
     gap: '32px',
@@ -61,7 +61,71 @@ const useStyles = makeStyles(() => ({
   chip: {
     margin: theme.spacing(0.5),
   },
-}));
+};
+
+const loadingStyles = {
+  // The padding of the real card's CardHeader and CardContent
+  header: {
+    padding: '16px',
+  },
+  body: {
+    padding: '16px',
+  },
+  field: {
+    borderRadius: '4px',
+  },
+  toggle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+};
+
+// One entry per column of the form: the fields under its heading, and how tall
+// each one is. Parties Contacted is a column of switches.
+const loadingColumns = [
+  { key: 'general', fields: [56, 56, 56, 56, 56, 56, 56, 56] },
+  { key: 'summary', fields: [128, 128] },
+  { key: 'review', fields: [56, 56, 56, 56] },
+  { key: 'parties', toggles: 4 },
+];
+
+// The complaint form while the lists it chooses from load
+function ChplComplaintEditLoading() {
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading complaint form</Box>
+      <ChplSkeletonCard>
+        <Box aria-hidden="true">
+          <Box sx={loadingStyles.header}>
+            <Skeleton variant="text" width="25%" height={32} />
+          </Box>
+          <Box sx={loadingStyles.body}>
+            <Skeleton variant="rectangular" height={56} sx={loadingStyles.field} />
+            <Box sx={styles.content}>
+              { loadingColumns.map((column) => (
+                <Box key={column.key} sx={styles.dataEntry}>
+                  <Skeleton variant="text" width="50%" height={28} />
+                  { column.fields?.map((height, idx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Skeleton key={idx} variant="rectangular" height={height} sx={loadingStyles.field} />
+                  ))}
+                  { [...Array(column.toggles ?? 0)].map((_toggle, idx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Box key={idx} sx={loadingStyles.toggle}>
+                      <Skeleton variant="rounded" width={34} height={14} />
+                      <Skeleton variant="text" width="60%" height={24} />
+                    </Box>
+                  ))}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+      </ChplSkeletonCard>
+    </Box>
+  );
+}
 
 const validationSchema = yup.object({
   certificationBody: yup.object()
@@ -126,7 +190,6 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
   const fetchSurveillanceListings = useFetchListingsBasic({
     ids: complaint.listings?.map((l) => l.listingId) ?? [],
   });
-  const classes = useStyles();
   let formik;
   let updateActionBar;
 
@@ -383,7 +446,7 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplComplaintEditLoading />
     );
   }
 
@@ -421,8 +484,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                 ))}
               </ChplTextField>
             )}
-          <div className={classes.content}>
-            <div className={classes.dataEntry}>
+          <Box sx={styles.content}>
+            <Box sx={styles.dataEntry}>
               <Typography variant="subtitle1">General Info</Typography>
               <ChplTextField
                 type="date"
@@ -542,8 +605,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                     helperText={formik.touched.complainantTypeOther && formik.errors.complainantTypeOther}
                   />
                 )}
-            </div>
-            <div className={classes.dataEntry}>
+            </Box>
+            <Box sx={styles.dataEntry}>
               <Typography variant="subtitle1">Summary and Actions</Typography>
               <ChplTextField
                 id="summary"
@@ -569,27 +632,27 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                 error={formik.touched.actions && !!formik.errors.actions}
                 helperText={formik.touched.actions && formik.errors.actions}
               />
-            </div>
-            <div className={classes.dataEntry}>
+            </Box>
+            <Box sx={styles.dataEntry}>
               <Typography variant="subtitle1">Review Info</Typography>
               {complaint.criteria?.length > 0
                && (
                  <>
                    <Typography>Associated Criteria</Typography>
-                   <ul className={classes.chips}>
+                   <Box component="ul" sx={styles.chips}>
                      {complaint.criteria
                        .map((criterion) => (
                          <li key={criterion.certificationCriterion.id}>
                            <Chip
                              label={`${(criterion.certificationCriterion.removed ? 'Removed | ' : '') + criterion.certificationCriterion.number}: ${criterion.certificationCriterion.title}`}
                              onDelete={() => removeAssociatedCriterion(criterion)}
-                             className={classes.chip}
+                             sx={styles.chip}
                              color="primary"
                              variant="outlined"
                            />
                          </li>
                        ))}
-                   </ul>
+                   </Box>
                  </>
                )}
               <ChplTextField
@@ -604,6 +667,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                     <InputAdornment position="start">
                       <Select
                         aria-label="Select Edition of Certification Criteria"
+                        variant="standard"
+                        disableUnderline
                         value={criterionParagraph}
                         onChange={handleEditionFilterChange}
                       >
@@ -628,20 +693,20 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                && (
                  <>
                    <Typography>Associated Listings</Typography>
-                   <ul className={classes.chips}>
+                   <Box component="ul" sx={styles.chips}>
                      {complaint.listings
                        .map((listing) => (
                          <li key={listing.id}>
                            <Chip
                              label={listing.chplProductNumber}
                              onDelete={() => removeAssociatedListing(listing)}
-                             className={classes.chip}
+                             sx={styles.chip}
                              color="primary"
                              variant="outlined"
                            />
                          </li>
                        ))}
-                   </ul>
+                   </Box>
                  </>
                )}
               { /* eslint-disable react/jsx-props-no-spreading */ }
@@ -663,20 +728,20 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                && (
                  <>
                    <Typography>Associated Surveillance Activities</Typography>
-                   <ul className={classes.chips}>
+                   <Box component="ul" sx={styles.chips}>
                      {complaint.surveillances
                        .map((surveillance) => (
                          <li key={`${surveillance.surveillance.chplProductNumber}-${surveillance.surveillance.friendlyId}`}>
                            <Chip
                              label={`${surveillance.surveillance.chplProductNumber}: ${surveillance.surveillance.friendlyId}`}
                              onDelete={() => removeAssociatedSurveillance(surveillance)}
-                             className={classes.chip}
+                             sx={styles.chip}
                              color="primary"
                              variant="outlined"
                            />
                          </li>
                        ))}
-                   </ul>
+                   </Box>
                  </>
                )}
               { surveillances.length > 0
@@ -695,8 +760,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                      ))}
                  </ChplTextField>
                )}
-            </div>
-            <div className={classes.dataEntry}>
+            </Box>
+            <Box sx={styles.dataEntry}>
               <Typography variant="subtitle1">Parties Contacted</Typography>
               <FormControlLabel
                 control={(
@@ -746,8 +811,8 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
                 )}
                 label="Informed ONC per &sect;170.523(s)"
               />
-            </div>
-          </div>
+            </Box>
+          </Box>
         </CardContent>
       </Card>
       <ChplActionBar dispatch={handleDispatch} />

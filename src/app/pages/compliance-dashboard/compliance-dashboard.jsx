@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
   Grid,
-  makeStyles,
-} from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+  Typography,
+} from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
+import { ChplSkeletonCard } from 'components/util';
+import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   reportCard: {
     height: 'auto',
     display: 'flex',
@@ -23,6 +26,9 @@ const useStyles = makeStyles({
       paddingBottom: '0 !important',
     },
   },
+  unavailable: {
+    padding: '16px',
+  },
   iframe: {
     border: 'none',
     width: '100%',
@@ -32,7 +38,7 @@ const useStyles = makeStyles({
   lessTopMargin: {
     marginTop: '-48px',
   },
-});
+};
 
 const reports = [{
   title: 'Important Dates',
@@ -61,37 +67,75 @@ const reports = [{
   isWide: true,
 }];
 
+// Report heights before the metadata gives the real ones
+const defaultHeight = (report) => (report.isWide ? 600 : 400);
+
+const loadingStyles = {
+  header: {
+    padding: '16px',
+  },
+};
+
+// The dashboard's grid of report cards: the narrow column beside the wide one,
+// each card its report's usual height under a title
+function ChplComplianceDashboardLoading() {
+  const buildCard = (report) => (
+    <Grid item xs={12} key={report.title}>
+      <ChplSkeletonCard>
+        <Box sx={loadingStyles.header}>
+          <Skeleton variant="text" width="60%" height={32} />
+        </Box>
+        <Box height={defaultHeight(report)} />
+      </ChplSkeletonCard>
+    </Grid>
+  );
+
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading compliance reports</Box>
+      <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start" aria-hidden="true">
+        <Grid item xs={12} md={4}>
+          <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
+            { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Grid container spacing={4}>
+            { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
+          </Grid>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
+
 function ChplComplianceDashboard() {
-  const classes = useStyles();
-  const [reportMetadata, setReportMetadata] = useState([]);
   const { data, isLoading, isSuccess } = useFetchReportMetadata('onc-dashboard');
 
-  useEffect(() => {
-    if (isLoading || !isSuccess) { return; }
-    setReportMetadata(data);
-  }, [data, isLoading, isSuccess]);
+  if (isLoading) {
+    return <ChplComplianceDashboardLoading />;
+  }
+
+  const reportMetadata = isSuccess ? data : [];
 
   const buildCard = (report) => {
-    const displayData = reportMetadata.find((r) => r.title === report.title) ?? {
-      isLoading: true,
-      title: `Not yet implemented - ${report.title}`,
-      height: report.isWide ? 600 : 400,
-    };
+    const displayData = reportMetadata.find((r) => r.title === report.title);
 
     return (
       <Grid item xs={12} key={report.title}>
-        <Card className={classes.reportCard}>
-          <CardHeader title={displayData.title} />
-          <CardContent className={classes.reportCardContent}>
-            { displayData.isLoading ? (
-              <Skeleton variant="rect" height={displayData.height} />
-            ) : (
-              <iframe
+        <Card sx={styles.reportCard}>
+          <CardHeader title={report.title} />
+          <CardContent sx={styles.reportCardContent}>
+            { displayData ? (
+              <Box
+                component="iframe"
                 title={displayData.title}
-                className={`${classes.iframe} ${report.uniqueClass ? classes[report.uniqueClass] : ''}`}
+                sx={[styles.iframe, report.uniqueClass && styles[report.uniqueClass]]}
                 height={displayData.height}
                 src={displayData.url}
               />
+            ) : (
+              <Typography sx={styles.unavailable}>This report is not available</Typography>
             )}
           </CardContent>
         </Card>
@@ -100,9 +144,9 @@ function ChplComplianceDashboard() {
   };
 
   return (
-    <Grid container spacing={4} alignItems="flex-start">
+    <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start">
       <Grid item xs={12} md={4}>
-        <Grid container spacing={4}>
+        <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
           { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
         </Grid>
       </Grid>

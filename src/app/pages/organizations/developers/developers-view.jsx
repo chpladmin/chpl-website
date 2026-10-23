@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, makeStyles } from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import { Box, Button } from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
 
 import ChplMessaging from './messaging/messaging';
@@ -12,9 +12,11 @@ import {
   ChplLink,
   ChplLoadingCards,
   ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareStrings } from 'services/sort.service';
@@ -27,14 +29,14 @@ const sortOptions = [
   { property: 'developer_code', text: 'Developer Code' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   developerView: {
     display: 'grid',
     borderRadius: 4,
     gridTemplateRows: '1fr',
   },
-});
+};
 
 function ChplDevelopersView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
@@ -51,10 +53,11 @@ function ChplDevelopersView() {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [messaging, setMessaging] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
 
   const {
     data, isError, isLoading,
+    isFetching,
+    isPreviousData,
   } = useFetchDevelopersBySearch({
     orderBy,
     pageNumber,
@@ -62,6 +65,9 @@ function ChplDevelopersView() {
     sortDescending,
     query: queryString(),
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -149,14 +155,14 @@ function ChplDevelopersView() {
 
   return (
     <>
-      <div className={classes.developerView} id="main-content" tabIndex="-1">
+      <Box sx={styles.developerView} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
           sticky
           placeholder="Search by Developer Name or Code..."
           toggleMultipleFilters={bonusQuickFilters}
         />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3]} actions={0} />)}
           { !isLoading
           && (
             <>
@@ -171,6 +177,7 @@ function ChplDevelopersView() {
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
                 <Button
                   onClick={downloadDevelopers}
@@ -201,54 +208,56 @@ function ChplDevelopersView() {
                     </Button>
                   )}
               </ChplSearchResultControls>
-              { developers.length > 0
-              && (
-                <>
-                  { developers.map((item) => (
-                    <ChplSearchResultCard
-                      key={item.id}
-                      fieldGroups={[[
-                        {
-                          label: 'Developer',
-                          value: (
-                            <ChplLink
-                              href={`#/organizations/developers/${item.id}`}
-                              text={item.name}
-                              analytics={{
-                                ...analytics,
-                                event: 'Navigate to Developer Page',
-                                label: item.name,
-                              }}
-                              external={false}
-                              router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
-                            />
-                          ),
-                        },
-                        {
-                          label: 'Developer Code',
-                          value: item.code,
-                        },
-                        {
-                          label: 'ONC-ACB for Active Listings',
-                          value: item.oncAcbDisplay,
-                        },
-                      ]]}
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { developers.length > 0
+                && (
+                  <>
+                    { developers.map((item) => (
+                      <ChplSearchResultCard
+                        key={item.id}
+                        fieldGroups={[[
+                          {
+                            label: 'Developer',
+                            value: (
+                              <ChplLink
+                                href={`#/organizations/developers/${item.id}`}
+                                text={item.name}
+                                analytics={{
+                                  ...analytics,
+                                  event: 'Navigate to Developer Page',
+                                  label: item.name,
+                                }}
+                                external={false}
+                                router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
+                              />
+                            ),
+                          },
+                          {
+                            label: 'Developer Code',
+                            value: item.code,
+                          },
+                          {
+                            label: 'ONC-ACB for Active Listings',
+                            value: item.oncAcbDisplay,
+                          },
+                        ]]}
+                      />
+                    ))}
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
                     />
-                  ))}
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                  />
-                </>
-              )}
+                  </>
+                )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>
-      </div>
+      </Box>
     </>
   );
 }

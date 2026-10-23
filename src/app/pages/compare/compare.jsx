@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { keyframes } from '@emotion/react';
 import {
   Box,
   Card,
-  CircularProgress,
   IconButton,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -11,22 +12,24 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import InfoIcon from '@material-ui/icons/Info';
-import CheckIcon from '@material-ui/icons/Check';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
-import { string } from 'prop-types';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import InfoIcon from '@mui/icons-material/Info';
+import CheckIcon from '@mui/icons-material/Check';
+import NotInterestedIcon from '@mui/icons-material/NotInterested';
+import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
+import { number, string } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
 import {
   ChplLink,
+  ChplLoadingPage,
   ChplPageBody,
   ChplPageHeader,
+  ChplSkeletonCard,
   ChplTooltip,
+  skeletonLineColor,
 } from 'components/util';
 import CmsButton from 'components/cms-widget/cms-button';
 import { eventTrack } from 'services/analytics.service';
@@ -37,7 +40,18 @@ import { compareListingsForDisplay } from 'services/listing.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const itemEnter = keyframes({
+  '0%': {
+    opacity: 0,
+    transform: 'translateY(200%)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+});
+
+const styles = {
   ...utilStyles,
   headerRow: {
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 16px 8px',
@@ -57,25 +71,131 @@ const useStyles = makeStyles({
     backgroundColor: palette.background,
     maxWidth: '200px',
   },
-  MuiTableCellStickyHeader: {
-    '&.TableCell-stickyHeader': {
-      top: '75px',
-    },
-  },
   animatedItem: {
-    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
+    animation: `${itemEnter} 1000ms ${theme.transitions.easing.easeInOut}`,
   },
-  '@keyframes myEffect': {
-    '0%': {
-      opacity: 0,
-      transform: 'translateY(200%)',
-    },
-    '100%': {
-      opacity: 1,
-      transform: 'translateY(0)',
+};
+
+// The compare table, built on the same small MUI Table as the real one so its
+// cells have the same padding and the rows the same heights. Its dividers are in
+// the skeleton grey, as on the other skeletons
+const loadingStyles = {
+  table: {
+    '& .MuiTableCell-root': {
+      borderBottom: `1px solid ${skeletonLineColor}`,
     },
   },
-});
+  // The real table's sticky column of data items, and its product header cells
+  itemColumn: {
+    width: '200px',
+    maxWidth: '200px',
+  },
+  headerColumnContent: {
+    padding: '16px',
+    minWidth: '150px',
+  },
+  headerContent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '8px',
+  },
+  stack: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '8px',
+  },
+};
+
+// The rows in the order the page has them. `lines` is how many lines the data
+// item's name wraps to in its 200px column, and `value` what each product shows
+const rows = [
+  { item: ['55%'], value: 'text' }, // Developer
+  { item: ['45%'], value: 'text' }, // Version
+  { item: ['90%'], value: 'text' }, // Certification Status
+  { item: ['75%'], value: 'text' }, // Certifying Body
+  { item: ['85%'], value: 'text' }, // Certification Date
+  { item: ['95%', '40%'], value: 'text' }, // Inactive/Decertified Date
+  { item: ['95%', '80%'], value: 'productNumber' }, // CHPL Product Number, Manage CMS ID Creator
+  { item: ['95%', '60%'], value: 'text' }, // Number of Open Non-Conformities
+  { item: ['90%'], value: 'text' }, // Certification Criteria
+  ...[...Array(8)].map(() => ({ item: ['100%', '95%', '50%'], value: 'icon' })), // each criterion: number and title
+  { item: ['95%', '45%'], value: 'text' }, // Clinical Quality Measures
+  ...[...Array(4)].map(() => ({ item: ['100%', '90%', '40%'], value: 'icon' })), // each CQM: id and title
+];
+
+const valueWidths = ['70%', '50%', '80%', '60%'];
+
+function ChplCompareLoading({ products }) {
+  const columns = Math.max(products, 1);
+
+  const renderValue = (value, key) => {
+    switch (value) {
+      case 'icon':
+        return <Skeleton variant="circular" width={24} height={24} />;
+      case 'productNumber':
+        return (
+          <Box sx={loadingStyles.stack}>
+            <Skeleton variant="text" width="80%" height={20} />
+            <Skeleton variant="rectangular" width={120} height={30} sx={{ borderRadius: '4px' }} />
+          </Box>
+        );
+      default:
+        return <Skeleton variant="text" width={valueWidths[key % valueWidths.length]} height={20} />;
+    }
+  };
+
+  return (
+    <ChplLoadingPage label="Loading products to compare" subtitle={2}>
+      <ChplSkeletonCard>
+        <TableContainer>
+          <Table size="small" sx={loadingStyles.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={loadingStyles.itemColumn} />
+                {[...Array(columns)].map((_product, idx) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <TableCell key={idx} sx={loadingStyles.headerColumnContent}>
+                    <Box sx={loadingStyles.headerContent}>
+                      <Skeleton variant="text" width="55%" height={24} />
+                      <Skeleton variant="circular" width={24} height={24} sx={{ flexShrink: 0 }} />
+                      <Skeleton variant="circular" width={28} height={28} sx={{ flexShrink: 0 }} />
+                    </Box>
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, rowIdx) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <TableRow key={rowIdx}>
+                  <TableCell sx={loadingStyles.itemColumn}>
+                    {row.item.map((width, lineIdx) => (
+                      // eslint-disable-next-line react/no-array-index-key
+                      <Skeleton key={lineIdx} variant="text" width={width} height={20} />
+                    ))}
+                  </TableCell>
+                  {[...Array(columns)].map((_product, colIdx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <TableCell key={colIdx}>
+                      { renderValue(row.value, rowIdx + colIdx) }
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </ChplSkeletonCard>
+    </ChplLoadingPage>
+  );
+}
+
+ChplCompareLoading.propTypes = {
+  products: number.isRequired,
+};
 
 function ChplComparePage({ ids }) {
   const analytics = {
@@ -89,7 +209,6 @@ function ChplComparePage({ ids }) {
   const [listingsToProcess, setListingsToProcess] = useState([]);
   const [showPracticeType, setShowPracticeType] = useState(false);
   const { data, isLoading, isSuccess } = useFetchListing({ id: activeListing });
-  const classes = useStyles();
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -123,9 +242,9 @@ function ChplComparePage({ ids }) {
 
   const makeRow = (title, getData) => (
     <TableRow>
-      <TableCell className={classes.stickyColumn}><strong>{ title }</strong></TableCell>
+      <TableCell sx={styles.stickyColumn}><strong>{ title }</strong></TableCell>
       { listings.map((listing) => (
-        <TableCell className={classes.animatedItem} key={listing.id}>
+        <TableCell sx={styles.animatedItem} key={listing.id}>
           { getData(listing) }
         </TableCell>
       ))}
@@ -168,7 +287,7 @@ function ChplComparePage({ ids }) {
     if (!listings.some((listing) => listing.certificationResults.some((cr) => cr.criterion.id === criterion.id))) { return null; }
     return (
       <TableRow key={criterion.id} id={`criterion-${criterion.id}`}>
-        <TableCell scope="row" className={classes.stickyColumn}>
+        <TableCell scope="row" sx={styles.stickyColumn}>
           { criterion.removed ? 'Removed | ' : '' }
           <strong>{ criterion.number }</strong>
           {': '}
@@ -176,9 +295,9 @@ function ChplComparePage({ ids }) {
           { criterion.removed
             && (
               <ChplTooltip title="This certification criterion has been removed from the Program.">
-                <IconButton className={classes.infoIcon}>
+                <IconButton sx={styles.infoIcon} size="large">
                   <InfoIcon
-                    className={classes.infoIconColor}
+                    sx={styles.infoIconColor}
                   />
                 </IconButton>
               </ChplTooltip>
@@ -227,7 +346,7 @@ function ChplComparePage({ ids }) {
     }))) { return null; }
     return (
       <TableRow key={cqm.id} id={`cqm-${cqm.id}`}>
-        <TableCell scope="row" className={classes.stickyColumn}>
+        <TableCell scope="row" sx={styles.stickyColumn}>
           <strong>{ cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }</strong>
           {': '}
           {cqm.title}
@@ -252,7 +371,7 @@ function ChplComparePage({ ids }) {
   };
 
   if (listings.length === 0) {
-    return <CircularProgress />;
+    return <ChplCompareLoading products={ids.split('&').length} />;
   }
 
   return (
@@ -269,13 +388,13 @@ function ChplComparePage({ ids }) {
       />
       <ChplPageBody>
         <Card>
-          <TableContainer className={classes.Table}>
+          <TableContainer sx={styles.Table}>
             <Table size="small">
               <TableHead>
-                <TableRow hover={false} className={classes.headerRow}>
-                  <TableCell className={classes.stickyColumn}><span className={classes.srOnly}>Data item</span></TableCell>
+                <TableRow hover={false} sx={styles.headerRow}>
+                  <TableCell sx={styles.stickyColumn}><Box component="span" sx={utilStyles.srOnly}>Data item</Box></TableCell>
                   { listings.map((listing) => (
-                    <TableCell className={classes.headerColumnContent} key={listing.id}>
+                    <TableCell sx={styles.headerColumnContent} key={listing.id}>
                       <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
                         { listing.product.name }
                         <ChplBrowserComparedWidget
@@ -319,7 +438,7 @@ function ChplComparePage({ ids }) {
                     <br />
                     <Typography variant="body2">Manage CMS ID Creator</Typography>
                   </>, (listing) => (
-                    <Box display="flex" alignItems="flex-start" flexDirection="column" justifyContent="space-between" gridGap={8}>
+                    <Box display="flex" alignItems="flex-start" flexDirection="column" justifyContent="space-between" gap="8px">
                       <ChplLink
                         href={`#/listing/${listing.id}`}
                         text={listing.chplProductNumber}
@@ -351,6 +470,7 @@ function ChplComparePage({ ids }) {
 }
 
 export default ChplComparePage;
+export { ChplCompareLoading };
 
 ChplComparePage.propTypes = {
   ids: string.isRequired,

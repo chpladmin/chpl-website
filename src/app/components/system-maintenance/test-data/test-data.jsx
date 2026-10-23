@@ -4,13 +4,13 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
-} from '@material-ui/core';
-import DataUsageOutlinedIcon from '@material-ui/icons/DataUsageOutlined';
+} from '@mui/material';
+import DataUsageOutlinedIcon from '@mui/icons-material/DataUsageOutlined';
 
 import ChplTestDataView from './test-data-view';
 
 import { useFetchTestData } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplTestData() {
   const { data, isLoading, isSuccess } = useFetchTestData();
@@ -23,7 +23,11 @@ function ChplTestData() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        controls={0}
+        fieldGroups={[1]}
+        label="Loading test data"
+      />
     );
   }
 

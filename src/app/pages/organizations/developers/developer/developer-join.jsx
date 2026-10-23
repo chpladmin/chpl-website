@@ -5,8 +5,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Container,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -14,27 +14,21 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
-import AddIcon from '@material-ui/icons/Add';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import AddIcon from '@mui/icons-material/Add';
+import Autocomplete from '@mui/material/Autocomplete';
 import { func } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
-import { ChplTextField } from 'components/util';
+import { ChplLoadingTable, ChplSkeletonCard, ChplTextField } from 'components/util';
 import { compareStrings } from 'services/sort.service';
 import { DeveloperContext } from 'shared/contexts';
-import { palette, theme, utilStyles } from 'themes';
+import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
-  ...utilStyles,
-  errorColor: {
-    border: '1px solid #c44f65',
-    color: palette.error,
-  },
+const styles = {
   cardContainer: {
     width: '100%',
     height: '700px',
@@ -46,7 +40,7 @@ const useStyles = makeStyles({
     },
   },
   pageContainer: {
-    padding: '32px 32px',
+    padding: '32px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -65,7 +59,57 @@ const useStyles = makeStyles({
       top: '100px',
     },
   },
-});
+};
+
+const loadingStyles = {
+  // The width of each real card, without the scrolling the selector card has
+  cards: {
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '50vw',
+    },
+  },
+  section: {
+    padding: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  text: {
+    padding: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+};
+
+// The developer selector and its table of developers, beside the instructions
+function ChplJoinDevelopersLoading() {
+  return (
+    <Container disableGutters maxWidth="xl" role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading developers</Box>
+      <Box sx={styles.pageContainer} aria-hidden="true">
+        <ChplSkeletonCard sx={loadingStyles.cards}>
+          <Box sx={loadingStyles.section}>
+            <Skeleton variant="text" width="50%" height={32} />
+            <Skeleton variant="rectangular" height={40} sx={{ borderRadius: '4px' }} />
+            <ChplLoadingTable columns={4} rows={8} showControls={false} framed={false} />
+          </Box>
+        </ChplSkeletonCard>
+        <ChplSkeletonCard sx={loadingStyles.cards}>
+          <Box sx={loadingStyles.text}>
+            <Skeleton variant="text" width="50%" height={32} />
+            <Skeleton variant="text" width="25%" height={32} />
+            {['95%', '90%', '85%', '95%', '70%', '90%', '60%'].map((width, idx) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Skeleton key={idx} variant="text" width={width} height={24} />
+            ))}
+          </Box>
+        </ChplSkeletonCard>
+      </Box>
+    </Container>
+  );
+}
 
 function ChplJoinDevelopers({ dispatch }) {
   const { developer: activeDeveloper } = useContext(DeveloperContext);
@@ -75,7 +119,6 @@ function ChplJoinDevelopers({ dispatch }) {
   const [developers, setDevelopers] = useState([]);
   const [developersToJoin, setDevelopersToJoin] = useState([]);
   const [developerValueToLoad, setDeveloperValueToLoad] = useState('');
-  const classes = useStyles();
   let updateActionBar;
 
   useEffect(() => {
@@ -143,16 +186,16 @@ function ChplJoinDevelopers({ dispatch }) {
     isDisabled: developersToJoin.length === 0,
   }, !isLoading && !!activeDeveloper);
 
-  if (isLoading || !activeDeveloper) { return <CircularProgress />; }
+  if (isLoading || !activeDeveloper) { return <ChplJoinDevelopersLoading />; }
 
   return (
     <>
       <Container disableGutters maxWidth="xl">
-        <Box className={classes.pageContainer}>
-          <Card className={classes.cardContainer}>
+        <Box sx={styles.pageContainer}>
+          <Card sx={styles.cardContainer}>
             <CardHeader title={`Select Developers joining ${activeDeveloper.name}`} />
             <CardContent>
-              <Box display="flex" flexDirection="column" gridGap={16}>
+              <Box display="flex" flexDirection="column" gap="16px">
                 { /* eslint-disable react/jsx-props-no-spreading */}
                 <Autocomplete
                   id="developers"
@@ -174,7 +217,7 @@ function ChplJoinDevelopers({ dispatch }) {
                         <TableCell>Code</TableCell>
                         <TableCell>Name</TableCell>
                         <TableCell>Status</TableCell>
-                        <TableCell><span className={classes.srOnly}>Action</span></TableCell>
+                        <TableCell><Box component="span" sx={utilStyles.srOnly}>Action</Box></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -202,10 +245,10 @@ function ChplJoinDevelopers({ dispatch }) {
               </Box>
             </CardContent>
           </Card>
-          <Card className={classes.stickyCardContainer}>
+          <Card sx={styles.stickyCardContainer}>
             <CardHeader title={`Developers joining ${activeDeveloper.name}`} />
             <CardContent>
-              <Box display="flex" flexDirection="column" gridGap="8px">
+              <Box display="flex" flexDirection="column" gap="8px">
                 <Typography variant="h6" gutterBottom>
                   <strong>Instructions</strong>
                 </Typography>
@@ -222,39 +265,39 @@ function ChplJoinDevelopers({ dispatch }) {
                   <strong>*** Please note that this action cannot be undone, so be sure to carefully review your selections before proceeding with the Join Developers action. ***</strong>
                 </Typography>
                 {developersToJoin.length > 0
-                 && (
-                   <TableContainer>
-                     <Table>
-                       <TableHead>
-                         <TableRow>
-                           <TableCell>Code</TableCell>
-                           <TableCell>Name</TableCell>
-                           <TableCell>Status</TableCell>
-                           <TableCell><span className={classes.srOnly}>Action</span></TableCell>
+               && (
+                 <TableContainer>
+                   <Table>
+                     <TableHead>
+                       <TableRow>
+                         <TableCell>Code</TableCell>
+                         <TableCell>Name</TableCell>
+                         <TableCell>Status</TableCell>
+                         <TableCell><Box component="span" sx={utilStyles.srOnly}>Action</Box></TableCell>
+                       </TableRow>
+                     </TableHead>
+                     <TableBody>
+                       {developersToJoin.map((developer) => (
+                         <TableRow key={developer.id}>
+                           <TableCell>{developer.developerCode}</TableCell>
+                           <TableCell>{developer.name}</TableCell>
+                           <TableCell>{getStatus(developer)}</TableCell>
+                           <TableCell>
+                             <Button
+                               onClick={() => removeDeveloper(developer)}
+                               variant="outlined"
+                               sx={utilStyles.deleteButton}
+                               endIcon={<ClearIcon fontSize="small" />}
+                             >
+                               Remove
+                             </Button>
+                           </TableCell>
                          </TableRow>
-                       </TableHead>
-                       <TableBody>
-                         {developersToJoin.map((developer) => (
-                           <TableRow key={developer.id}>
-                             <TableCell>{developer.developerCode}</TableCell>
-                             <TableCell>{developer.name}</TableCell>
-                             <TableCell>{getStatus(developer)}</TableCell>
-                             <TableCell>
-                               <Button
-                                 onClick={() => removeDeveloper(developer)}
-                                 variant="outlined"
-                                 className={classes.errorColor}
-                                 endIcon={<ClearIcon fontSize="small" />}
-                               >
-                                 Remove
-                               </Button>
-                             </TableCell>
-                           </TableRow>
-                         ))}
-                       </TableBody>
-                     </Table>
-                   </TableContainer>
-                 )}
+                       ))}
+                     </TableBody>
+                   </Table>
+                 </TableContainer>
+               )}
               </Box>
             </CardContent>
           </Card>

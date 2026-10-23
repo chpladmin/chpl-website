@@ -4,9 +4,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
-} from '@material-ui/core';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+} from '@mui/material';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import { useSnackbar } from 'notistack';
 
 import ChplCodeSetEdit from './code-set-edit';
@@ -19,6 +18,7 @@ import {
   usePostCodeSet,
   usePutCodeSet,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplCodeSets() {
   const { data, isLoading, isSuccess } = useFetchCodeSets();
@@ -116,7 +116,8 @@ function ChplCodeSets() {
             <SettingsEthernetIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeCodeSet.id ? 'Edit' : 'Add'} Code Set`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplCodeSetEdit
             codeSet={activeCodeSet}
@@ -132,7 +133,11 @@ function ChplCodeSets() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        fieldGroups={[3, 1]}
+        label="Loading code sets"
+      />
     );
   }
 

@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
+} from '@mui/material';
+import TouchAppOutlinedIcon from '@mui/icons-material/TouchAppOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplUcdProcessEdit from './ucd-process-edit';
@@ -18,6 +18,7 @@ import {
   usePostUcdProcess,
   usePutUcdProcess,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplUcdProcesses() {
   const { data, isLoading, isSuccess } = useFetchUcdProcesses();
@@ -108,7 +109,8 @@ function ChplUcdProcesses() {
             <TouchAppOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeUcdProcess.id ? 'Edit' : 'Add'} UCD Process`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplUcdProcessEdit
             ucdProcess={activeUcdProcess}
@@ -123,7 +125,10 @@ function ChplUcdProcesses() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        label="Loading UCD processes"
+      />
     );
   }
 

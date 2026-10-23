@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
+} from '@mui/material';
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplQmsStandardEdit from './qms-standard-edit';
@@ -18,6 +18,7 @@ import {
   usePostQmsStandard,
   usePutQmsStandard,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplQmsStandards() {
   const { data, isLoading, isSuccess } = useFetchQmsStandards();
@@ -108,7 +109,8 @@ function ChplQmsStandards() {
             <AssignmentTurnedInOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeQmsStandard.id ? 'Edit' : 'Add'} QMS Standard`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplQmsStandardEdit
             qmsStandard={activeQmsStandard}
@@ -123,7 +125,10 @@ function ChplQmsStandards() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        label="Loading QMS standards"
+      />
     );
   }
 

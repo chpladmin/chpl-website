@@ -1,13 +1,13 @@
 import React from 'react';
-import { IconButton, Typography } from '@material-ui/core';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
-import StopIcon from '@material-ui/icons/Stop';
+import { IconButton, Typography } from '@mui/material';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import StopIcon from '@mui/icons-material/Stop';
 
 import ChplTooltip from 'components/util/chpl-tooltip';
 import { compareStrings } from 'services/sort.service';
@@ -15,7 +15,7 @@ import { palette } from 'themes';
 
 const getFullButton = (text, icon) => (
   <ChplTooltip title={`Certification Status: ${text}`}>
-    <IconButton style={{ padding: 0 }} disableFocusRipple disableRipple>
+    <IconButton style={{ padding: 0 }} disableFocusRipple disableRipple size="large">
       { icon }
     </IconButton>
   </ChplTooltip>
