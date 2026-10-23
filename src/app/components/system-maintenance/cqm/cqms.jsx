@@ -4,13 +4,13 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
 } from '@mui/material';
 import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 
 import ChplCqmsView from './cqms-view';
 
 import { useFetchCqms } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplCqms() {
   const { data, isLoading, isSuccess } = useFetchCqms();
@@ -23,7 +23,10 @@ function ChplCqms() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        fieldGroups={[2, [{ flex: '1 1 100%', lines: 2 }]]}
+        label="Loading CQMs"
+      />
     );
   }
 

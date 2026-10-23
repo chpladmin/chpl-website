@@ -4,12 +4,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import {
   arrayOf,
@@ -22,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { useFetchTargetedUsers } from 'api/standards';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import {
+  ChplLoadingCards,
   ChplPagination,
   ChplSearchResultCard,
   ChplSearchResultControls,
@@ -200,7 +196,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
         fadeBackground={palette.white}
       />
       <ChplFilterLayout>
-        { isLoading && <CircularProgress /> }
+        { isLoading && (<ChplLoadingCards title fieldGroups={[4]} actions={0} />)}
         { !isLoading
           && (
             <>

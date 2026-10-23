@@ -192,7 +192,7 @@ function ChplManageSubscriptionsView({ analytics }) {
           placeholder="Search by Subscriber Email or CHPL Product Number..."
         />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards title fieldGroups={[2, [{ flex: '2 1 320px' }, { lines: 3 }]]} actions={0} controls={1} />)}
           { !isLoading
           && (
             <>
