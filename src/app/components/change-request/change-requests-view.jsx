@@ -17,6 +17,7 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
+import { usePageState } from 'components/page-state';
 import {
   ChplAvatar,
   ChplLink,
@@ -28,7 +29,6 @@ import {
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
@@ -59,10 +59,10 @@ function ChplChangeRequestsView({
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
-  const [order, setOrder] = useStorage(`${storageKey}-order`, 'desc');
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'current_status_change_date_time');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
+  const [order, setOrder] = usePageState(`${storageKey}-order`, 'desc');
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'current_status_change_date_time');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 10);
   const { queryParams, queryString } = useFilterContext();
   const {
     data, error, isError, isLoading, isSuccess,

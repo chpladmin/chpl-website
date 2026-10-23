@@ -4,6 +4,7 @@ import actionBarReducer from 'components/action-bar/actionBar.slice';
 import widgetReducer from 'components/action-widget/widget.slice';
 import browserInfoReducer, { MAX_REMEMBERED, initialState as browserInfoDefaults } from 'components/browser/browserInfo.slice';
 import userInfoReducer from 'components/login/userInfo.slice';
+import pageStateReducer from 'components/page-state/pageState.slice';
 import { summarizeListing } from 'services/listing.service';
 
 const LEGACY_USER_KEY = 'ngStorage-currentUser';
@@ -131,9 +132,9 @@ const loadState = () => {
   }
 };
 
-// The action bar is per-page UI state, so it is never written: a reload would
-// otherwise restore whatever bar was showing beforehand. The open widget is
-// written, so its panel stays open across a reload.
+// The action bar and the page state are per-page UI state, so they are never
+// written: a reload starts them afresh rather than restoring what was showing.
+// The open widget is written, so its panel stays open across a reload.
 const saveState = ({ browserInfo, userInfo, widget }) => {
   try {
     const serializedState = JSON.stringify({ browserInfo, userInfo, widget });
@@ -154,6 +155,7 @@ const createStore = () => {
     reducer: {
       actionBar: actionBarReducer,
       browserInfo: browserInfoReducer,
+      pageState: pageStateReducer,
       userInfo: userInfoReducer,
       widget: widgetReducer,
     },

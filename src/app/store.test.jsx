@@ -1,6 +1,7 @@
 import { setActionBar } from 'components/action-bar/actionBar.slice';
 import { openWidget } from 'components/action-widget/widget.slice';
 import { addCmsLookupId, addCompareListing, toggleFavorite } from 'components/browser/browserInfo.slice';
+import { setPageState } from 'components/page-state/pageState.slice';
 
 // `store.js` builds the store as it is imported, so each test loads a fresh copy
 // against whatever localStorage it has set up.
@@ -141,5 +142,14 @@ describe('the store', () => {
     loadStore().dispatch(setActionBar({ canSave: false }));
 
     expect(persisted()).not.toHaveProperty('actionBar');
+  });
+
+  it('never persists the page state, so the next load starts it empty', () => {
+    const store = loadStore();
+    store.dispatch(setPageState({ key: 'storageKey-listingsPage-pageNumber', value: 3 }));
+
+    expect(store.getState().pageState).toEqual({ 'storageKey-listingsPage-pageNumber': 3 });
+    expect(persisted()).not.toHaveProperty('pageState');
+    expect(loadStore().getState().pageState).toEqual({});
   });
 });
