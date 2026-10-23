@@ -64,7 +64,7 @@ function ChplComplaintsView(props) {
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'received_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
-  const { queryString } = useFilterContext();
+  const { isLoading: filtersAreLoading, queryString } = useFilterContext();
   const {
     data, isLoading, isSuccess,
   } = useFetchComplaints({
@@ -166,6 +166,13 @@ function ChplComplaintsView(props) {
     );
   }
 
+  // Mirrors getButtons, so the skeleton has the same controls beside the result count
+  const getButtonCount = () => {
+    if (hasAnyRole(['chpl-onc'])) { return 1; }
+    if (hasAnyRole(['chpl-onc-acb'])) { return canAdd ? 1 : 0; }
+    return canAdd ? 2 : 1;
+  };
+
   const getButtons = () => {
     if (hasAnyRole(['chpl-onc'])) {
       return (
@@ -238,6 +245,8 @@ function ChplComplaintsView(props) {
     );
   };
 
+  // The filter bar and chips show their own skeletons while the filters load, so the results wait with them
+  const showLoading = isLoading || filtersAreLoading;
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
@@ -254,11 +263,19 @@ function ChplComplaintsView(props) {
           placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
         />
         <ChplFilterLayout>
-          { isLoading
+          { showLoading
           && (
-            <ChplLoadingCards />
+            <ChplLoadingCards
+              title
+              fieldGroups={[
+                (!hasAnyRole(['chpl-onc-acb']) && !bonusQuery) ? [{}, {}, {}] : [{}, {}],
+                [{}, {}, {}],
+              ]}
+              actions={1}
+              controls={1 + getButtonCount()}
+            />
           )}
-          { !isLoading
+          { !showLoading
           && (
             <>
               <ChplSearchResultControls

@@ -4,14 +4,14 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Chip,
-  CircularProgress,
   Checkbox,
+  Chip,
   FormControlLabel,
   InputAdornment,
   ListItemText,
   MenuItem,
   Select,
+  Skeleton,
   Switch,
   Typography,
 } from '@mui/material';
@@ -27,11 +27,11 @@ import { useFetchListings as useFetchListingsBasic } from 'api/listing';
 import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
-import { ChplTextField } from 'components/util';
+import { ChplSkeletonCard, ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { compareStrings } from 'services/sort.service';
 import { complaint as complaintPropType } from 'shared/prop-types';
-import { theme } from 'themes';
+import { theme, utilStyles } from 'themes';
 
 const styles = {
   content: {
@@ -62,6 +62,70 @@ const styles = {
     margin: theme.spacing(0.5),
   },
 };
+
+const loadingStyles = {
+  // The padding of the real card's CardHeader and CardContent
+  header: {
+    padding: '16px',
+  },
+  body: {
+    padding: '16px',
+  },
+  field: {
+    borderRadius: '4px',
+  },
+  toggle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+};
+
+// One entry per column of the form: the fields under its heading, and how tall
+// each one is. Parties Contacted is a column of switches.
+const loadingColumns = [
+  { key: 'general', fields: [56, 56, 56, 56, 56, 56, 56, 56] },
+  { key: 'summary', fields: [128, 128] },
+  { key: 'review', fields: [56, 56, 56, 56] },
+  { key: 'parties', toggles: 4 },
+];
+
+// The complaint form while the lists it chooses from load
+function ChplComplaintEditLoading() {
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading complaint form</Box>
+      <ChplSkeletonCard>
+        <Box aria-hidden="true">
+          <Box sx={loadingStyles.header}>
+            <Skeleton variant="text" width="25%" height={32} />
+          </Box>
+          <Box sx={loadingStyles.body}>
+            <Skeleton variant="rectangular" height={56} sx={loadingStyles.field} />
+            <Box sx={styles.content}>
+              { loadingColumns.map((column) => (
+                <Box key={column.key} sx={styles.dataEntry}>
+                  <Skeleton variant="text" width="50%" height={28} />
+                  { column.fields?.map((height, idx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Skeleton key={idx} variant="rectangular" height={height} sx={loadingStyles.field} />
+                  ))}
+                  { [...Array(column.toggles ?? 0)].map((_toggle, idx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Box key={idx} sx={loadingStyles.toggle}>
+                      <Skeleton variant="rounded" width={34} height={14} />
+                      <Skeleton variant="text" width="60%" height={24} />
+                    </Box>
+                  ))}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+      </ChplSkeletonCard>
+    </Box>
+  );
+}
 
 const validationSchema = yup.object({
   certificationBody: yup.object()
@@ -382,7 +446,7 @@ function ChplComplaintEdit({ complaint: initialComplaint, dispatch }) {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplComplaintEditLoading />
     );
   }
 

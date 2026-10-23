@@ -118,6 +118,7 @@ function ChplChangeRequests({
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={crtQuery.isLoading}
         storageKey="storageKey-changeRequestsComponent"
       >
         <Box sx={useFooterSpacing ? styles.fixFooterSpacing : styles.noFooterSpacing}>

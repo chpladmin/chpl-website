@@ -64,6 +64,7 @@ function ChplQuestionableActivityPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={qaTypeQuery.isLoading}
         storageKey="storageKey-questionableActivity"
       >
         <ChplQuestionableActivityView />

@@ -4,8 +4,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Container,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import {
@@ -21,12 +21,12 @@ import ChplUserView from './user-view';
 import ChplUserEdit from './user-edit';
 
 import { usePutUser } from 'api/users';
-import { ChplTextField } from 'components/util';
+import { ChplSkeletonCard, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareStrings } from 'services/sort.service';
 import { user as userPropType } from 'shared/prop-types';
-import { theme } from 'themes';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
+import { theme, utilStyles } from 'themes';
 
 const styles = {
   container: {
@@ -62,6 +62,73 @@ const styles = {
     margin: '0',
   },
 };
+
+const loadingStyles = {
+  // The padding of the real card's CardHeader and CardContent
+  cardHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '16px',
+  },
+  cardContent: {
+    padding: '16px',
+  },
+  // The search box and invite button's row, without its own white fill
+  header: {
+    marginBottom: '16px',
+    display: 'flex',
+    gap: '8px',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+    },
+  },
+  search: {
+    flex: 1,
+    borderRadius: '4px',
+  },
+  button: {
+    borderRadius: '4px',
+  },
+  // Header, details and actions of a ChplUserView card
+  user: {
+    borderRadius: '4px',
+  },
+};
+
+// The Manage Users card while its users load: its title and count, the search
+// and invite row, and a grid of user cards
+function ChplUsersViewLoading() {
+  return (
+    <Container disableGutters maxWidth="lg">
+      <Box sx={styles.container} role="status" aria-live="polite">
+        <Box component="span" sx={utilStyles.visuallyHidden}>Loading users</Box>
+        <ChplSkeletonCard>
+          <Box aria-hidden="true">
+            <Box sx={loadingStyles.cardHeader}>
+              <Skeleton variant="text" width="25%" height={32} />
+              <Skeleton variant="text" width={80} height={24} />
+            </Box>
+            <Box sx={loadingStyles.cardContent}>
+              <Box sx={loadingStyles.header}>
+                <Skeleton variant="rectangular" height={56} sx={loadingStyles.search} />
+                <Skeleton variant="rectangular" width={160} height={40} sx={loadingStyles.button} />
+              </Box>
+              <Box sx={styles.users}>
+                {[...Array(6)].map((_user, idx) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <Skeleton key={idx} variant="rectangular" height={280} sx={loadingStyles.user} />
+                ))}
+              </Box>
+            </Box>
+          </Box>
+        </ChplSkeletonCard>
+      </Box>
+    </Container>
+  );
+}
 
 function ChplUsersView({
   dispatch,
@@ -174,7 +241,7 @@ function ChplUsersView({
     return null;
   }
 
-  if (isLoading) { return <CircularProgress />; }
+  if (isLoading) { return <ChplUsersViewLoading />; }
 
   return (
     <Container disableGutters maxWidth="lg">

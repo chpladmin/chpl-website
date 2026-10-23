@@ -59,9 +59,10 @@ function ChplDeveloperView({ dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { demographicChangeRequestIsOn, insightsDisplayIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
+  const canSeeUsers = hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn(developer));
   const usersQuery = useFetchUsersAtDeveloper({
     developer,
-    enabled: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn(developer)),
+    enabled: canSeeUsers,
   });
   const [state, setState] = useState('view');
   const [users, setUsers] = useState([]);
@@ -172,13 +173,14 @@ function ChplDeveloperView({ dispatch }) {
         {state === 'view' && (
         <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
-        {(state === 'view' || state === 'editUser') && (
+        {/* isInitialLoading, since the users query stays isLoading while it's disabled */}
+        {canSeeUsers && (state === 'view' || state === 'editUser') && (
         <ChplUsers
           users={users}
           dispatch={handleUserDispatch}
           groupNames={['chpl-developer']}
           organizationId={developer.id}
-          isLoading={usersQuery.isLoading}
+          isLoading={usersQuery.isInitialLoading}
         />
         )}
       </Box>

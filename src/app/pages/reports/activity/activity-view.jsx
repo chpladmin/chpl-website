@@ -156,6 +156,9 @@ function ChplActivityView() {
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
+  // The filter bar and chips show their own skeletons while the filters load, so the results wait with them
+  const showLoading = isLoading || filterContext.isLoading;
+
   return (
     <>
       <ChplPageHeader text="Activity" />
@@ -165,8 +168,8 @@ function ChplActivityView() {
           placeholder="Search by Description or Reason..."
         />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
-          { !isLoading
+          { showLoading && (<ChplLoadingCards title fieldGroups={[[{}, {}, {}], [{ flex: '2 1 320px' }, { flex: '2 1 320px' }]]} actions={1} controls={1} />)}
+          { !showLoading
           && (
             <>
               <ChplSearchResultControls

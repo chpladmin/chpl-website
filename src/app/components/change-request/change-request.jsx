@@ -3,9 +3,9 @@ import {
   Box,
   Card,
   CardContent,
-  CircularProgress,
   Divider,
   MenuItem,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import { func } from 'prop-types';
@@ -27,7 +27,12 @@ import ChplChangeRequestListingSbulView from './types/listing-sbul-view';
 import { useFetchChangeRequest, useFetchChangeRequestStatusTypes, usePutChangeRequest } from 'api/change-requests';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
-import { ChplAvatar, ChplLink, ChplTextField } from 'components/util';
+import {
+  ChplAvatar,
+  ChplLink,
+  ChplSkeletonCard,
+  ChplTextField,
+} from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { compareStrings } from 'services/sort.service';
@@ -40,7 +45,7 @@ import {
   useFormGroupMember,
 } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
   iconSpacing: {
@@ -113,6 +118,66 @@ const styles = {
     gridColumnEnd: '-1',
   },
 };
+
+const loadingStyles = {
+  // The real card's header band, without its fill: the skeleton card draws the card
+  cardHeaderContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'auto 11fr',
+    padding: '16px',
+    gap: '16px',
+    alignItems: 'end',
+  },
+  field: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+  },
+  lines: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+};
+
+const subHeaderFieldWidths = ['55%', '40%', '45%', '35%', '50%'];
+
+// The change request card while it loads: its header band, the summary fields
+// under it, and the details and history sections
+function ChplChangeRequestLoading() {
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading change request</Box>
+      <ChplSkeletonCard sx={styles.productCard}>
+        <Box aria-hidden="true">
+          <Box sx={loadingStyles.cardHeaderContainer}>
+            <Skeleton variant="circular" width={40} height={40} />
+            <Skeleton variant="text" width="40%" height={40} />
+          </Box>
+          <Box sx={styles.cardContentContainer}>
+            <Box sx={styles.cardSubHeaderContainer}>
+              { subHeaderFieldWidths.map((width) => (
+                <Box key={width} sx={loadingStyles.field}>
+                  <Skeleton variant="text" width="30%" height={20} />
+                  <Skeleton variant="text" width={width} height={24} />
+                </Box>
+              ))}
+            </Box>
+            <Box sx={loadingStyles.lines}>
+              <Skeleton variant="text" width="25%" height={28} />
+              <Skeleton variant="text" width="85%" height={24} />
+              <Skeleton variant="text" width="70%" height={24} />
+            </Box>
+            <Box sx={loadingStyles.lines}>
+              <Skeleton variant="text" width="20%" height={28} />
+              <Skeleton variant="rectangular" height={120} sx={{ borderRadius: '4px' }} />
+            </Box>
+          </Box>
+        </Box>
+      </ChplSkeletonCard>
+    </Box>
+  );
+}
 
 const validationSchema = yup.object({
   comment: yup.string()
@@ -434,7 +499,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
   }, !!changeRequest);
 
   if (!changeRequest) {
-    return <CircularProgress />;
+    return <ChplChangeRequestLoading />;
   }
 
   const changeRequestState = {

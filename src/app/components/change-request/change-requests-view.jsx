@@ -63,7 +63,7 @@ function ChplChangeRequestsView({
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'current_status_change_date_time');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
-  const { queryParams, queryString } = useFilterContext();
+  const { isLoading: filtersAreLoading, queryParams, queryString } = useFilterContext();
   const {
     data, error, isError, isLoading, isSuccess,
   } = useFetchChangeRequests({
@@ -145,6 +145,8 @@ function ChplChangeRequestsView({
     );
   }
 
+  // The filter bar and chips show their own skeletons while the filters load, so the results wait with them
+  const showLoading = isLoading || filtersAreLoading;
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
   const recordCount = data?.recordCount ?? 0;
@@ -158,8 +160,17 @@ function ChplChangeRequestsView({
         hideSearchTerm={disallowedFilters.includes('searchTerm')}
       />
       <ChplFilterLayout mobileOnly={embedded}>
-        { isLoading && (<ChplLoadingCards />)}
-        { !isLoading
+        { showLoading
+          && (
+            <ChplLoadingCards
+              title={!isDeveloper}
+              fieldGroups={isDeveloper
+                ? [[{}, {}, {}]]
+                : [[{}, {}, {}], [{ flex: '0 1 calc((100% - 56px) / 3)' }, { flex: '0 1 calc((100% - 56px) / 3)' }]]}
+              actions={1}
+            />
+          )}
+        { !showLoading
         && (
           <>
             { isError
