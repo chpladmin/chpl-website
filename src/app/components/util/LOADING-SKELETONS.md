@@ -1,6 +1,6 @@
 # Loading skeletons
 
-Every public-facing page that waits on data shows a skeleton in its own shape while it waits, never a blank area, a bare spinner or an empty state such as "No results". This guide covers the rules, the shared pieces and how to add a skeleton for a new page or feature.
+Every page that waits on data, public or behind a login, shows a skeleton in its own shape while it waits, never a blank area, a bare spinner or an empty state such as "No results". This guide covers the rules, the shared pieces and how to add a skeleton for a new page or feature.
 
 ## The rules
 
@@ -43,7 +43,15 @@ All of these are exported from `components/util`.
 - **`actions`:** the number of buttons in the card's actions column. Use `0` for none.
 - **`controls`:** the number of controls beside the result count, such as sort and download.
 
-If the shape depends on a flag or a role, work it out on the page and pass the result, as `real-world-testing-view.jsx` and `svap-view.jsx` do. While their filters load, `ChplFilterSearchBar` and `ChplFilterChips` show their own skeletons, so a search page only needs `ChplLoadingCards` for its results.
+If the shape depends on a flag or a role, work it out on the page and pass the result, as `real-world-testing-view.jsx` and `svap-view.jsx` do.
+
+### Filters
+
+`ChplFilterSearchBar` and `ChplFilterChips` show their own skeletons while the `FilterProvider`'s `isLoading` is true, so a search page only needs `ChplLoadingCards` for its results. They can only do that if the page tells them: **every `FilterProvider` whose filter options come from a query passes `isLoading`**, from those queries' first load (`isInitialLoading` if one can be disabled). Without it, the search bar and chips render real and empty, then fill in late.
+
+## Inline loaders stay as they are
+
+A skeleton stands in for content that's arriving. It doesn't replace a loader that reports an action in progress: a spinner on a save or Validate button, a per-row status such as an upload still processing, a progress circle, or a small count that's being worked out. Leave those as they are.
 
 ## Adding a skeleton to a page
 
@@ -91,4 +99,22 @@ While a page's code downloads, the content area shows the shared spinner from `A
 | CHPL API | `ChplApiSwaggerLoading` in `api.jsx`, until Swagger UI has the definition |
 | CMS ID Creator widget | `ChplCmsDisplayLoading` in `cms-display.jsx`, the whole widget |
 
-Login, registration, download, forgot password and not-found don't wait on data, so they have no skeleton.
+### Pages behind a login
+
+| Page | Skeleton |
+|---|---|
+| System Maintenance sub-pages | `ChplSystemMaintenanceLoading` in `components/system-maintenance/system-maintenance-loading.jsx`, shared by every sub-page and sized to its cards. System jobs have `ChplSystemJobsLoading` in `system-jobs.jsx` |
+| Change requests | `ChplLoadingCards` shaped by role in `change-requests-view.jsx`; one request has `ChplChangeRequestLoading` in `change-request.jsx` |
+| Activity and Questionable Activity | `ChplLoadingCards` shaped to their cards |
+| Complaints | `ChplLoadingCards` shaped by role; the edit form has `ChplComplaintEditLoading` |
+| Users, and the users card on ONC-ACB and developer pages | `ChplUsersViewLoading` in `components/user/users-view.jsx` |
+| ONC-ACBs and ONC-ATLs | `ChplOncOrganizationsLoading` in `onc-organizations.jsx`, shaped by role |
+| Surveillance Reporting | `ChplSurveillanceReportingLoading` in `reporting.jsx`; one ONC-ACB's report has `ChplReportLoading` in `report.jsx` |
+| Confirm Listings | `ChplConfirmListingsLoading` in `confirm-listings.jsx` |
+| Confirm a listing | `ChplConfirmLoading` in `confirm.jsx`; each step has `ChplConfirmStepLoading` in `components/listing/confirm/confirm-step-loading.jsx` |
+| Scheduled Reports | `ChplReportsLoading` in `reports.jsx`, both cards together |
+| Compliance Dashboard | `ChplComplianceDashboardLoading` in `compliance-dashboard.jsx` |
+| Listing edit, and its surveillance, requirement and non-conformity edits | form-shaped skeletons in each component |
+| Join developers | `ChplJoinDevelopersLoading` in `developer-join.jsx` |
+
+Login, registration, download, forgot password and not-found don't wait on data, so they have no skeleton. Neither do Upload, CMS, Surveillance Activity Reporting, the System Maintenance home card or the compare widget, which reads its products from local storage.
