@@ -69,12 +69,13 @@ Things worth knowing before changing routes:
 - **Do not call `router.start()`.** The `<UIRouter>` component starts it, and starting twice throws.
 - `src/app/services/navigation.service.js` is the single seam for imperative navigation; prefer it (or the `@uirouter/react` hooks) over touching the router directly.
 
-### Per-page React file trio
+### Per-page React files
 
-Most pages/features under `src/app/pages/**` and `src/app/components/**` follow a three-file pattern:
-- `x-wrapper.jsx` — wraps the page in `AppWrapper` (global providers) and is what a route points at.
-- `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own.
+Most pages/features under `src/app/pages/**` and `src/app/components/**` split into two files:
+- `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own. A route points straight at it, and a page renders its own `ChplPageHeader` / `ChplPageBody`.
 - `x-view.jsx` — presentational component, receives data/handlers as props.
+
+Don't add a `x-wrapper.jsx` that only passes props through to `x.jsx`. Those existed to bridge AngularJS, and `AppWrapper` is mounted once in `router/app-root.jsx`, not per page. When a component is a page on its own route but is also embedded in other pages without the page frame, its route gets a `x-page.jsx` that adds the frame around it (e.g. `components/change-request/change-requests-page.jsx`). The remaining `*-wrapper.jsx` files are real providers (`app-wrapper`, `api-wrapper`, `flag-wrapper`, `user-wrapper`, `snackbar-wrapper`, `url-checker-wrapper`).
 
 ### Loading states
 
@@ -82,11 +83,17 @@ Every public-facing page shows a skeleton in its own shape while its data loads.
 
 ### Provider stack
 
-`src/app/app-wrapper.jsx` composes the global provider tree every page mounts into (Redux `Provider` → `CookiesProvider` → MUI `ThemeProvider` → Snackbar → `ApiWrapper` (axios + react-query) → `UserWrapper` → `FlagWrapper` (feature flags) → `CompareWrapper` → `CmsWrapper` → analytics/hash contexts → `ChplAppLayout`). When adding a new cross-cutting concern, it likely belongs as another layer here rather than threaded through props.
+`src/app/app-wrapper.jsx` composes the global provider tree every page mounts into (Redux `Provider` → `CookiesProvider` → MUI `StyledEngineProvider` → `ThemeProvider` → Snackbar → `ApiWrapper` (axios + react-query) → `UserWrapper` → `FlagWrapper` (feature flags) → analytics/hash contexts → `ChplAppLayout`). When adding a new cross-cutting concern, it likely belongs as another layer here rather than threaded through props.
 
-- **Redux** (`@reduxjs/toolkit`, `src/app/store.js`): only two slices exist — `browserInfo` and `userInfo` — persisted to `localStorage` under key `chplState` via custom middleware. Most other shared state uses React Context instead of Redux; check `src/app/shared/contexts/` before adding a new Redux slice.
+- **Redux** (`@reduxjs/toolkit`, `src/app/store.js`): four slices, three of them persisted to `localStorage` under key `chplState` via custom middleware.
+  - `browserInfo` (persisted): the API location and key, previously compared and viewed listing ids, favorited listing ids, the CMS IDs entered on the CMS ID Reverse Lookup page, and the listings in the compare and CMS ID widgets. The widget lists hold `summarizeListing` summaries (`services/listing.service`), not whole listings.
+  - `userInfo` (persisted): the logged-in user.
+  - `widget` (persisted): which widget panel is open, `'cms'`, `'compare'` or `null`; opening one closes the other.
+  - `actionBar` (never persisted): the page's action bar.
+
+  Keep browser-side state that should survive a reload in a slice, not in a separate `localStorage` key. When moving an existing key into a slice, carry its value over once in `store.js` and then delete the key, as `LEGACY_KEYS` does. Most other shared state uses React Context instead of Redux; check `src/app/shared/contexts/` before adding a new Redux slice.
 - **Data fetching**: `@tanstack/react-query`, with hooks defined per-domain in `src/app/api/*.jsx` (e.g. `useFetchAcbs`, `useFetchCriteria`). `src/app/api/api-wrapper.jsx` sets up the shared `QueryClient` and axios provider; devtools show automatically in dev mode.
-- **Contexts**: `src/app/shared/contexts/` holds domain contexts (analytics, compare, developer, flags, hash, listing, pending-listing, user, etc.) re-exported from `contexts/index.js`.
+- **Contexts**: `src/app/shared/contexts/` holds domain contexts (analytics, developer, flags, hash, listing, pending-listing, user, etc.) re-exported from `contexts/index.js`.
 - **Shared PropTypes shapes**: `src/app/shared/prop-types/` — reuse these shapes for domain objects (listing, developer, acb, criterion, ...) instead of redefining inline.
 
 ### Module resolution
@@ -121,7 +128,7 @@ ESLint config (`.eslintrc`) extends `airbnb` + React/React Hooks recommended rul
 ### Import order in .jsx files
 
 Group imports into three blocks, separated by a blank line, in this order:
-1. External packages (`react`, `react-redux`, `axios-jwt`, `@material-ui/core`, ...).
+1. External packages (`react`, `react-redux`, `axios-jwt`, `@mui/material`, ...).
 2. Relative imports (`./`, `../`) — there aren't many of these; they're typically co-located files or a subfolder of the importing file.
 3. Bare imports resolved from `src/app` as root (e.g. `api/acbs`, `components/util`, `shared/contexts`, `services/analytics.service`), alphabetized by path, e.g. `api/acbs` before `components/util` before `shared/contexts`.
 
@@ -130,17 +137,17 @@ Within any named (non-default) import, alphabetize the imported names, e.g. `imp
 Keep up to three names on one line. From four names, the point where the airbnb `object-curly-newline` rule requires wrapping, put **every name on its own line**, with a trailing comma, rather than several to a line:
 
 ```
-import { Box, Container } from '@material-ui/core';
+import { Box, Container } from '@mui/material';
 
 import {
   Box,
   Container,
   Drawer,
   Table,
-} from '@material-ui/core';
+} from '@mui/material';
 ```
 
-not `import {⏎  Box, Container, Drawer, Table,⏎} from '@material-ui/core';`. The same goes for a default plus named import (`import React, {⏎  useEffect,⏎  useMemo,⏎  …⏎} from 'react';`) and for `export { … } from`. An import of three names or fewer stays on one line even though lint would allow wrapping it. No lint rule enforces any of this, so apply it by hand. Existing code doesn't follow it everywhere yet: convert the imports in files a change already touches, but don't reformat untouched files just for this.
+not `import {⏎  Box, Container, Drawer, Table,⏎} from '@mui/material';`. The same goes for a default plus named import (`import React, {⏎  useEffect,⏎  useMemo,⏎  …⏎} from 'react';`) and for `export { … } from`. An import of three names or fewer stays on one line even though lint would allow wrapping it. No lint rule enforces any of this, so apply it by hand. Existing code doesn't follow it everywhere yet: convert the imports in files a change already touches, but don't reformat untouched files just for this.
 
 ## Commits
 

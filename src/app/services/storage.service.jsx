@@ -16,8 +16,6 @@ const useStorage = (key, defaultValue, storage) => {
   return [value, setValue];
 };
 
-const useLocalStorage = (key, defaultValue) => useStorage(key, defaultValue, localStorage);
-
 const useSessionStorage = (key, defaultValue) => useStorage(key, defaultValue, sessionStorage);
 
-export { useLocalStorage, useSessionStorage };
+export { useSessionStorage }; // eslint-disable-line import/prefer-default-export

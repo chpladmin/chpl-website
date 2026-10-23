@@ -5,7 +5,7 @@ import ChplComplaints from './complaints';
 
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 
-function ChplComplaintsWrapper(props) {
+function ChplComplaintsPage(props) {
   const {
     bonusQuery = '',
     canAdd = true,
@@ -26,9 +26,9 @@ function ChplComplaintsWrapper(props) {
   );
 }
 
-export default ChplComplaintsWrapper;
+export default ChplComplaintsPage;
 
-ChplComplaintsWrapper.propTypes = {
+ChplComplaintsPage.propTypes = {
   bonusQuery: string,
   disallowedFilters: arrayOf(string),
   canAdd: bool,

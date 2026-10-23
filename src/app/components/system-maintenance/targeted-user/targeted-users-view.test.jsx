@@ -12,6 +12,7 @@ import { filters } from './targeted-users';
 import ChplTargetedUsersView from './targeted-users-view';
 
 import { useFetchTargetedUsers } from 'api/standards';
+import widgetReducer from 'components/action-widget/widget.slice';
 import browserInfoReducer from 'components/browser/browserInfo.slice';
 import { FilterProvider } from 'components/filter';
 
@@ -78,7 +79,7 @@ const cardFor = (name) => screen.getByText(name).closest('.MuiCard-root');
 const fieldValue = (card, label) => within(card).getByText(label).closest('div').parentElement.lastChild.textContent;
 
 const store = configureStore({
-  reducer: { browserInfo: browserInfoReducer },
+  reducer: { browserInfo: browserInfoReducer, widget: widgetReducer },
   preloadedState: { browserInfo: { api: '/rest', apiKey: 'test-key' } },
 });
 

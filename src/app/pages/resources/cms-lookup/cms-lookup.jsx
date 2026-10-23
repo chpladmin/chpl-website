@@ -21,8 +21,10 @@ import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined
 import WarningIcon from '@mui/icons-material/Warning';
 import { ExportToCsv } from 'export-to-csv';
 import { number } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useFetchListings } from 'api/cms';
+import { addCmsLookupId, removeCmsLookupId } from 'components/browser/browserInfo.slice';
 import ChplChips from 'components/cms/chips';
 import ChplSearchTerm from 'components/cms/search-term';
 import {
@@ -34,7 +36,6 @@ import {
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { eventTrack } from 'services/analytics.service';
-import { useLocalStorage as useStorage } from 'services/storage.service';
 import { FlagContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
@@ -110,7 +111,6 @@ ChplCmsLookupLoading.propTypes = {
 };
 
 function ChplCmsLookup() {
-  const storageKey = 'storageKey-cmsLookupIds';
   const { cmsDisabledIsOn } = useContext(FlagContext);
   const analytics = {
     ...useAnalyticsContext().analytics,
@@ -118,7 +118,8 @@ function ChplCmsLookup() {
   };
   const [errors, setErrors] = useState([]);
   const [listings, setListings] = useState([]);
-  const [cmsIds, setCmsIds] = useStorage(storageKey, []);
+  const cmsIds = useSelector((state) => state.browserInfo.cmsLookupIds);
+  const dispatch = useDispatch();
   const queries = useFetchListings({ cmsIds });
 
   const finishedLoading = queries.every((query) => !query.isLoading);
@@ -155,7 +156,7 @@ function ChplCmsLookup() {
           event: 'Remove CMS ID Chip',
           label: payload.trim(),
         });
-        setCmsIds((previous) => previous.filter((id) => id !== payload));
+        dispatch(removeCmsLookupId(payload));
         setListings((previous) => previous.filter((listing) => listing.certificationId !== payload));
         break;
       case 'search':
@@ -164,7 +165,7 @@ function ChplCmsLookup() {
           event: 'Lookup CMS ID',
           label: payload.trim(),
         });
-        setCmsIds((previous) => [...new Set(previous.concat(payload.trim()))]);
+        dispatch(addCmsLookupId(payload));
         break;
         // no default
     }

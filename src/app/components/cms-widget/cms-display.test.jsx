@@ -1,18 +1,31 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { configureStore } from '@reduxjs/toolkit';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 import ChplCmsDisplay from './cms-display';
 
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
-import { CmsContext, CompareContext, FlagContext } from 'shared/contexts';
+import widgetReducer from 'components/action-widget/widget.slice';
+import browserInfoReducer, { initialState as browserInfoDefaults } from 'components/browser/browserInfo.slice';
+import { FlagContext } from 'shared/contexts';
 
 jest.mock('api/cms', () => ({
   useFetchCmsIdAnalysis: jest.fn(),
   useFetchCmsIdPdf: jest.fn(),
   usePostCreateCmsId: jest.fn(),
 }));
+// The PDF builder needs a canvas, which jsdom doesn't have
+jest.mock('./cms-pdf', () => jest.fn());
 
-const listings = [{ id: 1, name: 'Alpha EHR' }];
+const summary = (id, name = `Product ${id}`) => ({
+  id,
+  chplProductNumber: `15.04.04.1234.PROD.0${id}.00.1.240101`,
+  name,
+  product: { name },
+  version: { version: '1.0' },
+  certificationDay: '2024-01-01',
+});
 
 const analysis = [{
   year: '2015',
@@ -36,17 +49,20 @@ const loaded = () => analysisWith({ data: analysis, isSuccess: true });
 const firstLoad = () => analysisWith({ isFetching: true, isLoading: true });
 const refetching = () => analysisWith({ data: analysis, isFetching: true, isSuccess: true });
 
-const view = () => (
-  <FlagContext.Provider value={{ cmsDisabledIsOn: false }}>
-    <CompareContext.Provider value={{
-      listings: [], addListing: jest.fn(), removeListing: jest.fn(), setIsOpen: jest.fn(),
-    }}
-    >
-      <CmsContext.Provider value={{ listings, removeListing: jest.fn(), setIsOpen: jest.fn() }}>
-        <ChplCmsDisplay onClose={jest.fn()} />
-      </CmsContext.Provider>
-    </CompareContext.Provider>
-  </FlagContext.Provider>
+const makeStore = ({ cms = [summary(1, 'Alpha EHR')], compare = [summary(9)] } = {}) => configureStore({
+  reducer: { browserInfo: browserInfoReducer, widget: widgetReducer },
+  preloadedState: {
+    browserInfo: { ...browserInfoDefaults, cms, compare },
+    widget: { open: 'cms' },
+  },
+});
+
+const view = (store) => (
+  <Provider store={store}>
+    <FlagContext.Provider value={{ cmsDisabledIsOn: false }}>
+      <ChplCmsDisplay onClose={jest.fn()} />
+    </FlagContext.Provider>
+  </Provider>
 );
 
 const loadingStatus = () => screen.queryByText('Loading CMS ID analysis');
@@ -60,7 +76,7 @@ beforeEach(() => {
 describe('once the analysis has loaded', () => {
   it('shows the CMS ID and validation, and no loading state', () => {
     loaded();
-    render(view());
+    render(view(makeStore()));
     expect(screen.getByText('0015EABCDEFGHIJ')).toBeInTheDocument();
     expect(screen.getByText('Validation')).toBeInTheDocument();
     expect(loadingStatus()).not.toBeInTheDocument();
@@ -69,9 +85,10 @@ describe('once the analysis has loaded', () => {
 
   it('keeps the analysis and shows the spinner over it while it refreshes', () => {
     loaded();
-    const { rerender } = render(view());
+    const store = makeStore();
+    const { rerender } = render(view(store));
     refetching();
-    rerender(view());
+    rerender(view(store));
     expect(screen.getByText('Validation')).toBeInTheDocument();
     expect(spinner()).toBeInTheDocument();
     expect(loadingStatus()).not.toBeInTheDocument();
@@ -81,20 +98,20 @@ describe('once the analysis has loaded', () => {
 describe('while the first analysis loads', () => {
   it('shows the skeleton, announced as loading, in place of the analysis', () => {
     firstLoad();
-    render(view());
+    render(view(makeStore()));
     expect(screen.getByRole('status')).toHaveTextContent('Loading CMS ID analysis');
     expect(screen.queryByText('Validation')).not.toBeInTheDocument();
   });
 
   it('shows the skeleton instead of the spinner', () => {
     firstLoad();
-    render(view());
+    render(view(makeStore()));
     expect(spinner()).not.toBeInTheDocument();
   });
 
   it('shows none of the real widget until the analysis arrives', () => {
     firstLoad();
-    render(view());
+    render(view(makeStore()));
     expect(screen.queryByText('CMS Certification ID Creator')).not.toBeInTheDocument();
     expect(screen.queryByText('Alpha EHR')).not.toBeInTheDocument();
     expect(screen.queryByText('Product Selected')).not.toBeInTheDocument();
@@ -102,19 +119,53 @@ describe('while the first analysis loads', () => {
 
   it('shows the header and selected products once the analysis arrives', () => {
     loaded();
-    render(view());
+    render(view(makeStore()));
     expect(screen.getByText('CMS Certification ID Creator')).toBeInTheDocument();
     expect(screen.getByText('Alpha EHR')).toBeInTheDocument();
   });
 
   it('hides the analysis for the previous products until the new one arrives', () => {
     loaded();
-    const { rerender } = render(view());
+    const store = makeStore();
+    const { rerender } = render(view(store));
     expect(screen.getByText('0015EABCDEFGHIJ')).toBeInTheDocument();
     firstLoad();
-    rerender(view());
+    rerender(view(store));
     expect(screen.queryByText('0015EABCDEFGHIJ')).not.toBeInTheDocument();
     expect(screen.queryByText('Validation')).not.toBeInTheDocument();
     expect(loadingStatus()).toBeInTheDocument();
+  });
+});
+
+describe('the listings the CMS ID widget holds', () => {
+  const twoListings = () => makeStore({ cms: [summary(1), summary(2)] });
+
+  beforeEach(() => {
+    loaded();
+  });
+
+  it('are the ones it analyses', () => {
+    render(view(twoListings()));
+
+    expect(useFetchCmsIdAnalysis).toHaveBeenLastCalledWith([summary(1), summary(2)]);
+  });
+
+  it('replace the compare widget\'s listings, and the compare widget opens', () => {
+    const store = twoListings();
+    render(view(store));
+    fireEvent.click(document.getElementById('compare-listings'));
+
+    expect(store.getState().browserInfo.compare).toEqual([summary(1), summary(2)]);
+    expect(store.getState().browserInfo.cms).toEqual([summary(1), summary(2)]);
+    expect(store.getState().widget.open).toBe('compare');
+  });
+
+  it('are all removed, leaving the compare widget alone', () => {
+    const store = twoListings();
+    render(view(store));
+    fireEvent.click(document.getElementById('remove-listings'));
+
+    expect(store.getState().browserInfo.cms).toEqual([]);
+    expect(store.getState().browserInfo.compare).toEqual([summary(9)]);
   });
 });

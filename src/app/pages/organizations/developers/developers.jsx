@@ -12,6 +12,7 @@ import {
   quickFilters,
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
 const staticFilters = [
@@ -133,15 +134,20 @@ function ChplDevelopersPage() {
   };
 
   return (
-    <AnalyticsContext.Provider value={data}>
-      <FilterProvider
-        analytics={data.analytics}
-        filters={filters}
-        storageKey="storageKey-developersPage"
-      >
-        <ChplDevelopersView />
-      </FilterProvider>
-    </AnalyticsContext.Provider>
+    <>
+      <ChplPageHeader text="CHPL Developers" />
+      <ChplPageBody>
+        <AnalyticsContext.Provider value={data}>
+          <FilterProvider
+            analytics={data.analytics}
+            filters={filters}
+            storageKey="storageKey-developersPage"
+          >
+            <ChplDevelopersView />
+          </FilterProvider>
+        </AnalyticsContext.Provider>
+      </ChplPageBody>
+    </>
   );
 }
 

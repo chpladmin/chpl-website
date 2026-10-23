@@ -8,7 +8,7 @@ import {
   Star,
   StarOutline,
 } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingEdit from './listing-edit';
@@ -19,12 +19,12 @@ import { useFreshAccessToken } from 'api/axios';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
+import { toggleFavorite as toggleFavoriteListing } from 'components/browser/browserInfo.slice';
 import ChplSurveillanceEdit from 'components/listing/details/compliance/surveillance-edit';
 import ChplListingView from 'components/listing/listing-view';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 import ChplTooltip from 'components/util/chpl-tooltip';
 import { eventTrack } from 'services/analytics.service';
-import { useLocalStorage } from 'services/storage.service';
 import {
   AnalyticsContext,
   ListingContext,
@@ -63,7 +63,8 @@ function ChplListingPage({ id }) {
   const [activeSurveillance, setActiveSurveillance] = useState(undefined);
   const [isEditing, setIsEditing] = useState(false);
   const [listing, setListing] = useState(undefined);
-  const [favorites, setFavorites] = useLocalStorage('favorites', []);
+  const favorites = useSelector((state) => state.browserInfo.favorites);
+  const dispatch = useDispatch();
   let analyticsData;
 
   useEffect(() => {
@@ -133,16 +134,9 @@ function ChplListingPage({ id }) {
     }
   };
 
-  const isFavorited = favorites.some((fav) => fav && fav.id === listing?.id);
+  const isFavorited = favorites.includes(listing?.id);
 
-  const toggleFavorite = () => {
-    setFavorites((prevFavorites) => {
-      if (isFavorited) {
-        return prevFavorites.filter((fav) => fav && fav.id !== listing?.id);
-      }
-      return [...prevFavorites, listing];
-    });
-  };
+  const toggleFavorite = () => dispatch(toggleFavoriteListing(listing));
 
   if (isLoading || !isSuccess || !listing) {
     return (
