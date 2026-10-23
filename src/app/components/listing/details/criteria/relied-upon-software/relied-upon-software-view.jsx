@@ -14,6 +14,7 @@ const getDisplay = (sw, classes) => (
         && (
         <>
           <span className={classes.invalidData}>{ sw.certifiedProductNumber }</span>
+          {' '}
           (this CHPL Product Number is invalid)
         </>
         )}
