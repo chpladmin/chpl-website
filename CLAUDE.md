@@ -81,13 +81,14 @@ Don't add a `x-wrapper.jsx` that only passes props through to `x.jsx`. Those exi
 
 `src/app/app-wrapper.jsx` composes the global provider tree every page mounts into (Redux `Provider` → `CookiesProvider` → MUI `ThemeProvider` → Snackbar → `ApiWrapper` (axios + react-query) → `UserWrapper` → `FlagWrapper` (feature flags) → analytics/hash contexts → `ChplAppLayout`). When adding a new cross-cutting concern, it likely belongs as another layer here rather than threaded through props.
 
-- **Redux** (`@reduxjs/toolkit`, `src/app/store.js`): four slices, three of them persisted to `localStorage` under key `chplState` via custom middleware.
+- **Redux** (`@reduxjs/toolkit`, `src/app/store.js`): five slices, three of them persisted to `localStorage` under key `chplState` via custom middleware.
   - `browserInfo` (persisted): the API location and key, previously compared and viewed listing ids, favorited listing ids, the CMS IDs entered on the CMS ID Reverse Lookup page, and the listings in the compare and CMS ID widgets. The widget lists hold `summarizeListing` summaries (`services/listing.service`), not whole listings.
   - `userInfo` (persisted): the logged-in user.
   - `widget` (persisted): which widget panel is open, `'cms'`, `'compare'` or `null`; opening one closes the other.
   - `actionBar` (never persisted): the page's action bar.
+  - `pageState` (never persisted): what a page remembers while the user moves around the app, such as a table's sort, page and page size, or a filter panel's selections and search term, keyed by the page's `storageKey`. Read and write it with `usePageState(key, default)` from `components/page-state`, which works like `useState`. A reload starts it empty.
 
-  Keep browser-side state that should survive a reload in a slice, not in a separate `localStorage` key. When moving an existing key into a slice, carry its value over once in `store.js` and then delete the key, as `LEGACY_KEYS` does. Most other shared state uses React Context instead of Redux; check `src/app/shared/contexts/` before adding a new Redux slice.
+  Keep browser-side state in a slice, not in `localStorage` or `sessionStorage` keys of its own: a persisted slice for state that should survive a reload, `pageState` for state that shouldn't. When moving an existing `localStorage` key into a persisted slice, carry its value over once in `store.js` and then delete the key, as `LEGACY_KEYS` does. Session-only values aren't carried over. Most other shared state uses React Context instead of Redux; check `src/app/shared/contexts/` before adding a new Redux slice.
 - **Data fetching**: `@tanstack/react-query`, with hooks defined per-domain in `src/app/api/*.jsx` (e.g. `useFetchAcbs`, `useFetchCriteria`). `src/app/api/api-wrapper.jsx` sets up the shared `QueryClient` and axios provider; devtools show automatically in dev mode.
 - **Contexts**: `src/app/shared/contexts/` holds domain contexts (analytics, developer, flags, hash, listing, pending-listing, user, etc.) re-exported from `contexts/index.js`.
 - **Shared PropTypes shapes**: `src/app/shared/prop-types/` — reuse these shapes for domain objects (listing, developer, acb, criterion, ...) instead of redefining inline.

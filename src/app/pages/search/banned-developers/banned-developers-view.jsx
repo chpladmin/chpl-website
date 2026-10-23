@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 
 import { useFetchBannedDevelopers } from 'api/search';
+import { usePageState } from 'components/page-state';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -15,7 +16,6 @@ import {
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
 import { compareStrings } from 'services/sort.service';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
 const sortOptions = [
@@ -27,10 +27,10 @@ function ChplBannedDevelopersSearchView() {
   const storageKey = 'storageKey-bannedDevelopersView';
   const { analytics } = useAnalyticsContext();
   const [developers, setDevelopers] = useState([]);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer_name');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'developer_name');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = usePageState(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
 
   const filterContext = useFilterContext();

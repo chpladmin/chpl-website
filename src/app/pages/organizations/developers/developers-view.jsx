@@ -8,6 +8,7 @@ import ChplMessaging from './messaging/messaging';
 import { useFreshAccessToken } from 'api/axios';
 import { useFetchDevelopersBySearch } from 'api/developer';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
+import { usePageState } from 'components/page-state';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -18,7 +19,6 @@ import {
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareStrings } from 'services/sort.service';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -45,10 +45,10 @@ function ChplDevelopersView() {
   const { hasAnyRole } = useContext(UserContext);
   const { dispatch, queryString } = useFilterContext();
   const [developers, setDevelopers] = useState([]);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer_name');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'developer_name');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = usePageState(`${storageKey}-sortDescending`, false);
   const [messaging, setMessaging] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
