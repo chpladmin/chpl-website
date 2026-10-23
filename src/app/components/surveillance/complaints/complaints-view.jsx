@@ -20,9 +20,11 @@ import {
   ChplEllipsis,
   ChplLoadingCards,
   ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -67,6 +69,8 @@ function ChplComplaintsView(props) {
   const { isLoading: filtersAreLoading, queryString } = useFilterContext();
   const {
     data, isLoading, isSuccess,
+    isFetching,
+    isPreviousData,
   } = useFetchComplaints({
     orderBy,
     pageNumber,
@@ -74,6 +78,9 @@ function ChplComplaintsView(props) {
     sortDescending: order === 'desc',
     query: `${queryString()}&${bonusQuery}`,
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${order}` });
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -289,80 +296,83 @@ function ChplComplaintsView(props) {
                   orderBy={orderBy}
                   order={order}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
                 { getButtons() }
               </ChplSearchResultControls>
-              { complaints.length === 0
-                && (
-                  <Box sx={styles.emptyActions}>
-                    { getButtons() }
-                  </Box>
-                )}
-              { complaints.length > 0
-                && (
-                  <>
-                    <Box sx={styles.resultsContainer}>
-                      { complaints.map((complaint) => {
-                        const showAcb = !hasAnyRole(['chpl-onc-acb']) && !bonusQuery;
-                        const primaryGroup = [];
-                        if (showAcb) {
-                          primaryGroup.push({ label: 'ONC-ACB', value: complaint.certificationBody.name });
-                        }
-                        primaryGroup.push({
-                          label: 'Status',
-                          value: (
-                            <Typography
-                              variant="subtitle1"
-                              sx={complaint.closedDate ? styles.statusIndicatorClosed : styles.statusIndicatorOpen}
-                            >
-                              {complaint.closedDate ? 'Closed' : 'Open'}
-                            </Typography>
-                          ),
-                        });
-                        primaryGroup.push({ label: 'Received Date', value: getDisplayDateFormat(complaint.receivedDate) });
-                        return (
-                          <ChplSearchResultCard
-                            key={complaint.id}
-                            cardTitle="ONC-ACB Complaint ID"
-                            cardTitleValue={complaint.acbComplaintId || 'N/A'}
-                            fieldGroups={[
-                              primaryGroup,
-                              [
-                                {
-                                  label: 'ONC Complaint ID',
-                                  value: complaint.oncComplaintId
-                                    ? (<ChplEllipsis text={complaint.oncComplaintId} maxLength={50} />)
-                                    : 'N/A',
-                                },
-                                { label: 'Complaint Type(s)', value: complaint.complaintTypes?.map((t) => t.name).join(', ') || 'N/A' },
-                                { label: 'Complainant Type', value: complaint.complainantType.name },
-                              ],
-                            ]}
-                            actions={(
-                              <Button
-                                onClick={() => handleDispatch({ action: 'view', payload: complaint })}
-                                variant="contained"
-                                color="secondary"
-                                id={`view-complaint-${complaint.id}`}
-                                endIcon={<VisibilityIcon />}
-                              >
-                                View
-                              </Button>
-                            )}
-                          />
-                        );
-                      })}
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { complaints.length === 0
+                  && (
+                    <Box sx={styles.emptyActions}>
+                      { getButtons() }
                     </Box>
-                    <ChplPagination
-                      count={data.recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[10, 50, 100, 250]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
-                    />
-                  </>
-                )}
+                  )}
+                { complaints.length > 0
+                  && (
+                    <>
+                      <Box sx={styles.resultsContainer}>
+                        { complaints.map((complaint) => {
+                          const showAcb = !hasAnyRole(['chpl-onc-acb']) && !bonusQuery;
+                          const primaryGroup = [];
+                          if (showAcb) {
+                            primaryGroup.push({ label: 'ONC-ACB', value: complaint.certificationBody.name });
+                          }
+                          primaryGroup.push({
+                            label: 'Status',
+                            value: (
+                              <Typography
+                                variant="subtitle1"
+                                sx={complaint.closedDate ? styles.statusIndicatorClosed : styles.statusIndicatorOpen}
+                              >
+                                {complaint.closedDate ? 'Closed' : 'Open'}
+                              </Typography>
+                            ),
+                          });
+                          primaryGroup.push({ label: 'Received Date', value: getDisplayDateFormat(complaint.receivedDate) });
+                          return (
+                            <ChplSearchResultCard
+                              key={complaint.id}
+                              cardTitle="ONC-ACB Complaint ID"
+                              cardTitleValue={complaint.acbComplaintId || 'N/A'}
+                              fieldGroups={[
+                                primaryGroup,
+                                [
+                                  {
+                                    label: 'ONC Complaint ID',
+                                    value: complaint.oncComplaintId
+                                      ? (<ChplEllipsis text={complaint.oncComplaintId} maxLength={50} />)
+                                      : 'N/A',
+                                  },
+                                  { label: 'Complaint Type(s)', value: complaint.complaintTypes?.map((t) => t.name).join(', ') || 'N/A' },
+                                  { label: 'Complainant Type', value: complaint.complainantType.name },
+                                ],
+                              ]}
+                              actions={(
+                                <Button
+                                  onClick={() => handleDispatch({ action: 'view', payload: complaint })}
+                                  variant="contained"
+                                  color="secondary"
+                                  id={`view-complaint-${complaint.id}`}
+                                  endIcon={<VisibilityIcon />}
+                                >
+                                  View
+                                </Button>
+                              )}
+                            />
+                          );
+                        })}
+                      </Box>
+                      <ChplPagination
+                        count={data.recordCount}
+                        page={pageNumber}
+                        rowsPerPage={pageSize}
+                        rowsPerPageOptions={[10, 50, 100, 250]}
+                        setPage={setPageNumber}
+                        setRowsPerPage={setPageSize}
+                      />
+                    </>
+                  )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>

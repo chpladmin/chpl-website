@@ -19,9 +19,11 @@ import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'compone
 import {
   ChplLoadingCards,
   ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -84,7 +86,11 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
 
   // `isPreviousData`: the request changed and the old results are still on screen until it answers
   const {
-    data, isError, isLoading, isPreviousData,
+    data,
+    isError,
+    isFetching,
+    isLoading,
+    isPreviousData,
   } = useFetchTargetedUsers({
     orderBy,
     pageNumber,
@@ -92,6 +98,9 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
     sortDescending,
     query,
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -211,6 +220,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
                 <Button
                   onClick={downloadTargetedUsers}
@@ -227,32 +237,34 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                   {`Targeted User${recordCount !== 1 ? 's' : ''}`}
                 </Button>
               </ChplSearchResultControls>
-              { targetedUsers
-                .map((item) => (
-                  <ChplSearchResultCard
-                    key={item.id}
-                    cardTitle="Targeted User"
-                    cardTitleValue={item.name}
-                    additionalTitleContent={(
-                      <Box sx={styles.narrowFields}>
-                        { getNarrowField('Total Listings', item.total) }
-                        { getNarrowField('Creation Date', getDisplayDateFormat(item.creationDate)) }
-                      </Box>
-                    )}
-                    fieldGroups={getStatusFieldGroups(item)}
-                  />
-                ))}
-              { recordCount > 0
-                && (
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                  />
-                )}
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { targetedUsers
+                  .map((item) => (
+                    <ChplSearchResultCard
+                      key={item.id}
+                      cardTitle="Targeted User"
+                      cardTitleValue={item.name}
+                      additionalTitleContent={(
+                        <Box sx={styles.narrowFields}>
+                          { getNarrowField('Total Listings', item.total) }
+                          { getNarrowField('Creation Date', getDisplayDateFormat(item.creationDate)) }
+                        </Box>
+                      )}
+                      fieldGroups={getStatusFieldGroups(item)}
+                    />
+                  ))}
+                { recordCount > 0
+                  && (
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                    />
+                  )}
+              </ChplResultsUpdating>
             </>
           )}
       </ChplFilterLayout>

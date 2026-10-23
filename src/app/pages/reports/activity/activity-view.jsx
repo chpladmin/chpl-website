@@ -7,12 +7,14 @@ import { useFetchActivity } from 'api/questionable-activity';
 import {
   ChplLink,
   ChplLoadingCards,
-  ChplPagination,
   ChplPageBody,
   ChplPageHeader,
+  ChplPagination,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import {
   ChplFilterLayout,
@@ -35,13 +37,22 @@ function ChplActivityView() {
   const [recordCount, setRecordCount] = useState(0);
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchActivity({
+  const {
+    data,
+    isError,
+    isFetching,
+    isLoading,
+    isPreviousData,
+  } = useFetchActivity({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query: filterContext.queryString(),
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -182,50 +193,53 @@ function ChplActivityView() {
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
               </ChplSearchResultControls>
-              { activities.length > 0
-                && (
-                  <>
-                    <Box>
-                      { activities.map((item) => (
-                        <ChplSearchResultCard
-                          key={item.id}
-                          cardTitle="User"
-                          cardTitleValue={item.username}
-                          fieldGroups={[
-                            [
-                              { label: 'Concept', value: item.concept },
-                              { label: 'Activity Date', value: getDisplayDateFormat(item.activityDate) },
-                              { label: 'CHPL Link', value: getLink(item) || 'N/A' },
-                            ],
-                            [
-                              {
-                                label: 'Description',
-                                style: { flex: '2 1 320px' },
-                                value: item.description || 'N/A',
-                              },
-                              {
-                                label: 'Reason',
-                                style: { flex: '2 1 320px' },
-                                value: item.reason || 'N/A',
-                              },
-                            ],
-                          ]}
-                          actions={<ChplActivityDetails activity={item} />}
-                        />
-                      ))}
-                    </Box>
-                    <ChplPagination
-                      count={recordCount}
-                      page={pageNumber}
-                      rowsPerPage={pageSize}
-                      rowsPerPageOptions={[25, 50, 100]}
-                      setPage={setPageNumber}
-                      setRowsPerPage={setPageSize}
-                    />
-                  </>
-                )}
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { activities.length > 0
+                  && (
+                    <>
+                      <Box>
+                        { activities.map((item) => (
+                          <ChplSearchResultCard
+                            key={item.id}
+                            cardTitle="User"
+                            cardTitleValue={item.username}
+                            fieldGroups={[
+                              [
+                                { label: 'Concept', value: item.concept },
+                                { label: 'Activity Date', value: getDisplayDateFormat(item.activityDate) },
+                                { label: 'CHPL Link', value: getLink(item) || 'N/A' },
+                              ],
+                              [
+                                {
+                                  label: 'Description',
+                                  style: { flex: '2 1 320px' },
+                                  value: item.description || 'N/A',
+                                },
+                                {
+                                  label: 'Reason',
+                                  style: { flex: '2 1 320px' },
+                                  value: item.reason || 'N/A',
+                                },
+                              ],
+                            ]}
+                            actions={<ChplActivityDetails activity={item} />}
+                          />
+                        ))}
+                      </Box>
+                      <ChplPagination
+                        count={recordCount}
+                        page={pageNumber}
+                        rowsPerPage={pageSize}
+                        rowsPerPageOptions={[25, 50, 100]}
+                        setPage={setPageNumber}
+                        setRowsPerPage={setPageSize}
+                      />
+                    </>
+                  )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>
