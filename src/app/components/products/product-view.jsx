@@ -382,7 +382,7 @@ function ChplProductView({ product, productCount, dispatch }) {
                           aggregationName: product.name,
                         }}
                         external={false}
-                        router={{ sref: 'listing', options: { id: item.id } }}
+                        router={{ sref: 'listing', params: { id: item.id } }}
                       />
                     </TableCell>
                     <TableCell>{ item.certificationStatus }</TableCell>
