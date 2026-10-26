@@ -20,7 +20,14 @@ yarn lint:fix                       # eslint --fix; pass a path to fix a single 
 yarn test                           # jest + @testing-library/react in jsdom
 ```
 
-Tests run on jest + `@testing-library/react` in a jsdom environment, configured in `jest.config.js` with shared setup and asset stubs under `test/`. Coverage is deliberately narrow right now: it covers the `@uirouter/react` integration, added so the routing migration can be verified without a browser.
+Tests run on jest + `@testing-library/react` in a jsdom environment, configured in `jest.config.js` with shared setup and asset stubs under `test/`.
+
+Coverage is still thin: it started with the `@uirouter/react` integration, added so the routing migration could be verified without a browser. **Grow it with every significant change.** Whenever a change alters functionality in a meaningful way, add tests that cover both sides of it:
+
+- **Before:** the existing behavior that must keep working, pinned so the change can't silently break it.
+- **After:** the new or changed behavior itself.
+
+Small, presentation-only or purely mechanical changes don't need new tests.
 
 Two things to know before adding tests:
 
@@ -82,6 +89,15 @@ Most pages/features under `src/app/pages/**` and `src/app/components/**` follow 
 
 Webpack's `resolve.modules` includes `src/app`, so imports write as if `src/app` were a root, e.g. `import ApiWrapper from 'api/api-wrapper'`, `import { AnalyticsContext } from 'shared/contexts'`, `import AppWrapper from 'app-wrapper'`. Don't use relative `../../..` paths across top-level directories (`api/`, `components/`, `pages/`, `services/`, `shared/`, `themes/`) — use the bare-style import instead, matching existing files. ESLint's `import/resolver` is configured the same way (`moduleDirectory: ["src/app", "node_modules"]`).
 
+### Sorting
+
+Sort human-readable strings with `compareStrings` from `services/sort.service` (negate it, or swap the arguments, for descending). It ignores case and accents, orders numbers inside text by value ("item2" before "item10"), returns 0 for equal strings, and puts null/undefined last. It is built on one shared `Intl.Collator`. Don't use `<`/`>` on display strings (that puts every capital letter first), and don't call `localeCompare` with an options object inline (it builds a collator per comparison, which is very slow on long lists). `sortComparator` from `components/util/sortable-headers` and the default filter `sortValues` already use it.
+
+Two exceptions keep exact comparisons:
+
+- **Codes and query parts** — CHPL product numbers, friendly ids, query-string building, Before/After filter keys — where order is structural rather than alphabetical. Fixed-order helpers like `sortCriteria` and `sortCqms` stay as they are.
+- **The history and activity compare services** (`pages/listing/history/*.service.js`, `pages/reports/activity/services/*`, `components/activity/services/*`), whose `sort` options double as an equality test: 0 means "same item", so a case-insensitive compare there would hide a case-only rename.
+
 ### Webpack entry point
 
 `webpack.config.js` defines a single `app` entry. It used to define ten, one per page area, but those existed only to register AngularJS modules and each pulled in a duplicate copy of the shared code.
@@ -106,6 +122,21 @@ Group imports into three blocks, separated by a blank line, in this order:
 3. Bare imports resolved from `src/app` as root (e.g. `api/acbs`, `components/util`, `shared/contexts`, `services/analytics.service`), alphabetized by path, e.g. `api/acbs` before `components/util` before `shared/contexts`.
 
 Within any named (non-default) import, alphabetize the imported names, e.g. `import { setLoginState, setUser } from 'components/login/userInfo.slice';` (not `{ setUser, setLoginState }`).
+
+Keep up to three names on one line. From four names, the point where the airbnb `object-curly-newline` rule requires wrapping, put **every name on its own line**, with a trailing comma, rather than several to a line:
+
+```
+import { Box, Container } from '@material-ui/core';
+
+import {
+  Box,
+  Container,
+  Drawer,
+  Table,
+} from '@material-ui/core';
+```
+
+not `import {⏎  Box, Container, Drawer, Table,⏎} from '@material-ui/core';`. The same goes for a default plus named import (`import React, {⏎  useEffect,⏎  useMemo,⏎  …⏎} from 'react';`) and for `export { … } from`. An import of three names or fewer stays on one line even though lint would allow wrapping it. No lint rule enforces any of this, so apply it by hand. Existing code doesn't follow it everywhere yet: convert the imports in files a change already touches, but don't reformat untouched files just for this.
 
 ## Commits
 

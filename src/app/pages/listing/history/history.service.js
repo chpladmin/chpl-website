@@ -39,31 +39,36 @@ const interpretActivity = (activity, canSeeHistory) => {
 const interpretCertificationStatusChanges = (listing) => listing.certificationEvents
   .filter((e) => !e.eventTypeId || e.eventTypeId === 1)
   .filter((e) => e.eventDay <= jsJoda.LocalDate.now())
+  // Build new objects rather than writing onto the listing's own (cached) events
   .map((e) => {
-    e.activityDate = localDateToTimestamp(e.eventDay);
+    let change;
     if (e.eventTypeId && e.eventTypeId === 1) {
-      e.change = ['Certification Status became "Active"'];
+      change = ['Certification Status became "Active"'];
     } else if (e.certificationStatusName) {
-      e.change = [`Certification Status became "${e.certificationStatusName}"`];
+      change = [`Certification Status became "${e.certificationStatusName}"`];
     } else if (e.status) {
-      e.change = [`Certification Status became "${e.status.name}"`];
+      change = [`Certification Status became "${e.status.name}"`];
     } else {
-      e.change = ['Undetermined change'];
+      change = ['Undetermined change'];
     }
-    return e;
+    return {
+      ...e,
+      activityDate: localDateToTimestamp(e.eventDay),
+      change,
+    };
   });
 
-const interpretPIHistory = (listing) => listing.promotingInteroperabilityUserHistory
+const interpretPIHistory = (listing) => [...listing.promotingInteroperabilityUserHistory]
   .sort((a, b) => (a.userCountDate < b.userCountDate ? -1 : 1))
   .map((item, idx, arr) => {
     const title = 'Promoting Interoperability';
-    item.activityDate = localDateToTimestamp(item.userCountDate);
-    if (idx > 0) {
-      item.change = [`Estimated number of ${title} Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${getDisplayDateFormat(item.userCountDate)}`];
-    } else {
-      item.change = [`Estimated number of ${title} Users became ${item.userCount} on ${getDisplayDateFormat(item.userCountDate)}`];
-    }
-    return item;
+    return {
+      ...item,
+      activityDate: localDateToTimestamp(item.userCountDate),
+      change: idx > 0
+        ? [`Estimated number of ${title} Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${getDisplayDateFormat(item.userCountDate)}`]
+        : [`Estimated number of ${title} Users became ${item.userCount} on ${getDisplayDateFormat(item.userCountDate)}`],
+    };
   });
 
 const interpretDeveloper = (activity) => {

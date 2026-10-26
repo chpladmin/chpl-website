@@ -1,4 +1,9 @@
-import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import {
+  compareArrays,
+  compareBoolean,
+  compareObject,
+  comparePrimitive,
+} from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 let lookup;
@@ -40,8 +45,8 @@ const compareAttestationData = (before, after) => {
     return `Attestation changes<ul><li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li></ul>`;
   }
   if (before.length === after.length) {
-    const sortedBefore = before.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
-    const sortedAfter = after.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
+    const sortedBefore = [...before].sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
+    const sortedAfter = [...after].sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
     const changes = sortedBefore
       .map((val, idx) => compareObject(val, sortedAfter[idx], lookup, 'attestations'))
       .filter((msgs) => msgs.length > 0)
@@ -108,13 +113,13 @@ lookup = {
   'root.contact.lastName': { message: (before, after) => comparePrimitive(before, after, 'lastName', 'Last Name') },
   'root.contact.phoneNumber': { message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number') },
   'root.contact.title': { message: (before, after) => comparePrimitive(before, after, 'title', 'Title') },
-  'root.deleted': { message: (before, after) => comparePrimitive(before, after, 'deleted', 'Deleted') },
+  'root.deleted': { message: (before, after) => compareBoolean(before, after, 'deleted', 'Deleted') },
   'root.developerCode': { message: (before, after) => comparePrimitive(before, after, 'developerCode', 'Developer Code') },
   'root.id': { message: () => undefined },
   'root.lastModifiedDate': { message: () => undefined },
   'root.lastModifiedUser': { message: () => undefined },
   'root.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
-  'root.selfDeveloper': { message: (before, after) => comparePrimitive(before, after, 'selfDeveloper', 'Self-developer') },
+  'root.selfDeveloper': { message: (before, after) => compareBoolean(before, after, 'selfDeveloper', 'Self-developer') },
   'root.status': { message: () => 'Current status changes:' },
   'root.status.id': { message: () => undefined },
   'root.status.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },

@@ -33,6 +33,7 @@ import { eventTrack } from 'services/analytics.service';
 import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareListingsForDisplay } from 'services/listing.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -95,7 +96,7 @@ function ChplComparePage({ ids }) {
       return;
     }
     if (data?.id) {
-      setListings((previous) => [...previous, data].sort((a, b) => (a.certificationDate < b.certificationDate ? -1 : 1)));
+      setListings((previous) => [...previous, data].sort(compareListingsForDisplay));
       setListingsToProcess((previous) => previous.filter((id) => id !== activeListing));
       setActiveListing(undefined);
       data.certificationResults.filter((cr) => cr.success).forEach((cr) => {

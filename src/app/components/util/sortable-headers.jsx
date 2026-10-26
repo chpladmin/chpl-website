@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf, bool, func, node, oneOf, shape, string,
+  arrayOf,
+  bool,
+  func,
+  node,
+  oneOf,
+  shape,
+  string,
 } from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableCell from '@material-ui/core/TableCell';
+
+import { compareStrings } from 'services/sort.service';
 
 const useStyles = makeStyles({
   visuallyHidden: {
@@ -108,10 +116,24 @@ function ChplSortableHeaders({
   );
 }
 
+const isStringOrMissing = (value) => typeof value === 'string' || value === null || value === undefined;
+
+// Strings (and a string against a missing value) sort ignoring case, with
+// numbers in natural order; anything else (numbers, booleans, epoch dates) by `<`.
+// Equal values return 0, so a stable sort keeps them in their incoming order.
 const sortComparator = (property, sortDescending) => (a, b) => {
-  let result = (a[property] < b[property]) ? -1 : 1;
-  result *= (sortDescending ? -1 : 1);
-  return result;
+  const aValue = a[property];
+  const bValue = b[property];
+  let result;
+  if (isStringOrMissing(aValue) && isStringOrMissing(bValue)
+      && (typeof aValue === 'string' || typeof bValue === 'string')) {
+    result = compareStrings(aValue, bValue);
+  } else if (aValue === bValue) {
+    result = 0;
+  } else {
+    result = (aValue < bValue) ? -1 : 1;
+  }
+  return result * (sortDescending ? -1 : 1);
 };
 
 ChplSortableHeaders.propTypes = {

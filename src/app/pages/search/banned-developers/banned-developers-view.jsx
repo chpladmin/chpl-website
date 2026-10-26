@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-} from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 
-import {
-  useFetchBannedDevelopers,
-} from 'api/search';
+import { useFetchBannedDevelopers } from 'api/search';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -17,12 +12,9 @@ import {
   ChplSearchResultControls,
   ChplSortControls,
 } from 'components/util';
-import {
-  ChplFilterLayout,
-  ChplFilterSearchBar,
-  useFilterContext,
-} from 'components/filter';
+import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
@@ -59,7 +51,7 @@ function ChplBannedDevelopersSearchView() {
     if (isLoading || !data.results) { return; }
     setDevelopers(data.results.map((developer) => ({
       ...developer,
-      oncAcbDisplay: developer.acbsForAllListings.map((acb) => acb.name).sort((a, b) => (a < b ? -1 : 1)).join(', '), // same question about "active"
+      oncAcbDisplay: developer.acbsForAllListings.map((acb) => acb.name).sort(compareStrings).join(', '), // same question about "active"
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
