@@ -34,7 +34,7 @@ import { palette, utilStyles } from 'themes';
 
 // On a developer page the change requests card is narrow, so its filter panel
 // is widened to give each filter button room around its name
-const embeddedPanelExtraWidth = 300;
+const embeddedPanelExtraWidth = '300px';
 
 const styles = {
   ...utilStyles,
@@ -160,7 +160,7 @@ function ChplChangeRequestsView({
         fadeBackground={palette.white}
         placeholder="Search by Developer..."
         hideSearchTerm={disallowedFilters.includes('searchTerm')}
-        panelExtraWidth={embedded ? embeddedPanelExtraWidth : 0}
+        panelExtraWidth={embedded ? embeddedPanelExtraWidth : undefined}
       />
       <ChplFilterLayout mobileOnly={embedded}>
         { isLoading && (<ChplLoadingCards />)}

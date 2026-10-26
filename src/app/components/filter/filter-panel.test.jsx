@@ -32,10 +32,10 @@ describe('the filter panel', () => {
   });
 
   it('is wider by extraWidth, for a page whose filter names need the room', () => {
-    expect(openPanel({ extraWidth: 240 })).toHaveStyle({ width: 'calc(100vw - 76px)' });
+    expect(openPanel({ extraWidth: '240px' })).toHaveStyle({ width: 'calc(100vw - 316px + 240px)' });
   });
 
   it('takes a size of its own from width, in place of the usual one', () => {
-    expect(openPanel({ extraWidth: 240, width: '750px' })).toHaveStyle({ width: '750px' });
+    expect(openPanel({ extraWidth: '240px', width: '750px' })).toHaveStyle({ width: '750px' });
   });
 });

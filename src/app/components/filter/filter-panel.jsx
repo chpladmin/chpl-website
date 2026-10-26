@@ -129,10 +129,16 @@ const styles = {
 };
 
 // The panel is as wide as its search bar, less the space the bar's buttons
-// take. extraWidth widens it, in px, for a page whose filter names need more
-// room than that. width replaces the size altogether, with any sx width,
-// including one that changes at each breakpoint
-function ChplFilterPanel({ extraWidth = 0, width = undefined }) {
+// take. extraWidth, a CSS length such as '300px', widens it for a page whose
+// filter names need more room than that. width replaces the size altogether,
+// with any sx width, including one that changes at each breakpoint
+const getPanelWidth = (searchBarWidth, extraWidth) => {
+  const usual = searchBarWidth ? `${searchBarWidth - 284}px` : '100vw - 316px';
+  if (extraWidth) { return `calc(${usual} + ${extraWidth})`; }
+  return searchBarWidth ? usual : `calc(${usual})`;
+};
+
+function ChplFilterPanel({ extraWidth = undefined, width = undefined }) {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [panelWidth, setPanelWidth] = useState(null);
@@ -288,7 +294,7 @@ function ChplFilterPanel({ extraWidth = 0, width = undefined }) {
         }}
         PaperProps={{
           sx: {
-            width: width ?? (panelWidth ? `${panelWidth - 284 + extraWidth}px` : `calc(100vw - ${316 - extraWidth}px)`),
+            width: width ?? getPanelWidth(panelWidth, extraWidth),
             maxWidth: 'calc(100vw - 32px)',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
@@ -464,6 +470,6 @@ function ChplFilterPanel({ extraWidth = 0, width = undefined }) {
 export default ChplFilterPanel;
 
 ChplFilterPanel.propTypes = {
-  extraWidth: number,
+  extraWidth: string,
   width: oneOfType([number, string, object]),
 };
