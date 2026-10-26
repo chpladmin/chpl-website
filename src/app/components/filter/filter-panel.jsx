@@ -10,6 +10,12 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
+import {
+  number,
+  object,
+  oneOfType,
+  string,
+} from 'prop-types';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 import { useFilterContext } from './filter-context';
@@ -122,7 +128,11 @@ const styles = {
   },
 };
 
-function ChplFilterPanel() {
+// The panel is as wide as its search bar, less the space the bar's buttons
+// take. extraWidth widens it, in px, for a page whose filter names need more
+// room than that. width replaces the size altogether, with any sx width,
+// including one that changes at each breakpoint
+function ChplFilterPanel({ extraWidth = 0, width = undefined }) {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [panelWidth, setPanelWidth] = useState(null);
@@ -278,7 +288,7 @@ function ChplFilterPanel() {
         }}
         PaperProps={{
           sx: {
-            width: panelWidth ? `${panelWidth - 284}px` : 'calc(100vw - 316px)',
+            width: width ?? (panelWidth ? `${panelWidth - 284 + extraWidth}px` : `calc(100vw - ${316 - extraWidth}px)`),
             maxWidth: 'calc(100vw - 32px)',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
@@ -452,3 +462,8 @@ function ChplFilterPanel() {
 }
 
 export default ChplFilterPanel;
+
+ChplFilterPanel.propTypes = {
+  extraWidth: number,
+  width: oneOfType([number, string, object]),
+};
