@@ -32,6 +32,10 @@ import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
+// On a developer page the change requests card is narrow, so its filter panel
+// is widened to give each filter button room around its name
+const embeddedPanelExtraWidth = 300;
+
 const styles = {
   ...utilStyles,
   card: {
@@ -156,6 +160,7 @@ function ChplChangeRequestsView({
         fadeBackground={palette.white}
         placeholder="Search by Developer..."
         hideSearchTerm={disallowedFilters.includes('searchTerm')}
+        panelExtraWidth={embedded ? embeddedPanelExtraWidth : 0}
       />
       <ChplFilterLayout mobileOnly={embedded}>
         { isLoading && (<ChplLoadingCards />)}
