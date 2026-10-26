@@ -1,5 +1,29 @@
 # Release Notes
 
+## Version 14.13.0
+_26 October 2026_
+
+### Features
+* Add a Targeted Users page to System Maintenance
+* Describe attestation change request responses in activity
+* Enable activity description of changes to Demographics CR details
+
+### Bug Fixes
+* Require valid emails for "Developer Ban Notification" email list
+* Only show current status changes when the status changed
+
+### User Interface Updates
+* Show compare page listings in the same order as the compare widget
+* Sort text ignoring case and with numbers in natural order
+* List active ONC-ACBs first on the surveillance reporting page
+* Show certification statuses in legend order when editing a listing
+* Show boolean changes in activity as Yes/No
+
+### Flagged User Interface Update
+* Use finalized URL for Insights Reporting link
+
+---
+
 ## Version 14.12.0
 _12 October 2026_
 
