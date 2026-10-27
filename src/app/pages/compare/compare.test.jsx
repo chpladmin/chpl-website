@@ -65,6 +65,51 @@ describe('the compare page', () => {
   });
 });
 
+describe('the compare page while some products are still loading', () => {
+  const stillLoading = (...pending) => {
+    useFetchListing.mockImplementation(({ id }) => {
+      if (pending.includes(id)) { return { data: undefined, isLoading: true, isSuccess: false }; }
+      return id
+        ? { data: listings[id], isLoading: false, isSuccess: true }
+        : { data: undefined, isLoading: false, isSuccess: false };
+    });
+  };
+  const skeletonHeaders = (container) => [...headerCells(container)].filter((th) => th.querySelector('.MuiSkeleton-root'));
+
+  it('shows the whole page skeleton until the first product loads', () => {
+    stillLoading('11');
+    render(<ChplComparePage ids="11&12" />);
+    expect(screen.getByRole('status')).toHaveTextContent('Loading products to compare');
+  });
+
+  it('shows the loaded products, then a skeleton column for each one still loading', async () => {
+    stillLoading('12');
+    const { container } = render(<ChplComparePage ids="11&12&13" />);
+    expect(await screen.findByText('CHP-11')).toBeInTheDocument();
+    expect(headerCells(container)).toHaveLength(1 + 1 + 2);
+    expect(skeletonHeaders(container)).toHaveLength(2);
+    expect(headerCells(container)[1].querySelector('.MuiSkeleton-root')).toBeNull();
+    expect(container.querySelector('table')).toHaveAttribute('aria-busy', 'true');
+  });
+
+  it('puts a skeleton cell in every row of a column still loading', async () => {
+    stillLoading('12');
+    const { container } = render(<ChplComparePage ids="11&12" />);
+    await screen.findByText('CHP-11');
+    container.querySelectorAll('tbody tr').forEach((row) => {
+      expect(row.querySelectorAll('td')).toHaveLength(1 + 1 + 1);
+      expect(row.querySelectorAll('td')[2].querySelector('.MuiSkeleton-root')).not.toBeNull();
+    });
+  });
+
+  it('drops the skeleton columns once every product has loaded', async () => {
+    const { container } = render(<ChplComparePage ids="11&12" />);
+    await screen.findByText('CHP-12');
+    expect(skeletonHeaders(container)).toHaveLength(0);
+    expect(container.querySelector('table')).toHaveAttribute('aria-busy', 'false');
+  });
+});
+
 describe('the compare skeleton', () => {
   it('announces that the products are loading', () => {
     render(<ChplCompareLoading products={3} />);
@@ -74,6 +119,11 @@ describe('the compare skeleton', () => {
   it('draws the data item column and one column per product', () => {
     const { container } = render(<ChplCompareLoading products={3} />);
     expect(headerCells(container)).toHaveLength(1 + 3);
+  });
+
+  it('draws 15 rows', () => {
+    const { container } = render(<ChplCompareLoading products={2} />);
+    expect(container.querySelectorAll('tbody tr')).toHaveLength(15);
   });
 
   it('draws at least one product column', () => {

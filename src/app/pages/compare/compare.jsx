@@ -84,6 +84,10 @@ const loadingStyles = {
     '& .MuiTableCell-root': {
       borderBottom: `1px solid ${skeletonLineColor}`,
     },
+    // nothing to point at yet, so no theme hover highlight
+    '& .MuiTableRow-root:hover': {
+      backgroundColor: 'transparent',
+    },
   },
   // The real table's sticky column of data items, and its product header cells
   itemColumn: {
@@ -94,13 +98,6 @@ const loadingStyles = {
     padding: '16px',
     minWidth: '150px',
   },
-  headerContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: '8px',
-    marginBottom: '8px',
-  },
   stack: {
     display: 'flex',
     flexDirection: 'column',
@@ -109,8 +106,8 @@ const loadingStyles = {
   },
 };
 
-// The rows in the order the page has them. `lines` is how many lines the data
-// item's name wraps to in its 200px column, and `value` what each product shows
+// The rows in the order the page has them. `item` is the widths of the lines the
+// data item's name wraps to in its 200px column, and `value` what each product shows
 const rows = [
   { item: ['55%'], value: 'text' }, // Developer
   { item: ['45%'], value: 'text' }, // Version
@@ -121,31 +118,35 @@ const rows = [
   { item: ['95%', '80%'], value: 'productNumber' }, // CHPL Product Number, Manage CMS ID Creator
   { item: ['95%', '60%'], value: 'text' }, // Number of Open Non-Conformities
   { item: ['90%'], value: 'text' }, // Certification Criteria
-  ...[...Array(8)].map(() => ({ item: ['100%', '95%', '50%'], value: 'icon' })), // each criterion: number and title
+  ...[...Array(3)].map(() => ({ item: ['100%', '95%', '50%'], value: 'icon' })), // each criterion: number and title
   { item: ['95%', '45%'], value: 'text' }, // Clinical Quality Measures
-  ...[...Array(4)].map(() => ({ item: ['100%', '90%', '40%'], value: 'icon' })), // each CQM: id and title
+  ...[...Array(2)].map(() => ({ item: ['100%', '90%', '40%'], value: 'icon' })), // each CQM: id and title
 ];
 
 const valueWidths = ['70%', '50%', '80%', '60%'];
 
+// What a product shows in one row while it loads, by the row's `value`
+const renderSkeletonValue = (value, key) => {
+  switch (value) {
+    case 'icon':
+      return <Skeleton variant="circular" width={24} height={24} />;
+    case 'productNumber':
+      return (
+        <Box sx={loadingStyles.stack}>
+          <Skeleton variant="text" width="80%" height={20} />
+          <Skeleton variant="rectangular" width={120} height={30} sx={{ borderRadius: '4px' }} />
+        </Box>
+      );
+    default:
+      return <Skeleton variant="text" width={valueWidths[key % valueWidths.length]} height={20} />;
+  }
+};
+
+// A product's header while it loads
+const renderSkeletonHeader = () => <Skeleton variant="text" width="60%" height={24} />;
+
 function ChplCompareLoading({ products }) {
   const columns = Math.max(products, 1);
-
-  const renderValue = (value, key) => {
-    switch (value) {
-      case 'icon':
-        return <Skeleton variant="circular" width={24} height={24} />;
-      case 'productNumber':
-        return (
-          <Box sx={loadingStyles.stack}>
-            <Skeleton variant="text" width="80%" height={20} />
-            <Skeleton variant="rectangular" width={120} height={30} sx={{ borderRadius: '4px' }} />
-          </Box>
-        );
-      default:
-        return <Skeleton variant="text" width={valueWidths[key % valueWidths.length]} height={20} />;
-    }
-  };
 
   return (
     <ChplLoadingPage label="Loading products to compare" subtitle={2}>
@@ -158,11 +159,7 @@ function ChplCompareLoading({ products }) {
                 {[...Array(columns)].map((_product, idx) => (
                   // eslint-disable-next-line react/no-array-index-key
                   <TableCell key={idx} sx={loadingStyles.headerColumnContent}>
-                    <Box sx={loadingStyles.headerContent}>
-                      <Skeleton variant="text" width="55%" height={24} />
-                      <Skeleton variant="circular" width={24} height={24} sx={{ flexShrink: 0 }} />
-                      <Skeleton variant="circular" width={28} height={28} sx={{ flexShrink: 0 }} />
-                    </Box>
+                    { renderSkeletonHeader() }
                   </TableCell>
                 ))}
               </TableRow>
@@ -180,7 +177,7 @@ function ChplCompareLoading({ products }) {
                   {[...Array(columns)].map((_product, colIdx) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <TableCell key={colIdx}>
-                      { renderValue(row.value, rowIdx + colIdx) }
+                      { renderSkeletonValue(row.value, rowIdx + colIdx) }
                     </TableCell>
                   ))}
                 </TableRow>
@@ -240,7 +237,14 @@ function ChplComparePage({ ids }) {
     setActiveListing(listingsToProcess[0]);
   }, [listingsToProcess]);
 
-  const makeRow = (title, getData) => (
+  // One skeleton cell per listing still loading, after the loaded ones
+  const makePendingCells = (value, key = 0) => listingsToProcess.map((id, idx) => (
+    <TableCell key={`pending-${id}`}>
+      { renderSkeletonValue(value, key + idx) }
+    </TableCell>
+  ));
+
+  const makeRow = (title, getData, skeleton = 'text') => (
     <TableRow>
       <TableCell sx={styles.stickyColumn}><strong>{ title }</strong></TableCell>
       { listings.map((listing) => (
@@ -248,6 +252,7 @@ function ChplComparePage({ ids }) {
           { getData(listing) }
         </TableCell>
       ))}
+      { makePendingCells(skeleton, listings.length) }
     </TableRow>
   );
 
@@ -313,6 +318,7 @@ function ChplComparePage({ ids }) {
               : getAttestationDisplay('Cannot meet')}
           </TableCell>
         ))}
+        { makePendingCells('icon') }
       </TableRow>
     );
   };
@@ -356,6 +362,7 @@ function ChplComparePage({ ids }) {
             { getCqmValue(cqm, listing) }
           </TableCell>
         ))}
+        { makePendingCells('icon') }
       </TableRow>
     );
   };
@@ -389,7 +396,7 @@ function ChplComparePage({ ids }) {
       <ChplPageBody>
         <Card>
           <TableContainer sx={styles.Table}>
-            <Table size="small">
+            <Table size="small" aria-busy={listingsToProcess.length > 0}>
               <TableHead>
                 <TableRow hover={false} sx={styles.headerRow}>
                   <TableCell sx={styles.stickyColumn}><Box component="span" sx={utilStyles.srOnly}>Data item</Box></TableCell>
@@ -408,6 +415,11 @@ function ChplComparePage({ ids }) {
                           <CloseIcon />
                         </IconButton>
                       </Box>
+                    </TableCell>
+                  ))}
+                  { listingsToProcess.map((id) => (
+                    <TableCell sx={styles.headerColumnContent} key={`pending-${id}`}>
+                      { renderSkeletonHeader() }
                     </TableCell>
                   ))}
                 </TableRow>
@@ -454,6 +466,7 @@ function ChplComparePage({ ids }) {
                       <CmsButton listing={listing} size="small" />
                     </Box>
                   ),
+                  'productNumber',
                 )}
                 { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
                 { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
