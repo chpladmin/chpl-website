@@ -18,6 +18,7 @@ import { arrayOf, object } from 'prop-types';
 
 import { ChplDialogTitle } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
@@ -34,9 +35,9 @@ function ChplSedTaskParticipantsView(props) {
   const { task } = props;
   const { analytics } = useAnalyticsContext();
   const [open, setOpen] = useState(false);
-  const participants = props.participants.sort((a, b) => { // eslint-disable-line react/destructuring-assignment
-    if (a.occupation !== b.occupation) { return a.occupation < b.occupation ? -1 : 1; }
-    if (a.educationType.name !== b.educationType.name) { return a.educationType.name < b.educationType.name ? -1 : 1; }
+  const participants = [...props.participants].sort((a, b) => { // eslint-disable-line react/destructuring-assignment
+    const byText = compareStrings(a.occupation, b.occupation) || compareStrings(a.educationType.name, b.educationType.name);
+    if (byText !== 0) { return byText; }
     if (a.productExperienceMonths !== b.productExperienceMonths) { return a.productExperienceMonths - b.productExperienceMonths; }
     if (a.professionalExperienceMonths !== b.professionalExperienceMonths) { return a.professionalExperienceMonths - b.professionalExperienceMonths; }
     if (a.computerExperienceMonths !== b.computerExperienceMonths) { return a.computerExperienceMonths - b.computerExperienceMonths; }

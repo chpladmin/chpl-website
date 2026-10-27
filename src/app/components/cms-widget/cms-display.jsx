@@ -32,6 +32,7 @@ import createPdf from './cms-pdf';
 import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
+import { compareStrings } from 'services/sort.service';
 import { CmsContext, CompareContext, FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
@@ -537,7 +538,7 @@ function ChplCmsDisplay({ onClose }) {
       <Divider />
       <Typography className={classes.sectionLabelFontWeight800}>Product Selected</Typography>
       <div className={classes.chipContainer}>
-        { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
+        { [...listings].sort((a, b) => compareStrings(a.name, b.name))
           .map((listing) => (
             <Chip
               className={classes.productChips}

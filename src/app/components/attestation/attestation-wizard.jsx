@@ -44,8 +44,10 @@ function ChplAttestationWizard({
   useEffect(() => {
     setForm(initialForm);
     if (initialForm?.sectionHeadings) {
-      setSections(initialForm.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder));
-      setSubmission(initialForm.sectionHeadings);
+      // Sorted copy, so the form passed in is left as it is; both still share one array, as before
+      const sortedSections = [...initialForm.sectionHeadings].sort((a, b) => a.sortOrder - b.sortOrder);
+      setSections(sortedSections);
+      setSubmission(sortedSections);
     }
   }, [initialForm]);
 

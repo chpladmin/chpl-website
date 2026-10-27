@@ -7,7 +7,10 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import {
-  arrayOf, bool, func, string,
+  arrayOf,
+  bool,
+  func,
+  string,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -15,10 +18,8 @@ import * as yup from 'yup';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import {
-  criterion as criterionPropType,
-  conformanceMethod as conformanceMethodPropType,
-} from 'shared/prop-types';
+import { compareStrings } from 'services/sort.service';
+import { criterion as criterionPropType, conformanceMethod as conformanceMethodPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -114,7 +115,7 @@ function ChplConformanceMethodEdit({
 
   useActionBar({
     canDelete: !!conformanceMethod.id,
-    errors: [...propsErrors].sort((a, b) => (a < b ? -1 : 1)),
+    errors: [...propsErrors].sort(compareStrings),
     isDisabled: !isValid(),
     isProcessing,
   });
@@ -157,7 +158,7 @@ function ChplConformanceMethodEdit({
         onChange={(event) => add(event.target.value)}
         helperText={criteria.length === 0 && 'At least one Criteria must be selected'}
       >
-        { criterionOptions
+        { [...criterionOptions]
           .sort(sortCriteria)
           .map((item) => (
             <MenuItem
@@ -170,7 +171,7 @@ function ChplConformanceMethodEdit({
           ))}
       </ChplTextField>
       <div className={classes.chips}>
-        { criteria
+        { [...criteria]
           .sort(sortCriteria)
           .map((item) => (
             <Chip

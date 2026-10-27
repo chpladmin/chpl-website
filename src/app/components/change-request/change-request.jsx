@@ -24,16 +24,13 @@ import ChplChangeRequestListingRwtView from './types/listing-rwt-view';
 import ChplChangeRequestListingSbulEdit from './types/listing-sbul-edit';
 import ChplChangeRequestListingSbulView from './types/listing-sbul-view';
 
-import {
-  useFetchChangeRequest,
-  useFetchChangeRequestStatusTypes,
-  usePutChangeRequest,
-} from 'api/change-requests';
+import { useFetchChangeRequest, useFetchChangeRequestStatusTypes, usePutChangeRequest } from 'api/change-requests';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplAvatar, ChplLink, ChplTextField } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { compareStrings } from 'services/sort.service';
 import {
   ChangeRequestContext,
   FormGroupContext,
@@ -247,7 +244,7 @@ function ChplChangeRequest({ changeRequest: { id }, dispatch }) {
         }
         return type.name !== 'Pending ONC-ACB Action' && type.name !== 'Cancelled by Requester';
       })
-      .sort((a, b) => (a.name < b.name ? -1 : 1));
+      .sort((a, b) => compareStrings(a.name, b.name));
     setChangeRequestStatusTypes(types);
 
     if (hasAnyRole(['chpl-developer'])) {
