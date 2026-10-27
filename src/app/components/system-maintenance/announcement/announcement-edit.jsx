@@ -99,8 +99,10 @@ function ChplAnnouncementEdit(props) {
         minRows={6}
         sx={styles.fullWidth}
         name="text"
+        // No height here: MUI measures rows with a hidden copy of the textarea
+        // that gets this style too, so a fixed height makes every row that tall
         inputProps={{
-          style: { height: 132, padding: 0 },
+          style: { padding: 0 },
         }}
         label="Text"
         value={formik.values.text}

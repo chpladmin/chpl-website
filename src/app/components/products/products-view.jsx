@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Card, CardContent, CardHeader, GlobalStyles, Typography,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
 } from '@mui/material';
 import { arrayOf, func } from 'prop-types';
 
@@ -36,18 +40,8 @@ const styles = {
   },
 };
 
-const globalStyles = {
-  '.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded': {
-    width: '300px !important',
-    right: '0 !important',
-    [theme.breakpoints.up('sm')]: {
-      width: '600px !important',
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '750px !important',
-    },
-  },
-};
+// The products card is narrow, so its filter panel has a size of its own
+const filterPanelWidth = { xs: '300px', sm: '600px', md: '750px' };
 
 const includeListing = (listing, params) => {
   let include = true;
@@ -108,13 +102,13 @@ function ChplProductsView({ products = [], dispatch }) {
 
   return (
     <Card>
-      <GlobalStyles styles={globalStyles} />
       <CardHeader
         title="Products"
       />
       <CardContent>
         <ChplFilterSearchBar
           hideSearchTerm
+          panelWidth={filterPanelWidth}
         />
         <ChplFilterLayout mobileOnly>
           <Box sx={styles.tableResultsHeaderContainer}>

@@ -3,7 +3,9 @@ import { Box, Skeleton } from '@mui/material';
 import {
   arrayOf,
   bool,
+  number,
   object,
+  oneOfType,
   string,
 } from 'prop-types';
 
@@ -72,6 +74,8 @@ function ChplFilterSearchBar({
   fadeBackground = palette.backgroundPage,
   hideAdvancedSearch = false,
   hideSearchTerm = false,
+  panelExtraWidth = undefined,
+  panelWidth = undefined,
   placeholder = 'Search by Developer, Product, or CHPL ID...',
   sticky = false,
   toggleMultipleFilters = undefined,
@@ -129,7 +133,7 @@ function ChplFilterSearchBar({
         <ChplFilterBrowse />
         { !hideAdvancedSearch
           && (
-            <ChplFilterPanel />
+            <ChplFilterPanel extraWidth={panelExtraWidth} width={panelWidth} />
           )}
         { filters.some((f) => f.key === 'quickFilters')
           && (
@@ -159,6 +163,8 @@ ChplFilterSearchBar.propTypes = {
   fadeBackground: string,
   hideAdvancedSearch: bool,
   hideSearchTerm: bool,
+  panelExtraWidth: string,
+  panelWidth: oneOfType([number, string, object]),
   placeholder: string,
   sticky: bool,
   toggleMultipleFilters: arrayOf(object),

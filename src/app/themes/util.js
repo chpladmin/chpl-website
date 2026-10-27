@@ -20,6 +20,11 @@ const util = {
       color: palette.errorDark,
       backgroundColor: palette.errorLight,
     },
+    // Disabled takes MUI's grey, so the red border goes too. Transparent rather
+    // than none, so the button keeps its size when it's enabled
+    '&.Mui-disabled': {
+      border: '1px solid transparent',
+    },
   },
   deleteButtonOutlined: {
     border: '1px solid #c44f65 !important',

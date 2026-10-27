@@ -21,6 +21,20 @@ const snackbarClasses = {
 const variantStyles = (backgroundColor, color, buttonColor, buttonBorderColor = buttonColor) => ({
   backgroundColor: `${backgroundColor} !important`,
   color: `${color} !important`,
+  // notistack lets the row wrap, so a long message pushes the Dismiss button
+  // onto a line of its own. Keep them side by side and wrap the message's text
+  // instead, except on narrow screens where there's no room for both
+  flexWrap: 'nowrap !important',
+  [theme.breakpoints.down('sm')]: {
+    flexWrap: 'wrap !important',
+  },
+  '& .SnackbarItem-message': {
+    flex: '1 1 auto',
+    minWidth: 0,
+  },
+  '& .SnackbarItem-action': {
+    flexShrink: 0,
+  },
   '& .MuiButton-root, & .MuiButton-root:hover': {
     backgroundColor: palette.white,
     border: `1px solid ${buttonBorderColor}`,

@@ -683,12 +683,21 @@ const theme = createTheme({
           paddingTop: '14.5px',
           paddingBottom: '10px',
         },
+        // v4 let its own dense multiline padding beat this override; v5 doesn't, so restore it for small
         multiline: {
           paddingTop: '14.5px',
           paddingBottom: '10px',
+          '&.MuiInputBase-sizeSmall': {
+            paddingTop: '10.5px',
+            paddingBottom: '10.5px',
+          },
         },
+        // the multiline root carries the padding; without this the input/inputSizeSmall padding above stacks on the textarea too
+        // v5 also raised the row height from v4's 1.1876em
         inputMultiline: {
           height: '256px',
+          padding: 0,
+          lineHeight: '1.1876em',
         },
       },
     },
