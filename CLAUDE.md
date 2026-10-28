@@ -244,3 +244,23 @@ Fill in these rows when drafting, and leave the rest blank for people to complet
 
 - Include only manual checks. Leave out anything automated, such as `yarn test`, `yarn lint`, `yarn build`, or bundle and grep checks: the build process runs those, so the testers never do. Report automated results in the PR description's testing section instead.
 - Number the sections from 1, starting with the first manual check. The header table is not numbered.
+
+### Test step tables
+
+Every table of test steps, in every section, has these ten columns in this order:
+
+```markdown
+| ID | Role(s) | Test Case Description | Test Steps | Test Data / Notes | Expected Result | Actual Result | Test Result | Automation? | Comments |
+|---|---|---|---|---|---|---|---|---|---|
+```
+
+Fill in the first six with your best guess, and leave the last four (Actual Result, Test Result, Automation?, Comments) empty for the testers.
+
+- **ID**: `<section>.<row>`, e.g. `3.2`. Other rows and sections may refer to a row by its ID.
+- **Role(s)**: who runs the row, using the CHPL role names `ROLE_ADMIN`, `ROLE_ONC`, `ROLE_ACB` and `ROLE_DEVELOPER`, plus `Anonymous` for logged out, `Any logged-in` and `Any`. Comma-separate several. The role goes here, not in a section's introduction or in the steps.
+- **Test Case Description**: a short phrase saying what the row verifies.
+- **Test Steps**: the actions only, as a numbered list with one step per line. Table cells can't hold real line breaks, so separate the steps with `<br>`: `1. Open #/search<br>2. Click **Compare** on three listings`.
+- **Test Data / Notes**: addresses, the listings, accounts or flag states the row needs, which earlier row it continues from, and comparisons against STG ("on STG this still shows the earlier list").
+- **Expected Result**: what the tester should see, as an unnumbered `•` list separated by `<br>`, each item naming the step it applies to: `• Step 2: the widget opens listing all three<br>• Step 3: the compare page opens`.
+
+A section can keep a short introduction above its table for shared, non-role setup, such as "Have listings in both widgets."
