@@ -8,6 +8,7 @@ import {
   CardHeader,
   Divider,
   MenuItem,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
@@ -18,7 +19,9 @@ import {
   ChplLink,
   ChplPageBody,
   ChplPageHeader,
+  ChplSkeletonCard,
   ChplTextField,
+  skeletonLineColor,
 } from 'components/util';
 import { ChplApiKeyRegistration } from 'components/api-key';
 import { eventTrack } from 'services/analytics.service';
@@ -35,6 +38,9 @@ const styles = {
   },
   fullWidth: {
     gridColumn: '1 / -1',
+  },
+  hidden: {
+    display: 'none',
   },
   pageBody: {
     display: 'flex',
@@ -153,18 +159,6 @@ const styles = {
       marginTop: '.7em',
     },
   },
-  warningBox: {
-    padding: '16px',
-    backgroundColor: palette.warningLight,
-    border: `1px solid ${palette.grey}`,
-    borderRadius: '4px',
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: '4px',
-    marginBottom: '16px',
-    gridGap: '16px',
-    alignItems: 'center',
-  },
 };
 
 const allOptions = [
@@ -173,6 +167,50 @@ const allOptions = [
   '2014 edition products',
   '2011 edition products',
 ];
+
+// The Swagger UI card: the API title, then a row per group of operations
+const loadingStyles = {
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    padding: '48px 16px 16px',
+  },
+  info: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: '24px',
+  },
+  group: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '16px',
+    padding: '12px 0',
+    borderBottom: `1px solid ${skeletonLineColor}`,
+  },
+};
+
+const groupWidths = ['20%', '28%', '16%', '24%', '30%', '18%', '22%', '26%'];
+
+function ChplApiSwaggerLoading() {
+  return (
+    <ChplSkeletonCard>
+      <Box sx={loadingStyles.content} aria-hidden="true">
+        <Box sx={loadingStyles.info}>
+          <Skeleton variant="text" width="30%" height={40} />
+          <Skeleton variant="text" width="45%" height={22} />
+        </Box>
+        { groupWidths.map((width) => (
+          <Box key={width} sx={loadingStyles.group}>
+            <Skeleton variant="text" width={width} height={32} />
+            <Skeleton variant="circular" width={20} height={20} />
+          </Box>
+        ))}
+      </Box>
+    </ChplSkeletonCard>
+  );
+}
 
 function ChplResourcesApi() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
@@ -185,6 +223,15 @@ function ChplResourcesApi() {
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('Active products');
   const url = `${window.location.href.split('#')[0]}rest/v3/api-docs`;
+  // Swagger UI fetches the definition itself after it mounts, so it renders
+  // hidden behind a skeleton until it is done. If onComplete never comes, as
+  // when the definition can't be fetched, show it anyway so its error is seen
+  const [swaggerIsReady, setSwaggerIsReady] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setSwaggerIsReady(true), 10000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     const data = {
@@ -347,12 +394,14 @@ function ChplResourcesApi() {
               </AnalyticsContext.Provider>
             </Box>
           </Box>
-          <Card sx={styles.fullWidth}>
+          { !swaggerIsReady && <ChplApiSwaggerLoading /> }
+          <Card sx={[styles.fullWidth, !swaggerIsReady && styles.hidden]}>
             <CardContent sx={styles.swaggerCardContent}>
               <SwaggerUI
                 url={url}
                 docExpansion="none"
                 supportedSubmitMethods={[]}
+                onComplete={() => setSwaggerIsReady(true)}
               />
             </CardContent>
           </Card>

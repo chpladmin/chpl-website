@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Chip, FormControlLabel, MenuItem, Switch,
+  Box,
+  Chip,
+  FormControlLabel,
+  MenuItem,
+  Switch,
 } from '@mui/material';
 import {
   arrayOf,

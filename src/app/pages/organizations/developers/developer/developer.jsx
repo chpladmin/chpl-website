@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {
-  CircularProgress,
-} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { number, oneOfType, string } from 'prop-types';
 
 import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperJoin from './developer-join';
+import ChplDeveloperLoading from './developer-loading';
 import ChplDeveloperSplit from './developer-split';
 import ChplDeveloperView from './developer-view';
 import ChplProductEdit from './product-edit';
@@ -125,7 +123,7 @@ function ChplDeveloperPage({ id }) {
   };
 
   if (isLoading || !isSuccess || !developer) {
-    return <CircularProgress />;
+    return <ChplDeveloperLoading />;
   }
 
   const developerState = {

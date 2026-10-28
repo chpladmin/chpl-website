@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Accordion, AccordionDetails, AccordionSummary, Box, Button, Typography,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Typography,
 } from '@mui/material';
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import ArrowUpward from '@mui/icons-material/ArrowUpward';
@@ -9,7 +14,7 @@ import { number, object } from 'prop-types';
 import ChplQuarterEditListingSurveillance from './quarter-edit-listing-surveillance';
 
 import { getDisplayDateFormat } from 'services/date-util';
-import { utilStyles, palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const styles = {
   ...utilStyles,

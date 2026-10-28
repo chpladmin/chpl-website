@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, Card, CardContent, Chip, FormControlLabel, Switch, Typography,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  FormControlLabel,
+  Skeleton,
+  Switch,
+  Typography,
 } from '@mui/material';
 import { bool } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
 
+import { ChplSkeletonCard } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { compareStrings } from 'services/sort.service';
-import { palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const styles = {
   filterContainer: {
@@ -68,6 +77,10 @@ const styles = {
     width: '100%',
     maxHeight: '50vh',
     overflowY: 'auto',
+  },
+  // Same padding as the CardContent of the filter card
+  loadingContent: {
+    padding: '16px',
   },
 };
 
@@ -132,6 +145,31 @@ function ChplFilterChips({ horizontal = false }) {
     }
     filterContext.dispatch('toggleShowAll', f);
   };
+
+  if (filterContext.isLoading) {
+    return (
+      <Box component="span" sx={styles.filterContainer} role="status" aria-live="polite">
+        <Box component="span" sx={utilStyles.visuallyHidden}>Loading filters</Box>
+        <ChplSkeletonCard sx={[styles.card, styles.loadingContent]}>
+          <Box aria-hidden="true">
+            <Skeleton variant="text" width="50%" height={22} />
+            <Box sx={styles.filterChipsContainer}>
+              { [3, 2].map((chips, groupIdx) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Box key={groupIdx} sx={[styles.filterSelectedContainer, horizontal && styles.filterSelectedContainerHorizontal]}>
+                  <Skeleton variant="text" width="65%" height={24} sx={horizontal ? styles.filterGroupTitleHorizontal : undefined} />
+                  { [...Array(chips)].map((_chip, chipIdx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Skeleton key={chipIdx} variant="rounded" width={`${80 - (chipIdx * 15)}%`} height={24} sx={{ borderRadius: '16px', maxWidth: horizontal ? '160px' : undefined }} />
+                  ))}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </ChplSkeletonCard>
+      </Box>
+    );
+  }
 
   if (filters.length === 0) { return null; }
 

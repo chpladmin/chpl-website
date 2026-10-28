@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemIcon,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -19,16 +20,23 @@ import {
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import WarningIcon from '@mui/icons-material/Warning';
 import { ExportToCsv } from 'export-to-csv';
+import { number } from 'prop-types';
 
 import { useFetchListings } from 'api/cms';
 import ChplChips from 'components/cms/chips';
 import ChplSearchTerm from 'components/cms/search-term';
-import { ChplLink, ChplPageBody, ChplPageHeader } from 'components/util';
+import {
+  ChplLink,
+  ChplLoadingTable,
+  ChplPageBody,
+  ChplPageHeader,
+  ChplSkeletonCard,
+} from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { eventTrack } from 'services/analytics.service';
 import { useLocalStorage as useStorage } from 'services/storage.service';
 import { FlagContext, useAnalyticsContext } from 'shared/contexts';
-import { palette } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const csvOptions = {
   filename: 'cms-id-data',
@@ -62,6 +70,43 @@ const styles = {
   wrap: {
     flexFlow: 'wrap',
   },
+};
+
+const loadingStyles = {
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    padding: '16px',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+};
+
+// The results card while the CMS IDs are looked up: the download button above
+// a table of the same columns. The lookup form above it stays real, since it
+// does not wait on anything
+function ChplCmsLookupLoading({ columns, rows }) {
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading CMS ID results</Box>
+      <ChplSkeletonCard>
+        <Box sx={loadingStyles.content} aria-hidden="true">
+          <Box sx={loadingStyles.header}>
+            <Skeleton variant="rectangular" width={180} height={32} sx={{ borderRadius: '4px' }} />
+          </Box>
+          <ChplLoadingTable columns={columns} rows={rows} showControls={false} />
+        </Box>
+      </ChplSkeletonCard>
+    </Box>
+  );
+}
+
+ChplCmsLookupLoading.propTypes = {
+  columns: number.isRequired,
+  rows: number.isRequired,
 };
 
 function ChplCmsLookup() {
@@ -180,7 +225,11 @@ function ChplCmsLookup() {
               </Box>
             </CardContent>
           </Card>
-          { listings.length > 0
+          { !finishedLoading
+            && (
+              <ChplCmsLookupLoading columns={headers.length} rows={Math.max(cmsIds.length, 3)} />
+            )}
+          { finishedLoading && listings.length > 0
           && (
             <Card>
               <CardContent>

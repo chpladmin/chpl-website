@@ -129,6 +129,7 @@ function ChplSvapSearchPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={acbQuery.isLoading || ccQuery.isLoading || svapQuery.isLoading}
         storageKey="storageKey-svapPage"
       >
         <ChplSvapSearchView />

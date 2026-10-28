@@ -5,7 +5,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -17,7 +16,7 @@ import {
 import { func } from 'prop-types';
 
 import { useFetchSbuls } from 'api/developer';
-import { ChplLink } from 'components/util';
+import { ChplLink, ChplLoadingSection } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -50,7 +49,7 @@ function ChplSbulsView({ developer, dispatch }) {
   };
 
   if (isError || isLoading) {
-    return <CircularProgress />;
+    return <ChplLoadingSection rows={3} />;
   }
 
   return (

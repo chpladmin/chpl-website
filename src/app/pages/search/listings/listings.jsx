@@ -186,6 +186,7 @@ function ChplListingsPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={acbQuery.isLoading || ccQuery.isLoading || cqmQuery.isLoading || standardsQuery.isLoading}
         storageKey="storageKey-listingsPage"
       >
         <ChplListingsView />

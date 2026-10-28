@@ -108,7 +108,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
               >
                 Revoke key
               </Button>
-          )}
+            )}
           />
         ))}
       </Box>

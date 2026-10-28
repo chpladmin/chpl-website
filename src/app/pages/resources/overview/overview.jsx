@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Divider,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -24,8 +25,10 @@ import { useFetchAnnouncements } from 'api/announcements';
 import { useFetchAtls } from 'api/atls';
 import {
   ChplLink,
+  ChplLoadingPage,
   ChplPageBody,
   ChplPageHeader,
+  ChplSkeletonCard,
   InternalScrollButton,
 } from 'components/util';
 import { compareStrings } from 'services/sort.service';
@@ -95,6 +98,105 @@ const getOrgs = (query, key) => {
     .sort((a, b) => compareStrings(a.name, b.name));
 };
 
+// Same layout as ChplResourcesOverview: the section navigation card beside the
+// column of section cards, the last of them holding the ONC-ACB and ONC-ATL table
+const loadingStyles = {
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: 'minmax(220px, auto) 1fr',
+    },
+  },
+  navigation: {
+    height: 'min-content',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '4px',
+    padding: '8px',
+    overflowX: 'hidden',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'column',
+      gap: 0,
+    },
+  },
+  navigationItem: {
+    padding: '6px 8px',
+    flex: '0 0 auto',
+  },
+  content: {
+    display: 'grid',
+    gap: '16px',
+  },
+  section: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    padding: '16px',
+  },
+  tableRow: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 3fr',
+    gap: '16px',
+    padding: '8px 0',
+  },
+};
+
+// Announcements, What is the CHPL, Recommended Web Browsers, Using the CHPL
+// Website, ONC Certification Program, For EHR Developers, ONC-ACB and ONC-ATL
+// Information
+const navigationWidths = [140, 150, 190, 170, 200, 140, 210];
+const sections = [
+  { title: '30%', lines: ['100%', '95%', '70%'] },
+  { title: '40%', lines: ['90%', '60%'] },
+  { title: '35%', lines: ['100%', '95%', '100%', '80%', '65%'] },
+  { title: '45%', lines: ['100%', '90%', '75%'] },
+  { title: '30%', lines: ['95%', '85%'] },
+];
+
+function ChplOverviewLoading() {
+  return (
+    <ChplLoadingPage label="Loading CHPL overview">
+      <Box sx={loadingStyles.pageBody}>
+        <ChplSkeletonCard sx={loadingStyles.navigation}>
+          { navigationWidths.map((width) => (
+            <Box key={width} sx={loadingStyles.navigationItem}>
+              <Skeleton variant="text" width={width} height={28} />
+            </Box>
+          ))}
+        </ChplSkeletonCard>
+        <Box sx={loadingStyles.content}>
+          { sections.map((section, sectionIdx) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <ChplSkeletonCard key={sectionIdx}>
+              <Box sx={loadingStyles.section}>
+                <Skeleton variant="text" width={section.title} height={32} />
+                { section.lines.map((width, lineIdx) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <Skeleton key={lineIdx} variant="text" width={width} height={22} />
+                ))}
+              </Box>
+            </ChplSkeletonCard>
+          ))}
+          <ChplSkeletonCard>
+            <Box sx={loadingStyles.section}>
+              <Skeleton variant="text" width="45%" height={32} />
+              {[...Array(6)].map((_row, rowIdx) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Box key={rowIdx} sx={loadingStyles.tableRow}>
+                  <Skeleton variant="text" width="80%" height={22} />
+                  <Skeleton variant="text" width="60%" height={22} />
+                </Box>
+              ))}
+            </Box>
+          </ChplSkeletonCard>
+        </Box>
+      </Box>
+    </ChplLoadingPage>
+  );
+}
+
 function ChplResourcesOverview() {
   const analytics = {
     ...useAnalyticsContext().analytics,
@@ -111,6 +213,12 @@ function ChplResourcesOverview() {
     }
     setAnnouncements([...data].sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess]);
+
+  // Announcements and the ONC-ACB and ONC-ATL table would otherwise appear late
+  // and push the sections below them, and the navigation anchors, down the page
+  if (isLoading || acbQuery.isLoading || atlQuery.isLoading) {
+    return <ChplOverviewLoading />;
+  }
 
   return (
     <>

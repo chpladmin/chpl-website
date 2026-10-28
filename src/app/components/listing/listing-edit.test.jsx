@@ -107,4 +107,21 @@ describe('the listing edit form', () => {
 
     expect(openSelect(/^ONC-ATL/)).toEqual(['drummond', 'ICSA Labs', 'SLI Compliance']);
   });
+
+  describe('while its options load', () => {
+    it('shows a skeleton of the form, and none of the form itself', () => {
+      useFetchAtls.mockReturnValue({ data: undefined, isLoading: true, isSuccess: false });
+      renderView();
+
+      expect(screen.getByRole('status')).toHaveTextContent('Loading listing edit form');
+      expect(screen.queryByText('Edit Listing')).not.toBeInTheDocument();
+    });
+
+    it('shows the form once they have loaded', () => {
+      renderView();
+
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+      expect(screen.getByText('Edit Listing')).toBeInTheDocument();
+    });
+  });
 });

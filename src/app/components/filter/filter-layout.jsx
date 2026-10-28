@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, Card, CardContent, Chip, Collapse, Typography, useMediaQuery,
+  Box, Button, Card, CardContent, Chip, Collapse, Skeleton, Typography, useMediaQuery,
 } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import LabelOffIcon from '@mui/icons-material/LabelOff';
@@ -117,6 +117,23 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
   useEffect(() => {
     if (isDesktop) { setExpanded(false); }
   }, [isDesktop]);
+
+  // Hold the sidebar with a chips skeleton while filter values load, rather than
+  // flashing the "No filters applied" message before the defaults arrive
+  if (filterContext.isLoading) {
+    return (
+      <Box sx={mobileOnly ? styles.layoutContainerMobileOnly : styles.layoutContainer}>
+        <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
+          {isDesktop
+            ? <ChplFilterChips />
+            : <Skeleton variant="rectangular" height={36} sx={{ borderRadius: '4px' }} />}
+        </Box>
+        <Box sx={styles.content}>
+          {children}
+        </Box>
+      </Box>
+    );
+  }
 
   if (!hasAppliedFilters) {
     return (

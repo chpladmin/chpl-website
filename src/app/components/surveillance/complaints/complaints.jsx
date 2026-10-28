@@ -184,6 +184,7 @@ function ChplComplaints({
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={acbQuery.isLoading}
         storageKey="storageKey-complaintsComponent"
       >
         <Box sx={styles.fixFooterSpacing}>

@@ -1,11 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
-  Box, Button, Card, CardActions, CardContent, Chip, Typography,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Chip,
+  Skeleton,
+  Typography,
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AddIcon from '@mui/icons-material/Add';
 import { useSnackbar } from 'notistack';
-import { oneOf } from 'prop-types';
+import { bool, oneOf } from 'prop-types';
 
 import {
   useDeleteUserFromAcb,
@@ -16,6 +28,7 @@ import {
 import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
+import { ChplLoadingSection, ChplSkeletonCard } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareOrganizations } from 'services/sort.service';
 import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -50,11 +63,70 @@ const styles = {
   },
 };
 
+const loadingStyles = {
+  // A menu Button: its 8px padding around a line of text
+  menuItem: {
+    padding: '8px',
+  },
+  maintenance: {
+    padding: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+};
+
+// ONC staff see the menu of organizations beside the maintenance card. Anyone
+// else usually has a single organization, which opens straight away: its card,
+// and for an ONC-ACB the card of its users
+function ChplOncOrganizationsLoading({ orgType, showMenu }) {
+  const label = orgType === 'acb' ? 'Loading ONC-ACBs' : 'Loading ONC-ATLs';
+  if (!showMenu) {
+    return (
+      <Box role="status" aria-live="polite">
+        <Box component="span" sx={utilStyles.visuallyHidden}>{ label }</Box>
+        <Box display="flex" flexDirection="column" gap="16px" aria-hidden="true">
+          <ChplLoadingSection announce={false} rows={5} />
+          { orgType === 'acb'
+            && <ChplLoadingSection announce={false} rows={3} />}
+        </Box>
+      </Box>
+    );
+  }
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>{ label }</Box>
+      <Box sx={styles.container} aria-hidden="true">
+        <Box sx={styles.navigation}>
+          <ChplSkeletonCard>
+            {[...Array(6)].map((_org, idx) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Box key={idx} sx={loadingStyles.menuItem}>
+                <Skeleton variant="text" width="70%" height={24} />
+              </Box>
+            ))}
+          </ChplSkeletonCard>
+        </Box>
+        <ChplSkeletonCard sx={loadingStyles.maintenance}>
+          <Skeleton variant="text" width="40%" height={24} />
+          <Skeleton variant="rectangular" width={100} height={36} sx={{ borderRadius: '4px' }} />
+        </ChplSkeletonCard>
+      </Box>
+    </Box>
+  );
+}
+
+ChplOncOrganizationsLoading.propTypes = {
+  orgType: oneOf(['acb', 'atl']).isRequired,
+  showMenu: bool.isRequired,
+};
+
+const none = [];
+
 function ChplOncOrganizations({ orgType = 'acb' }) {
   const { hasAnyRole } = useContext(UserContext);
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
-  const [orgs, setOrgs] = useState([]);
   const [activeId, setActiveId] = useState(undefined);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
@@ -63,27 +135,20 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
   const { mutate: invite } = usePostUserInvitation();
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
+  const orgQuery = orgType === 'acb' ? acbQuery : atlQuery;
+  const orgs = useMemo(() => {
+    if (!orgQuery.data) { return none; }
+    return [...(orgType === 'acb' ? orgQuery.data.acbs : orgQuery.data.atls)].sort(compareOrganizations);
+  }, [orgQuery.data, orgType]);
   const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
   const roles = ['chpl-onc-acb'];
   let analyticsData;
 
   useEffect(() => {
-    if (orgType !== 'acb') { return; }
-    if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
-    setOrgs([...acbQuery.data.acbs].sort(compareOrganizations));
-    if (acbQuery.data.acbs.length === 1) {
-      setActiveId(acbQuery.data.acbs[0].id);
+    if (orgs.length === 1) {
+      setActiveId(orgs[0].id);
     }
-  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess, orgType]);
-
-  useEffect(() => {
-    if (orgType !== 'atl') { return; }
-    if (atlQuery.isLoading || !atlQuery.isSuccess) { return; }
-    setOrgs([...atlQuery.data.atls].sort(compareOrganizations));
-    if (atlQuery.data.atls.length === 1) {
-      setActiveId(atlQuery.data.atls[0].id);
-    }
-  }, [atlQuery.data, atlQuery.isLoading, atlQuery.isSuccess, orgType]);
+  }, [orgs]);
 
   useEffect(() => {
     if (orgType !== 'acb') { return; }
@@ -156,6 +221,16 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
     },
   };
 
+  // A single organization opens straight away, so wait for it to be selected too
+  if (orgQuery.isLoading || (orgs.length === 1 && !activeId)) {
+    return (
+      <ChplOncOrganizationsLoading
+        orgType={orgType}
+        showMenu={hasAnyRole(['chpl-admin', 'chpl-onc'])}
+      />
+    );
+  }
+
   return (
     <AnalyticsContext.Provider value={analyticsData}>
       <Box sx={orgs.length > 1 ? styles.container : undefined}>
@@ -203,7 +278,7 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
                       groupNames={roles}
                       dispatch={handleDispatch}
                       organizationId={activeId}
-                      isLoading={userQuery.isLoading}
+                      isLoading={userQuery.isInitialLoading}
                     />
                   )}
               </>

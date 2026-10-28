@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
-  CircularProgress,
   List,
   ListItem,
+  Skeleton,
   Typography,
 } from '@mui/material';
 
@@ -33,7 +33,7 @@ function ChplCodeSetIndicator({ criterion }) {
     setEndDay(missingDays[0]);
   }, [criterion, relevantCodeSets]);
 
-  if (isLoading || isError) { return <CircularProgress />; }
+  if (isLoading || isError) { return <Skeleton variant="text" width={120} height={24} />; }
 
   if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
     return (
