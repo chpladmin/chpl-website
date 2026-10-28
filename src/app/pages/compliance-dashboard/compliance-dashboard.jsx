@@ -38,8 +38,6 @@ const reports = [{
   title: 'Important Dates',
   uniqueClass: 'lessTopMargin',
 }, {
-  title: 'Direct Review Activities',
-}, {
   title: 'Questionable URLs',
 }, {
   title: 'Questionable Activity',
@@ -55,6 +53,9 @@ const reports = [{
   isWide: true,
 }, {
   title: 'Updated Criteria Status',
+  isWide: true,
+}, {
+  title: 'Direct Review Activities',
   isWide: true,
 }, {
   title: 'Surveillance Activities',
