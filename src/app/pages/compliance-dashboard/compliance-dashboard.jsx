@@ -10,7 +10,7 @@ import {
 import Skeleton from '@mui/material/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
-import { ChplSkeletonCard } from 'components/util';
+import { ChplPageBody, ChplPageHeader, ChplSkeletonCard } from 'components/util';
 import { utilStyles } from 'themes';
 
 const styles = {
@@ -113,7 +113,17 @@ function ChplComplianceDashboard() {
   const { data, isLoading, isSuccess } = useFetchReportMetadata('onc-dashboard');
 
   if (isLoading) {
-    return <ChplComplianceDashboardLoading />;
+    return (
+      <>
+        <ChplPageHeader
+          text="Compliance Dashboard"
+          subtitle="A comprehensive view of compliance reports and metrics"
+        />
+        <ChplPageBody>
+          <ChplComplianceDashboardLoading />
+        </ChplPageBody>
+      </>
+    );
   }
 
   const reportMetadata = isSuccess ? data : [];
@@ -144,18 +154,26 @@ function ChplComplianceDashboard() {
   };
 
   return (
-    <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start">
-      <Grid item xs={12} md={4}>
-        <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
-          { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+    <>
+      <ChplPageHeader
+        text="Compliance Dashboard"
+        subtitle="A comprehensive view of compliance reports and metrics"
+      />
+      <ChplPageBody>
+        <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start">
+          <Grid item xs={12} md={4}>
+            <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
+              { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Grid container spacing={4}>
+              { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} md={8}>
-        <Grid container spacing={4}>
-          { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
-        </Grid>
-      </Grid>
-    </Grid>
+      </ChplPageBody>
+    </>
   );
 }
 

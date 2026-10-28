@@ -8,6 +8,7 @@ import { useFetchListings } from 'api/search';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
+import { usePageState } from 'components/page-state';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -28,7 +29,6 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette } from 'themes';
 
@@ -66,10 +66,10 @@ function ChplListingsView() {
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
   const [searchTermRecordCount, setSearchTermRecordCount] = useState(undefined);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'developer');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = usePageState(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const { dispatch, hasSearched, queryString } = useFilterContext();
 

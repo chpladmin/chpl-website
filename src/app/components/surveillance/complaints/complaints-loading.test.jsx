@@ -20,7 +20,9 @@ import { useFetchListings as useFetchListingsBasic } from 'api/listing';
 import { useFetchListings } from 'api/search';
 import { useFetchCriteria } from 'api/standards';
 import actionBarReducer from 'components/action-bar/actionBar.slice';
+import widgetReducer from 'components/action-widget/widget.slice';
 import { FilterProvider } from 'components/filter';
+import pageStateReducer from 'components/page-state/pageState.slice';
 import { UserContext } from 'shared/contexts';
 
 jest.mock('api/acbs', () => ({ useFetchAcbs: jest.fn() }));
@@ -55,7 +57,7 @@ const loaded = (data) => ({ data, isLoading: false, isSuccess: true });
 const loading = { data: undefined, isLoading: true, isSuccess: false };
 
 const renderWith = (ui) => render(
-  <Provider store={configureStore({ reducer: { actionBar: actionBarReducer } })}>
+  <Provider store={configureStore({ reducer: { actionBar: actionBarReducer, pageState: pageStateReducer, widget: widgetReducer } })}>
     <SnackbarProvider>
       <UserContext.Provider value={{ hasAnyRole: (roles) => roles.includes('chpl-onc') }}>
         { ui }

@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 
 import { useFetchTargetedUsers } from 'api/standards';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
+import { usePageState } from 'components/page-state';
 import {
   ChplLoadingCards,
   ChplPagination,
@@ -28,7 +29,6 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { certificationStatusOrder, compareCertificationStatuses, getStatusIcon } from 'services/listing.service';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -72,10 +72,10 @@ const getStatusKey = (status) => `status-${status.id}`;
 
 function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const storageKey = 'storageKey-targetedUsersView';
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'NAME');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'NAME');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = usePageState(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const [results, setResults] = useState([]);
   const apiKey = useSelector((state) => state.browserInfo.apiKey);

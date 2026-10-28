@@ -1,8 +1,12 @@
 import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchCriteria, useFetchSvaps } from 'api/standards';
+import widgetReducer from 'components/action-widget/widget.slice';
+import pageStateReducer from 'components/page-state/pageState.slice';
 import ChplDevelopersPage from 'pages/organizations/developers/developers';
 import ChplApiDocumentationSearchPage from 'pages/search/api-documentation/api-documentation';
 import ChplBannedDevelopersSearchPage from 'pages/search/banned-developers/banned-developers';
@@ -59,10 +63,16 @@ const mockQueries = (stillLoading) => {
   useFetchSvaps.mockReturnValue(stillLoading === 'svaps' ? loading : loaded([]));
 };
 
+// Pages keep their filter and table state in redux, and the search result
+// controls read which widget is open from it
+const store = () => configureStore({ reducer: { pageState: pageStateReducer, widget: widgetReducer } });
+
 const renderPage = (Page) => render(
-  <UserContext.Provider value={{ hasAnyRole: () => false }}>
-    <Page />
-  </UserContext.Provider>,
+  <Provider store={store()}>
+    <UserContext.Provider value={{ hasAnyRole: () => false }}>
+      <Page />
+    </UserContext.Provider>
+  </Provider>,
 );
 
 describe('the filter bar on search pages', () => {

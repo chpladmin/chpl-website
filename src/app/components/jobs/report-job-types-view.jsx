@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -81,30 +81,25 @@ const getAction = (item, dispatch) => {
 function ChplReportJobTypesView(props) {
   const { dispatch, jobTypes: initialJobTypes } = props;
   const { hasAnyRole } = useContext(UserContext);
-  const [jobTypes, setJobTypes] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
 
-  useEffect(() => {
-    setJobTypes(initialJobTypes
-      .map((job) => ({
-        ...job,
-        oncAcbSpecific: job.jobDataMap.acbSpecific ? 'Yes' : 'No',
-        action: getAction(job, dispatch),
-      }))
-      .sort(sortComparator('name')));
-  }, []);
+  // Built from the props on every change, so a report edited and saved opens with its saved values
+  const jobTypes = useMemo(() => initialJobTypes
+    .map((job) => ({
+      ...job,
+      oncAcbSpecific: job.jobDataMap.acbSpecific ? 'Yes' : 'No',
+      action: getAction(job, dispatch),
+    }))
+    .sort(sortComparator(orderBy, order === 'desc')), [dispatch, initialJobTypes, order, orderBy]);
 
   const filterHeaders = () => headers.filter((item) => hasAnyRole(['chpl-admin'])
                           || (item.property === 'oncAcbSpecific' && hasAnyRole(['chpl-onc']))
                           || (item.property !== 'oncAcbSpecific'));
 
   const handleTableSort = (event, property, orderDirection) => {
-    const descending = orderDirection === 'desc';
-    const updated = [...jobTypes].sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setJobTypes(updated);
   };
 
   return (

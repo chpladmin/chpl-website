@@ -8,10 +8,10 @@ import { arrayOf, bool, string } from 'prop-types';
 
 import { getDefaultValueEntry, getDateEntry, getDateTimeEntry } from './filters/value-entries';
 
+import { usePageState } from 'components/page-state';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { compareStrings } from 'services/sort.service';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { filter as filterPropType } from 'shared/prop-types';
 
@@ -181,13 +181,13 @@ function FilterProvider(props) {
     storageKey = '',
   } = props;
   const [filters, setFilters] = useState([]);
-  const [hasSearched, setHasSearched] = useStorage(`${storageKey}-hasSearched`, false);
-  const [operators, setOperators] = useStorage(`${storageKey}-operators`, {});
-  const [developersListingsCriteriaOptions, setDevelopersListingsCriteriaOptions] = useStorage(`${storageKey}-developersListingsCriteriaOptions`, {});
+  const [hasSearched, setHasSearched] = usePageState(`${storageKey}-hasSearched`, false);
+  const [operators, setOperators] = usePageState(`${storageKey}-operators`, {});
+  const [developersListingsCriteriaOptions, setDevelopersListingsCriteriaOptions] = usePageState(`${storageKey}-developersListingsCriteriaOptions`, {});
   const { analytics } = useAnalyticsContext();
   const [searchTerm, setSearchTerm] = useState('');
-  const [storedSearchTerm, setStoredSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
-  const [values, setValues] = useStorage(`${storageKey}-values`, {});
+  const [storedSearchTerm, setStoredSearchTerm] = usePageState(`${storageKey}-searchTerm`, '');
+  const [values, setValues] = usePageState(`${storageKey}-values`, {});
 
   useEffect(() => {
     if (!storageKey) { return; }

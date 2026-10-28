@@ -1,7 +1,5 @@
 import { AnalyticsContext, AnalyticsProvider, useAnalyticsContext } from './analytics-context';
 import ChangeRequestContext from './change-request-context';
-import CmsContext from './cms-context';
-import CompareContext from './compare-context';
 import CriterionContext from './criterion-context';
 import DeveloperContext from './developer-context';
 import FlagContext from './flag-context';
@@ -15,8 +13,6 @@ export {
   AnalyticsContext,
   AnalyticsProvider,
   ChangeRequestContext,
-  CmsContext,
-  CompareContext,
   CriterionContext,
   DeveloperContext,
   FlagContext,
