@@ -13,9 +13,8 @@ import {
   MenuItem,
   Tooltip,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   arrayOf,
   bool,
@@ -24,7 +23,7 @@ import {
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Add, Close, Save } from '@material-ui/icons';
+import { Add, Close, Save } from '@mui/icons-material';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
@@ -35,6 +34,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { compareCertificationStatuses } from 'services/listing.service';
 import { compareStrings } from 'services/sort.service';
 import { FlagContext, ListingContext, UserContext } from 'shared/contexts';
+import { utilStyles } from 'themes';
 
 const validationSchema = yup.object({
   acbCertificationId: yup.string()
@@ -70,20 +70,27 @@ const validationSchema = yup.object({
     .url('Improper format (http://www.example.com)'),
 });
 
-const useStyles = makeStyles({
-  deleteButton: {
-    border: '1px solid #c44f65',
-    backgroundColor: '#FFFFFF',
-    color: '#c44f65',
-    '&:hover': {
-      border: '1px solid #853544',
-      color: '#853544',
-    },
+const styles = {
+  atlListItem: {
+    marginBottom: '8px',
+    border: '1px solid #c2c6ca',
+    borderRadius: '4px',
+    paddingBottom: '4px',
   },
   tooltipText: {
     fontSize: '1.5em !important',
   },
-});
+  statusListItem: {
+    marginBottom: '8px',
+    border: '1px solid #c2c6ca',
+    borderRadius: '4px',
+    paddingBottom: '4px',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
+    alignItems: 'center',
+  },
+};
 
 function ChplListingEdit({
   dispatch,
@@ -110,7 +117,6 @@ function ChplListingEdit({
   const { data: statusesData, isLoading: statusesIsLoading, isSuccess: statusesIsSuccess } = useFetchCertificationStatuses();
   const { data: acbsData, isLoading: acbsIsLoading, isSuccess: acbsIsSuccess } = useFetchAcbs();
   const { data: atlsData, isLoading: atlsIsLoading, isSuccess: atlsIsSuccess } = useFetchAtls();
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -242,12 +248,12 @@ function ChplListingEdit({
           title="Edit Listing"
         />
         <CardContent>
-          <Box display="flex" padding={4} justifyContent="space-around" gridGap={16} flexDirection="column">
+          <Box display="flex" padding={4} justifyContent="space-around" gap="16px" flexDirection="column">
             { /* CHPL Product Number */}
             <Typography variant="h6">
               CHPL Product Number
             </Typography>
-            <Box display="flex" justifyContent="space-around" alignItems="baseline" gridGap={8} flexDirection="row">
+            <Box display="flex" justifyContent="space-around" alignItems="baseline" gap="8px" flexDirection="row">
               <Typography>
                 { listing.chplProductNumber.split('.').slice(0, 4).join('.') }
               </Typography>
@@ -291,7 +297,7 @@ function ChplListingEdit({
             <Divider />
 
             { /* Certification Events */}
-            <Box display="flex" gridGap={8} flexDirection="column">
+            <Box display="flex" gap="8px" flexDirection="column">
               <Typography variant="h6">
                 Certification Status
               </Typography>
@@ -300,17 +306,8 @@ function ChplListingEdit({
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                   .map((status, idx, arr) => (
                     <ListItem
-                      style={{
-                        marginBottom: '8px',
-                        border: '1px solid #c2c6ca',
-                        borderRadius: '4px',
-                        paddingBottom: '4px',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: '16px',
-                        alignItems: 'center',
-                      }}
                       key={status.eventDay}
+                      sx={styles.statusListItem}
                     >
                       <Box flexGrow={1}>
                         {status.status.name}
@@ -322,10 +319,12 @@ function ChplListingEdit({
                       { idx === 0 && status.status.name === 'Terminated by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;</Typography> }
                       { idx === 0 && status.status.name === 'Suspended by ONC' && <Typography>Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;</Typography> }
                       { idx === 0 && status.status.name === 'Withdrawn by Developer' && <Typography>Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;</Typography> }
-                      <Tooltip className={classes.tooltipText} arrow title="Delete">
-                        <IconButton
-                          onClick={() => removeStatus(status)}
-                        >
+                      <Tooltip
+                        arrow
+                        componentsProps={{ tooltip: { sx: styles.tooltipText } }}
+                        title="Delete"
+                      >
+                        <IconButton onClick={() => removeStatus(status)} size="large">
                           <DeleteIcon color="error" />
                         </IconButton>
                       </Tooltip>
@@ -333,110 +332,110 @@ function ChplListingEdit({
                   ))}
               </List>
               { !addingStatus
-                && (
-                  <div>
-                    <Button
-                      onClick={() => setAddingStatus(true)}
-                      endIcon={<Add />}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      Add Certification Status
-                    </Button>
-                  </div>
-                )}
+              && (
+                <div>
+                  <Button
+                    onClick={() => setAddingStatus(true)}
+                    endIcon={<Add />}
+                    color="primary"
+                    variant="outlined"
+                  >
+                    Add Certification Status
+                  </Button>
+                </div>
+              )}
             </Box>
             { addingStatus
-              && (
-                <>
-                  <Box display="flex" justifyContent="space-around" gridGap={8} flexDirection="column">
-                    <ChplTextField
-                      select
-                      id="status"
-                      name="status"
-                      label="Certification Status"
-                      required
-                      value={statusToAdd}
-                      onChange={(event) => setStatusToAdd(event.target.value)}
-                    >
-                      {statuses
-                        .map((item) => (
-                          <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                        ))}
-                    </ChplTextField>
-                    <ChplTextField
-                      id="event-day-to-add"
-                      name="eventDayToAdd"
-                      label="Effective Date"
-                      type="date"
-                      required
-                      value={eventDayToAdd}
-                      onChange={(event) => setEventDayToAdd(event.target.value)}
-                    />
-                    <ChplTextField
-                      id="reson-to-add"
-                      name="reasonToAdd"
-                      label="Reason"
-                      value={reasonToAdd}
-                      onChange={(event) => setReasonToAdd(event.target.value)}
-                    />
-                  </Box>
-                  <Box py={2} display="flex" justifyContent="flex-start" gridGap={8} flexDirection="row">
-                    <Button
-                      onClick={() => addStatus()}
-                      disabled={statusToAdd === '' || eventDayToAdd === ''}
-                      endIcon={<Save />}
-                      color="primary"
-                      variant="contained"
-                    >
-                      Save Certification Status
-                    </Button>
-                    <Button
-                      onClick={() => setAddingStatus(false)}
-                      endIcon={<Close />}
-                      className={classes.deleteButton}
-                      variant="contained"
-                    >
-                      Cancel adding Certification Status
-                    </Button>
-                  </Box>
-                </>
-              )}
+            && (
+              <>
+                <Box display="flex" justifyContent="space-around" gap="8px" flexDirection="column">
+                  <ChplTextField
+                    select
+                    id="status"
+                    name="status"
+                    label="Certification Status"
+                    required
+                    value={statusToAdd}
+                    onChange={(event) => setStatusToAdd(event.target.value)}
+                  >
+                    {statuses
+                      .map((item) => (
+                        <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                      ))}
+                  </ChplTextField>
+                  <ChplTextField
+                    id="event-day-to-add"
+                    name="eventDayToAdd"
+                    label="Effective Date"
+                    type="date"
+                    required
+                    value={eventDayToAdd}
+                    onChange={(event) => setEventDayToAdd(event.target.value)}
+                  />
+                  <ChplTextField
+                    id="reson-to-add"
+                    name="reasonToAdd"
+                    label="Reason"
+                    value={reasonToAdd}
+                    onChange={(event) => setReasonToAdd(event.target.value)}
+                  />
+                </Box>
+                <Box py={2} display="flex" justifyContent="flex-start" gap="8px" flexDirection="row">
+                  <Button
+                    onClick={() => addStatus()}
+                    disabled={statusToAdd === '' || eventDayToAdd === ''}
+                    endIcon={<Save />}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Save Certification Status
+                  </Button>
+                  <Button
+                    onClick={() => setAddingStatus(false)}
+                    endIcon={<Close />}
+                    variant="contained"
+                    sx={utilStyles.deleteButton}
+                  >
+                    Cancel adding Certification Status
+                  </Button>
+                </Box>
+              </>
+            )}
             <Divider />
 
             { /* ACB & ATL */}
-            <Box display="flex" gridGap={12} flexDirection="column">
+            <Box display="flex" gap="12px" flexDirection="column">
               <Typography variant="h6">
                 ONC-ACB
               </Typography>
               { hasAnyRole(['chpl-admin', 'chpl-onc'])
-                && (
-                  <ChplTextField
-                    select
-                    id="certifying-body"
-                    name="certifyingBody"
-                    label="ONC-ACB"
-                    required
-                    value={formik.values.certifyingBody}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
-                    helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
-                  >
-                    { acbs.map((item) => (
-                      <MenuItem
-                        value={item.name}
-                        key={item.id}
-                      >
-                        {`${item.name}${item.retired ? ' (Retired)' : ''}`}
-                      </MenuItem>
-                    ))}
-                  </ChplTextField>
-                )}
+              && (
+                <ChplTextField
+                  select
+                  id="certifying-body"
+                  name="certifyingBody"
+                  label="ONC-ACB"
+                  required
+                  value={formik.values.certifyingBody}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
+                  helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
+                >
+                  { acbs.map((item) => (
+                    <MenuItem
+                      value={item.name}
+                      key={item.id}
+                    >
+                      {`${item.name}${item.retired ? ' (Retired)' : ''}`}
+                    </MenuItem>
+                  ))}
+                </ChplTextField>
+              )}
               { hasAnyRole(['chpl-onc-acb'])
-                && (
-                  <Typography>{listing.certifyingBody.name}</Typography>
-                )}
+              && (
+                <Typography>{listing.certifyingBody.name}</Typography>
+              )}
               <ChplTextField
                 id="acb-certification-id"
                 name="acbCertificationId"
@@ -449,7 +448,7 @@ function ChplListingEdit({
               />
             </Box>
             <Divider />
-            <Box pt={4} display="flex" gridGap={8} flexDirection="column">
+            <Box pt={4} display="flex" gap="8px" flexDirection="column">
               <Typography variant="h6">
                 ONC-ATL
                 { selectedAtls.length !== 1 ? 's' : '' }
@@ -457,18 +456,18 @@ function ChplListingEdit({
               <List>
                 { selectedAtls.map((atl) => (
                   <ListItem
-                    style={{
-                      marginBottom: '8px', border: '1px solid #c2c6ca', borderRadius: '4px', paddingBottom: '4px',
-                    }}
                     key={atl.id}
+                    sx={styles.atlListItem}
                   >
                     <Box pb={2} flexGrow={1}>
                       {atl.name}
                     </Box>
-                    <Tooltip className={classes.tooltipText} arrow title="Delete">
-                      <IconButton
-                        onClick={() => removeAtl(atl)}
-                      >
+                    <Tooltip
+                      arrow
+                      componentsProps={{ tooltip: { sx: styles.tooltipText } }}
+                      title="Delete"
+                    >
+                      <IconButton onClick={() => removeAtl(atl)} size="large">
                         <DeleteIcon color="error" />
                       </IconButton>
                     </Tooltip>
@@ -476,61 +475,61 @@ function ChplListingEdit({
                 ))}
               </List>
               { !addingAtl
-                && (
-                  <div>
-                    <Button
-                      onClick={() => setAddingAtl(true)}
-                      endIcon={<Add />}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      Add ONC-ATL
-                    </Button>
-                  </div>
-                )}
+              && (
+                <div>
+                  <Button
+                    onClick={() => setAddingAtl(true)}
+                    endIcon={<Add />}
+                    color="primary"
+                    variant="outlined"
+                  >
+                    Add ONC-ATL
+                  </Button>
+                </div>
+              )}
               { addingAtl
-                && (
-                  <>
-                    <ChplTextField
-                      select
-                      id="atl"
-                      name="atl"
-                      label="ONC-ATL"
-                      required
-                      value={atlToAdd}
-                      onChange={(event) => setAtlToAdd(event.target.value)}
+              && (
+                <>
+                  <ChplTextField
+                    select
+                    id="atl"
+                    name="atl"
+                    label="ONC-ATL"
+                    required
+                    value={atlToAdd}
+                    onChange={(event) => setAtlToAdd(event.target.value)}
+                  >
+                    {atls
+                      .filter((atl) => !selectedAtls.find((a) => a.id === atl.id))
+                      .map((item) => (
+                        <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
+                      ))}
+                  </ChplTextField>
+                  <Box py={2} display="flex" justifyContent="flex-start" gap="8px" flexDirection="row">
+                    <Button
+                      onClick={() => addAtl()}
+                      disabled={atlToAdd === ''}
+                      endIcon={<Save />}
+                      color="primary"
+                      variant="contained"
                     >
-                      {atls
-                        .filter((atl) => !selectedAtls.find((a) => a.id === atl.id))
-                        .map((item) => (
-                          <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
-                        ))}
-                    </ChplTextField>
-                    <Box py={2} display="flex" justifyContent="flex-start" gridGap={8} flexDirection="row">
-                      <Button
-                        onClick={() => addAtl()}
-                        disabled={atlToAdd === ''}
-                        endIcon={<Save />}
-                        color="primary"
-                        variant="contained"
-                      >
-                        Save ONC-ATL
-                      </Button>
-                      <Button
-                        onClick={() => setAddingAtl(false)}
-                        className={classes.deleteButton}
-                        endIcon={<Close />}
-                      >
-                        Cancel adding ONC-ATL
-                      </Button>
-                    </Box>
-                  </>
-                )}
+                      Save ONC-ATL
+                    </Button>
+                    <Button
+                      onClick={() => setAddingAtl(false)}
+                      endIcon={<Close />}
+                      sx={utilStyles.deleteButton}
+                    >
+                      Cancel adding ONC-ATL
+                    </Button>
+                  </Box>
+                </>
+              )}
             </Box>
             <Divider />
 
             { /* Mandatory Disclosures */}
-            <Box display="flex" gridGap={12} flexDirection="column">
+            <Box display="flex" gap="12px" flexDirection="column">
               <Typography variant="h6">
                 Mandatory Disclosures
               </Typography>
@@ -548,24 +547,24 @@ function ChplListingEdit({
             <Divider />
 
             { /* Real-World Testing */}
-            <Box display="flex" pt={4} gridGap={8} flexDirection="column">
+            <Box display="flex" pt={4} gap="8px" flexDirection="column">
               <Typography gutterBottom variant="h6">
                 Real World Testing
               </Typography>
-              <Box display="flex" justifyContent="space-around" gridGap={16} flexDirection="row">
+              <Box display="flex" justifyContent="space-around" gap="16px" flexDirection="row">
                 { !hti5ErdIsOn
-                  && (
-                    <ChplTextField
-                      id="rwt-plans-url"
-                      name="rwtPlansUrl"
-                      label="Real-World Testing Plans URL"
-                      value={formik.values.rwtPlansUrl}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
-                      helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
-                    />
-                  )}
+                && (
+                  <ChplTextField
+                    id="rwt-plans-url"
+                    name="rwtPlansUrl"
+                    label="Real-World Testing Plans URL"
+                    value={formik.values.rwtPlansUrl}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
+                    helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
+                  />
+                )}
                 <ChplTextField
                   id="rwt-results-url"
                   name="rwtResultsUrl"
@@ -577,22 +576,22 @@ function ChplListingEdit({
                   helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
                 />
               </Box>
-              <Box display="flex" pt={4} justifyContent="space-around" gridGap={16} flexDirection="row">
+              <Box display="flex" pt={4} justifyContent="space-around" gap="16px" flexDirection="row">
                 { !hti5ErdIsOn
-                  && (
-                    <ChplTextField
-                      id="rwt-plans-check-date"
-                      name="rwtPlansCheckDate"
-                      label="Real-World Testing Plans Check Date"
-                      type="date"
-                      required={formik.values.rwtPlansUrl !== ''}
-                      value={formik.values.rwtPlansCheckDate}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.rwtPlansCheckDate && !!formik.errors.rwtPlansCheckDate}
-                      helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
-                    />
-                  )}
+                && (
+                  <ChplTextField
+                    id="rwt-plans-check-date"
+                    name="rwtPlansCheckDate"
+                    label="Real-World Testing Plans Check Date"
+                    type="date"
+                    required={formik.values.rwtPlansUrl !== ''}
+                    value={formik.values.rwtPlansCheckDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtPlansCheckDate && !!formik.errors.rwtPlansCheckDate}
+                    helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
+                  />
+                )}
                 <ChplTextField
                   id="rwt-results-check-date"
                   name="rwtResultsCheckDate"

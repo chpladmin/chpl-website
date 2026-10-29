@@ -1,12 +1,7 @@
 import React from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Button, Card, CardHeader, CardContent, Typography,
+} from '@mui/material';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -14,7 +9,7 @@ import * as yup from 'yup';
 import { ChplTextField } from 'components/util';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   content: {
     display: 'grid',
     gap: '8px',
@@ -24,7 +19,7 @@ const useStyles = makeStyles({
     backgroundColor: palette.secondary,
     padding: '16px',
   },
-});
+};
 
 const validationSchema = yup.object({
   fullName: yup.string()
@@ -35,7 +30,6 @@ const validationSchema = yup.object({
 });
 
 function ChplUserCreate({ dispatch }) {
-  const classes = useStyles();
   let formik;
 
   const create = () => {
@@ -59,8 +53,8 @@ function ChplUserCreate({ dispatch }) {
 
   return (
     <Card>
-      <CardHeader className={classes.loginHeader} title="Create a new account" />
-      <CardContent className={classes.content}>
+      <CardHeader sx={styles.loginHeader} title="Create a new account" />
+      <CardContent sx={styles.content}>
         <Typography gutterBottom>
           <strong>
             Welcome to ONC&apos;s Certified Health IT Product List (CHPL).

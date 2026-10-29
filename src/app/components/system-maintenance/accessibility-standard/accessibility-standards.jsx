@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
+} from '@mui/material';
+import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplAccessibilityStandardEdit from './accessibility-standard-edit';
@@ -108,7 +108,8 @@ function ChplAccessibilityStandards() {
             <AccessibilityNewOutlinedIcon style={{ verticalAlign: 'middle', marginRight: '8px' }} />
             {`${activeAccessibilityStandard.id ? 'Edit' : 'Add'} Accessibility Standard`}
           </>
-)} />
+)}
+        />
         <CardContent>
           <ChplAccessibilityStandardEdit
             accessibilityStandard={activeAccessibilityStandard}

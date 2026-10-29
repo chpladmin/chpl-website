@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  Box,
-  LinearProgress,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, LinearProgress, Typography } from '@mui/material';
 import { number, oneOfType, string } from 'prop-types';
 
-import { palette, utilStyles } from 'themes';
+import { palette } from 'themes';
 
 const getProgressColor = (value) => {
   if (value >= 100) return palette.active;
@@ -15,57 +10,45 @@ const getProgressColor = (value) => {
   return palette.primary;
 };
 
-const useStyles = makeStyles({
-  ...utilStyles,
+const getProgressTrackColor = (value) => {
+  if (value >= 100) return palette.progressSuccessTrack;
+  if (value < 25) return palette.progressErrorTrack;
+  return palette.primaryLight;
+};
+
+const styles = {
   progressBarWrapperNoShrink: {
     flexShrink: 0,
   },
-  linearProgressRootRounded: {
-    height: '16px',
-    borderRadius: '8px',
-    overflow: 'hidden',
-  },
-  linearProgressTrackColorByThreshold: {
-    backgroundColor: ({ progressValue }) => {
-      if (progressValue >= 100) return palette.progressSuccessTrack;
-      if (progressValue < 25) return palette.progressErrorTrack;
-      return palette.primaryLight;
-    },
-  },
-  linearProgressFillColorByThreshold: {
-    backgroundColor: ({ progressValue }) => getProgressColor(progressValue),
-  },
-  linearProgressDeterminateFillColorByThreshold: {
-    backgroundColor: ({ progressValue }) => getProgressColor(progressValue),
-  },
-});
+};
 
 function CmsDisplayProgressBar({ value, year }) {
-  const classes = useStyles({ progressValue: value });
-
   const normalizedValue = Number.isFinite(Number(value))
     ? Math.min(100, Math.max(0, Number(value)))
     : 0;
   return (
     <Box
       pt={2}
-      gridGap={8}
+      gap="8px"
       pb={2}
       display="flex"
       alignItems="center"
       justifyContent="space-between"
       id="progress-bar"
     >
-      <Box width="150px" className={classes.progressBarWrapperNoShrink}>
+      <Box width="150px" sx={styles.progressBarWrapperNoShrink}>
         <LinearProgress
           id="progress-bar-bar"
           variant="determinate"
           value={normalizedValue}
-          classes={{
-            root: classes.linearProgressRootRounded,
-            colorPrimary: classes.linearProgressTrackColorByThreshold,
-            barColorPrimary: classes.linearProgressFillColorByThreshold,
-            bar1Determinate: classes.linearProgressDeterminateFillColorByThreshold,
+          sx={{
+            height: '16px',
+            borderRadius: '8px',
+            overflow: 'hidden',
+            backgroundColor: getProgressTrackColor(normalizedValue),
+            '& .MuiLinearProgress-bar': {
+              backgroundColor: getProgressColor(normalizedValue),
+            },
           }}
         />
       </Box>

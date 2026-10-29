@@ -10,12 +10,11 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FeedbackIcon from '@material-ui/icons/Feedback';
+} from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CircularProgress from '@mui/material/CircularProgress';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 import { useSnackbar } from 'notistack';
 
 import {
@@ -28,7 +27,7 @@ import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-he
 import { getDisplayDateFormat } from 'services/date-util';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   messageButton: {
     marginLeft: '-8px',
@@ -46,9 +45,9 @@ const useStyles = makeStyles({
     justifyContent: 'flex-end',
     padding: '16px 32px',
   },
-});
+};
 
-const getStatus = (listing, classes) => {
+const getStatus = (listing) => {
   if (listing.status === 'UPLOAD_PROCESSING') {
     return <CircularProgress />;
   }
@@ -56,7 +55,7 @@ const getStatus = (listing, classes) => {
     return (
       <Chip
         label="Processing error"
-        className={classes.deleteButton}
+        sx={styles.deleteButton}
       />
     );
   }
@@ -81,7 +80,6 @@ function ChplConfirmListings({ onProcess }) {
   const { data: modernData } = useFetchPendingListings();
   const { data: processingListing } = useFetchPendingListing({ id: listingIdToLoad });
   const { mutate: rejectListing } = useRejectPendingListing();
-  const classes = useStyles();
 
   useEffect(() => {
     if (!processingListing?.id || listings.length === 0) { return; }
@@ -109,7 +107,7 @@ function ChplConfirmListings({ onProcess }) {
     const updated = modernData
       .map((listing) => ({
         ...listing,
-        displayStatus: getStatus(listing, classes),
+        displayStatus: getStatus(listing),
       }))
       .sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1));
     setListings(updated);
@@ -117,7 +115,7 @@ function ChplConfirmListings({ onProcess }) {
     if (nextListing) {
       setListingIdToLoad(nextListing);
     }
-  }, [modernData, classes]);
+  }, [modernData]);
 
   const handleProcess = (listing) => {
     onProcess(listing.id);
@@ -182,10 +180,10 @@ function ChplConfirmListings({ onProcess }) {
       { listings.length > 0
         && (
           <>
-            <div className={classes.rejectFooter}>
+            <div style={styles.rejectFooter}>
               <Button
                 id="reject-selected-pending-listings"
-                className={classes.deleteButton}
+                sx={styles.deleteButton}
                 variant="contained"
                 onClick={handleReject}
                 startIcon={<DeleteIcon />}
@@ -198,7 +196,7 @@ function ChplConfirmListings({ onProcess }) {
                 selected
               </Button>
             </div>
-            <TableContainer className={classes.tableContainer} component={Paper}>
+            <TableContainer sx={styles.tableContainer} component={Paper}>
               <Table>
                 <ChplSortableHeaders
                   headers={headers}
@@ -210,7 +208,7 @@ function ChplConfirmListings({ onProcess }) {
                   { listings
                     .map((listing) => (
                       <TableRow key={listing.id}>
-                        <TableCell className={classes.firstColumn}>
+                        <TableCell sx={styles.firstColumn}>
                           <Button
                             id={`process-pending-listing-${listing.chplProductNumber}`}
                             color="primary"
@@ -222,11 +220,11 @@ function ChplConfirmListings({ onProcess }) {
                             Process Listing
                           </Button>
                         </TableCell>
-                        <TableCell className={classes.linkWrap}>{listing.chplProductNumber}</TableCell>
-                        <TableCell className={classes.linkWrap}>{listing.developer}</TableCell>
-                        <TableCell className={classes.linkWrap}>{listing.product}</TableCell>
-                        <TableCell className={classes.linkWrap}>{listing.version}</TableCell>
-                        <TableCell className={classes.linkWrap}>{getDisplayDateFormat(listing.certificationDate)}</TableCell>
+                        <TableCell sx={styles.linkWrap}>{listing.chplProductNumber}</TableCell>
+                        <TableCell sx={styles.linkWrap}>{listing.developer}</TableCell>
+                        <TableCell sx={styles.linkWrap}>{listing.product}</TableCell>
+                        <TableCell sx={styles.linkWrap}>{listing.version}</TableCell>
+                        <TableCell sx={styles.linkWrap}>{getDisplayDateFormat(listing.certificationDate)}</TableCell>
                         <TableCell>
                           { listing.displayStatus }
                           { listing.status !== 'UPLOAD_FAILURE' && (listing.errors?.length !== 0 || listing.warnings?.length !== 0)
@@ -237,11 +235,11 @@ function ChplConfirmListings({ onProcess }) {
                                   disabled={!(listing.errors?.length !== 0 || listing.warnings?.length !== 0)}
                                   variant="text"
                                   color="primary"
-                                  className={classes.messageButton}
+                                  sx={styles.messageButton}
                                 >
                                   See messages
                                   {' '}
-                                  <FeedbackIcon color="primary" fontSize="small" className={classes.iconSpacing} />
+                                  <FeedbackIcon color="primary" fontSize="small" sx={styles.iconSpacing} />
                                 </Button>
                               </div>
                             )}

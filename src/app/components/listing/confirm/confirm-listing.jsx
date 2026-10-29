@@ -1,26 +1,20 @@
 import React, { useContext } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+  Card, CardContent, CardHeader, CircularProgress, Container,
+} from '@mui/material';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import ChplListingView from 'components/listing/listing-view';
 import { ListingContext, PendingListingContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   confirmContainer: {
     padding: '32px 0',
   },
-});
+};
 
 function ChplConfirmListing() {
   const { listing } = useContext(PendingListingContext);
-  const classes = useStyles();
 
   if (!listing) { return <CircularProgress />; }
 
@@ -29,7 +23,7 @@ function ChplConfirmListing() {
   };
 
   return (
-    <Container maxWidth="md" className={classes.confirmContainer}>
+    <Container maxWidth="md" sx={styles.confirmContainer}>
       <Card>
         <CardHeader
           title="Listing"

@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, IconButton, Typography,
+} from '@mui/material';
 import { arrayOf, func, shape } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@mui/icons-material/Add';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { useFetchConformanceMethodsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
@@ -24,20 +20,19 @@ const sortOptions = [
   { property: 'name', text: 'Name' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   tableResultsHeaderContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-});
+};
 
 function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConformanceMethods }) {
   const { hasAnyRole } = useContext(UserContext);
   const [conformanceMethods, setConformanceMethods] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
-  const classes = useStyles();
 
   useEffect(() => {
     setConformanceMethods(initialConformanceMethods
@@ -60,8 +55,8 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
 
   return (
     <>
-      <Box className={classes.headerContainer}>
-        <Box display="flex" flexDirection="row" gridGap={2} alignItems="center">
+      <Box sx={styles.headerContainer}>
+        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
           <Typography variant="subtitle2">
             Conformance Methods
           </Typography>
@@ -69,7 +64,7 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
             {`(${conformanceMethods.length} Result${conformanceMethods.length !== 1 ? 's' : ''})`}
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" gridGap={4}>
+        <Box display="flex" alignItems="center" gap="4px">
           <ChplSortControls
             sortOptions={sortOptions}
             orderBy={orderBy}
@@ -81,15 +76,15 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
             title="Conformance Methods"
           />
           { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-            <Button
-              onClick={() => dispatch({ action: 'edit', payload: {} })}
-              id="add-new-conformance-method"
-              variant="contained"
-              color="primary"
-              endIcon={<AddIcon />}
-            >
-              Add
-            </Button>
+          <Button
+            onClick={() => dispatch({ action: 'edit', payload: {} })}
+            id="add-new-conformance-method"
+            variant="contained"
+            color="primary"
+            endIcon={<AddIcon />}
+          >
+            Add
+          </Button>
           )}
         </Box>
       </Box>
@@ -106,7 +101,7 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
                     <InfoIcon fontSize="small" />
                   </IconButton>
                 </ChplTooltip>
-              )}
+            )}
               fieldGroups={[
                 [
                   {
@@ -120,19 +115,19 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
                 ],
               ]}
               actions={
-                hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                  <Button
-                    onClick={() => dispatch({ action: 'edit', payload: item })}
-                    id={`edit-conformance-method-${item.value}`}
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    endIcon={<EditOutlinedIcon />}
-                  >
-                    Edit
-                  </Button>
-                )
-              }
+              hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                <Button
+                  onClick={() => dispatch({ action: 'edit', payload: item })}
+                  id={`edit-conformance-method-${item.value}`}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  endIcon={<EditOutlinedIcon />}
+                >
+                  Edit
+                </Button>
+              )
+            }
             />
           ))}
       </Box>
