@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, makeStyles } from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+import { Box, Button } from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSelector } from 'react-redux';
 
 import ChplMessaging from './messaging/messaging';
@@ -27,14 +27,14 @@ const sortOptions = [
   { property: 'developer_code', text: 'Developer Code' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   developerView: {
     display: 'grid',
     borderRadius: 4,
     gridTemplateRows: '1fr',
   },
-});
+};
 
 function ChplDevelopersView() {
   const apiKey = useSelector((state) => state.browserInfo.apiKey);
@@ -51,7 +51,6 @@ function ChplDevelopersView() {
   const [sortDescending, setSortDescending] = usePageState(`${storageKey}-sortDescending`, false);
   const [messaging, setMessaging] = useState(false);
   const [recordCount, setRecordCount] = useState(0);
-  const classes = useStyles();
 
   const {
     data, isError, isLoading,
@@ -149,7 +148,7 @@ function ChplDevelopersView() {
 
   return (
     <>
-      <div className={classes.developerView} id="main-content" tabIndex="-1">
+      <Box sx={styles.developerView} id="main-content" tabIndex="-1">
         <ChplFilterSearchBar
           sticky
           placeholder="Search by Developer Name or Code..."
@@ -248,7 +247,7 @@ function ChplDevelopersView() {
             </>
           )}
         </ChplFilterLayout>
-      </div>
+      </Box>
     </>
   );
 }

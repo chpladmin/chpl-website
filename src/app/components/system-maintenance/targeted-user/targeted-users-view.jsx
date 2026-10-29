@@ -9,9 +9,8 @@ import {
   Button,
   CircularProgress,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import {
   arrayOf,
   number,
@@ -42,7 +41,7 @@ const sortOptions = [
   { property: 'CREATION_DATE', text: 'Creation Date' },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   // Sit beside the card title and mirror its label and value styling, but only take the width they need
   narrowFields: {
@@ -69,7 +68,7 @@ const useStyles = makeStyles({
     fontWeight: 700,
     lineHeight: 1.25,
   },
-});
+};
 
 const getStatusKey = (status) => `status-${status.id}`;
 
@@ -86,7 +85,6 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   const { analytics } = useAnalyticsContext();
   const filterContext = useFilterContext();
   const query = filterContext.queryString();
-  const classes = useStyles();
 
   // `isPreviousData`: the request changed and the old results are still on screen until it answers
   const {
@@ -186,11 +184,11 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
   };
 
   const getNarrowField = (label, value) => (
-    <Box className={classes.narrowField}>
-      <Box className={classes.narrowLabelRow}>
-        <Typography className={classes.narrowLabel}>{ label }</Typography>
+    <Box sx={styles.narrowField}>
+      <Box sx={styles.narrowLabelRow}>
+        <Typography sx={styles.narrowLabel}>{ label }</Typography>
       </Box>
-      <Typography className={classes.narrowValue}>{ value }</Typography>
+      <Typography sx={styles.narrowValue}>{ value }</Typography>
     </Box>
   );
 
@@ -240,7 +238,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                     cardTitle="Targeted User"
                     cardTitleValue={item.name}
                     additionalTitleContent={(
-                      <Box className={classes.narrowFields}>
+                      <Box sx={styles.narrowFields}>
                         { getNarrowField('Total Listings', item.total) }
                         { getNarrowField('Creation Date', getDisplayDateFormat(item.creationDate)) }
                       </Box>

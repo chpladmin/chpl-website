@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
+} from '@mui/material';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 
 import ChplCertificationCriteriaView from './certification-criteria-view';
 

@@ -15,16 +15,15 @@ import {
   Radio,
   RadioGroup,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CloseIcon from '@material-ui/icons/Close';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import { func, objectOf, string } from 'prop-types';
+} from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CloseIcon from '@mui/icons-material/Close';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
+import { func } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChplCmsDisplayProgressBar from './cms-display-progress-bar';
@@ -53,9 +52,20 @@ function ChplCmsEmptyStateIcon() {
   );
 }
 
-function ChplCmsWidgetHelpFooter({ classes }) {
+const widgetHelpFooterStyles = {
+  marginTop: 'auto',
+  minHeight: '130px', // matches compare widget footer height so empty-state icons align vertically
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
+  gap: '4px',
+  paddingTop: '12px',
+};
+
+function ChplCmsWidgetHelpFooter() {
   return (
-    <div className={classes.widgetHelpFooter}>
+    <Box sx={widgetHelpFooterStyles}>
       <Typography variant="body2" style={{ color: palette.greyDark }}>
         For assistance, view the
         <br />
@@ -92,15 +102,11 @@ function ChplCmsWidgetHelpFooter({ classes }) {
         />
         .
       </Typography>
-    </div>
+    </Box>
   );
 }
 
-ChplCmsWidgetHelpFooter.propTypes = {
-  classes: objectOf(string).isRequired,
-};
-
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   stickyWidgetHeader: {
     position: 'sticky',
@@ -153,16 +159,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100%',
-  },
-  widgetHelpFooter: {
-    marginTop: 'auto',
-    minHeight: '130px', // matches compare widget footer height so empty-state icons align vertically
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-    gap: '4px',
-    paddingTop: '12px',
   },
   emptyStateBody: {
     flex: '1 1 auto',
@@ -220,7 +216,7 @@ const useStyles = makeStyles({
   yearSelector: {
     width: '100%',
     padding: '8px 16px',
-    borderRadius: '0px 0px 8px 8px',
+    borderRadius: '0 0 8px 8px',
     backgroundColor: palette.greyLight,
     marginTop: '-8px',
     marginBottom: '8px',
@@ -228,15 +224,25 @@ const useStyles = makeStyles({
   yearSelectorLayout: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: '16px',
   },
   yearLabel: {
     fontWeight: '900 !important',
+    color: palette.black,
+    '&.Mui-focused': {
+      color: palette.black,
+    },
+    fontSize: '12.5px',
     marginBottom: 0,
+    width: 'fit-content',
     whiteSpace: 'nowrap',
   },
   yearRadioGroup: {
-    gap: '8px',
+    flexWrap: 'nowrap',
+    gap: '4px',
+  },
+  yearOption: {
+    marginLeft: '4px',
+    marginRight: 0,
   },
   reportingYearOptionFontWeight600WhenActive: {
     fontWeight: '600 !important',
@@ -245,13 +251,12 @@ const useStyles = makeStyles({
     fontWeight: '400 !important',
   },
   reportingYearRadioUsesActivePaletteColor: {
-    color: palette.active,
+    color: palette.primary,
   },
-  reportingYearRadioScale150WithRightSpacing: {
-    transform: 'scale(1.5)',
-    marginRight: '4px',
+  reportingYearRadioPadding: {
+    padding: '4px',
   },
-});
+};
 
 function ChplCmsDisplay({ onClose }) {
   const listings = useSelector((state) => state.browserInfo.cms);
@@ -269,7 +274,6 @@ function ChplCmsDisplay({ onClose }) {
   } = useFetchCmsIdAnalysis(listings);
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(idAnalysis.ehrCertificationId, isDownloading);
   const { mutate, isLoading: isCreatingCmsId } = usePostCreateCmsId();
-  const classes = useStyles({ progressValue: idAnalysis?.metPercentages?.criteriaMet });
 
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
@@ -340,27 +344,27 @@ function ChplCmsDisplay({ onClose }) {
 
   if (cmsDisabledIsOn) {
     return (
-      <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
-        <div className={classes.stickyWidgetHeader}>
+      <CardContent sx={[styles.cardcontentPadding, styles.mainCardContent]}>
+        <Box sx={styles.stickyWidgetHeader}>
           <Typography variant="h2">
             CMS Certification ID Creator
           </Typography>
           <IconButton aria-label="Close widget" onClick={onClose} size="small">
             <CloseIcon />
           </IconButton>
-        </div>
+        </Box>
         <Typography>
           Access to the CMS ID Creator has been paused. Please check back periodically for updates.
         </Typography>
-        <ChplCmsWidgetHelpFooter classes={classes} />
+        <ChplCmsWidgetHelpFooter />
       </CardContent>
     );
   }
 
   if (!listings || listings.length === 0) {
     return (
-      <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
-        <div className={classes.stickyWidgetHeader}>
+      <CardContent sx={[styles.cardcontentPadding, styles.mainCardContent]}>
+        <Box sx={styles.stickyWidgetHeader}>
           <Typography variant="h2">
             CMS Certification ID Creator
           </Typography>
@@ -369,24 +373,24 @@ function ChplCmsDisplay({ onClose }) {
               <CloseIcon />
             </IconButton>
           </ChplTooltip>
-        </div>
-        <div className={classes.emptyStateBody}>
+        </Box>
+        <Box sx={styles.emptyStateBody}>
           <ChplCmsEmptyStateIcon />
           <Typography variant="h6"><strong>No products selected.</strong></Typography>
-          <Box className={classes.userNote}>
+          <Box sx={styles.userNote}>
             <Typography variant="body2" color="textPrimary">
               Note: the selected products must meet 100% of the Base Criteria.
             </Typography>
           </Box>
-        </div>
-        <ChplCmsWidgetHelpFooter classes={classes} />
+        </Box>
+        <ChplCmsWidgetHelpFooter />
       </CardContent>
     );
   }
 
   return (
-    <CardContent className={`${classes.cardcontentPadding} ${classes.mainCardContent}`}>
-      <div className={classes.stickyWidgetHeader}>
+    <CardContent sx={[styles.cardcontentPadding, styles.mainCardContent]}>
+      <Box sx={styles.stickyWidgetHeader}>
         <Typography variant="h2">
           CMS Certification ID Creator
         </Typography>
@@ -395,14 +399,14 @@ function ChplCmsDisplay({ onClose }) {
             <CloseIcon />
           </IconButton>
         </ChplTooltip>
-      </div>
+      </Box>
       { idAnalysis.ehrCertificationId
         && (
           <>
             <Typography>
               <strong> Your CMS EHR Certification ID</strong>
             </Typography>
-            <div className={classes.certCopyContainer} id="ehr-cert-id">
+            <Box sx={styles.certCopyContainer} id="ehr-cert-id">
               <Typography variant="h5" color="primary">
                 { idAnalysis.ehrCertificationId }
               </Typography>
@@ -416,9 +420,9 @@ function ChplCmsDisplay({ onClose }) {
                   <FileCopyOutlinedIcon />
                 </IconButton>
               </ChplTooltip>
-            </div>
-            <Typography gutterBottom className={classes.preserveWhitespacePreWrapText} variant="body2">
-              <span className={classes.errorAsteriskTextColor}>*</span>
+            </Box>
+            <Typography gutterBottom sx={styles.preserveWhitespacePreWrapText} variant="body2">
+              <Box component="span" sx={styles.errorAsteriskTextColor}>*</Box>
               {' '}
               Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
             </Typography>
@@ -427,32 +431,42 @@ function ChplCmsDisplay({ onClose }) {
         )}
       { isLoadingAnalysis
         && (
-          <FormControl className={`${classes.yearSelector} ${classes.yearSelectorLayout}`}>
+          <FormControl sx={[styles.yearSelector, styles.yearSelectorLayout]}>
             <Skeleton variant="text" width="100%" height={32} />
           </FormControl>
         )}
       { !isLoadingAnalysis && reportingYears.length > 1
         && (
-          <FormControl className={`${classes.yearSelector} ${classes.yearSelectorLayout}`}>
-            <FormLabel className={classes.yearLabel}>
+          <FormControl sx={[styles.yearSelector, styles.yearSelectorLayout]}>
+            <FormLabel sx={styles.yearLabel}>
               Reporting Year
             </FormLabel>
             <RadioGroup
               row
               onChange={(e) => handleYearSelection(e.currentTarget.value)}
               value={activeYear}
-              className={classes.yearRadioGroup}
+              sx={styles.yearRadioGroup}
             >
               { reportingYears
                 .map((y) => (
                   <FormControlLabel
                     key={y}
                     value={y}
-                    control={<Radio color="primary" classes={{ root: classes.reportingYearRadioUsesActivePaletteColor }} className={classes.reportingYearRadioScale150WithRightSpacing} />}
+                    sx={styles.yearOption}
+                    control={(
+                      <Radio
+                        color="primary"
+                        size="small"
+                        sx={[
+                          styles.reportingYearRadioUsesActivePaletteColor,
+                          styles.reportingYearRadioPadding,
+                        ]}
+                      />
+                    )}
                     label={(
                       <Typography
                         variant="body1"
-                        className={activeYear === y ? classes.reportingYearOptionFontWeight600WhenActive : classes.reportingYearOptionFontWeight400WhenInactive}
+                        sx={activeYear === y ? styles.reportingYearOptionFontWeight600WhenActive : styles.reportingYearOptionFontWeight400WhenInactive}
                       >
                         {y}
                       </Typography>
@@ -465,8 +479,8 @@ function ChplCmsDisplay({ onClose }) {
       { idAnalysis.products?.length > 0
         && (
           <>
-            <Box style={{ marginTop: '8px' }}>
-              <Typography className={classes.sectionLabelFontWeight800}>Validation</Typography>
+            <Box sx={{ marginTop: '8px' }}>
+              <Typography sx={styles.sectionLabelFontWeight800}>Validation</Typography>
             </Box>
             <ChplCmsDisplayProgressBar
               value={idAnalysis.metPercentages?.criteriaMet}
@@ -474,7 +488,7 @@ function ChplCmsDisplay({ onClose }) {
             />
             { idAnalysis.metPercentages?.criteriaMet < 100
               && (
-              <Box className={classes.userNote}>
+              <Box sx={styles.userNote}>
                 <Typography variant="body2">
                   Note: the selected product
                   {listings?.length !== 1 ? 's' : ''}
@@ -488,11 +502,11 @@ function ChplCmsDisplay({ onClose }) {
       { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0 || idAnalysis.missingUpToDate?.length > 0)
         && (
           <>
-            <div className={classes.missingLists}>
+            <Box sx={styles.missingLists}>
               { idAnalysis.missingAnd?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2" className={classes.sectionLabelFontWeight800}>Please select a product or products that contain the following criteria:</Typography>
+                    <Typography variant="body2" sx={styles.sectionLabelFontWeight800}>Please select a product or products that contain the following criteria:</Typography>
                     <List id="missing-and">
                       { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
                     </List>
@@ -501,7 +515,7 @@ function ChplCmsDisplay({ onClose }) {
               { idAnalysis.missingOr?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2" className={classes.sectionLabelFontWeight800}>
+                    <Typography variant="body2" sx={styles.sectionLabelFontWeight800}>
                       { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
                       { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
                       {' '}
@@ -517,7 +531,7 @@ function ChplCmsDisplay({ onClose }) {
               { idAnalysis.missingUpToDate?.length > 0
                 && (
                   <div>
-                    <Typography variant="body2" className={classes.sectionLabelFontWeight800}>
+                    <Typography variant="body2" sx={styles.sectionLabelFontWeight800}>
                       { (idAnalysis.missingAnd.length > 0 || idAnalysis.missingOr.length > 0) && 'In addition, a product or products' }
                       { idAnalysis.missingAnd.length === 0 && idAnalysis.missingOr.length === 0 && 'Please select a product or products' }
                       {' '}
@@ -528,16 +542,16 @@ function ChplCmsDisplay({ onClose }) {
                     </List>
                   </div>
                 )}
-            </div>
+            </Box>
           </>
         )}
       <Divider />
-      <Typography className={classes.sectionLabelFontWeight800}>Product Selected</Typography>
-      <div className={classes.chipContainer}>
+      <Typography sx={styles.sectionLabelFontWeight800}>Product Selected</Typography>
+      <Box sx={styles.chipContainer}>
         { [...listings].sort((a, b) => compareStrings(a.name, b.name))
           .map((listing) => (
             <Chip
-              className={classes.productChips}
+              sx={styles.productChips}
               color="primary"
               variant="outlined"
               key={listing.id}
@@ -545,15 +559,15 @@ function ChplCmsDisplay({ onClose }) {
               onDelete={() => dispatch(removeCmsListing(listing))}
             />
           ))}
-      </div>
+      </Box>
       { (isFetching || isCreatingCmsId || isDownloading)
         && (
-          <div className={classes.loadingOverlay}>
+          <Box sx={styles.loadingOverlay}>
             <CircularProgress id="cms-id-processing" size={40} />
-          </div>
+          </Box>
         )}
       <Divider />
-      <div className={classes.buttonContainer}>
+      <Box sx={styles.buttonContainer}>
         { !idAnalysis.ehrCertificationId
           && (
             <Button
@@ -581,7 +595,7 @@ function ChplCmsDisplay({ onClose }) {
               Download PDF
             </Button>
           )}
-        <div className={classes.secondaryButtonContainer}>
+        <Box sx={styles.secondaryButtonContainer}>
           <Button
             fullWidth
             color="primary"
@@ -599,13 +613,13 @@ function ChplCmsDisplay({ onClose }) {
             id="remove-listings"
             onClick={removeAll}
             endIcon={<DeleteIcon />}
-            className={classes.deleteButtonOutlined}
+            sx={styles.deleteButtonOutlined}
           >
             Remove All
           </Button>
-        </div>
-      </div>
-      <ChplCmsWidgetHelpFooter classes={classes} />
+        </Box>
+      </Box>
+      <ChplCmsWidgetHelpFooter />
     </CardContent>
   );
 }

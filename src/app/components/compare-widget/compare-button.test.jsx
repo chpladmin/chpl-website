@@ -52,12 +52,14 @@ describe('the compare button', () => {
   it('shows as a remove button while the listing is in the compare widget', () => {
     renderButton({ compare: [{ id: 7, name: 'Product' }] });
 
-    expect(screen.getByRole('button', { name: /Compare/ }).className).toMatch(/deleteButtonOutlined/);
+    expect(screen.getByTestId('RemoveIcon')).toBeInTheDocument();
+    expect(screen.queryByTestId('CompareArrowsIcon')).not.toBeInTheDocument();
   });
 
   it('shows as an add button while the listing is not in the compare widget', () => {
     renderButton({ compare: [{ id: 8, name: 'Other' }] });
 
-    expect(screen.getByRole('button', { name: /Compare/ }).className).not.toMatch(/deleteButtonOutlined/);
+    expect(screen.getByTestId('CompareArrowsIcon')).toBeInTheDocument();
+    expect(screen.queryByTestId('RemoveIcon')).not.toBeInTheDocument();
   });
 });

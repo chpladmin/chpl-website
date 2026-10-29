@@ -10,10 +10,9 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  makeStyles,
-} from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import EventIcon from '@material-ui/icons/Event';
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import EventIcon from '@mui/icons-material/Event';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
@@ -28,7 +27,7 @@ const headers = [
   { property: 'actions', text: 'Actions', invisible: true },
 ];
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     maxHeight: '64vh',
   },
@@ -38,7 +37,7 @@ const useStyles = makeStyles({
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     backgroundColor: '#fff',
   },
-});
+};
 
 const getAction = (item, dispatch) => {
   if (item.jobDataMap.editableJobFields) {
@@ -52,6 +51,7 @@ const getAction = (item, dispatch) => {
           variant="contained"
           color="primary"
           aria-label={`Edit Report ${item.name}`}
+          size="large"
         >
           <EditIcon />
         </IconButton>
@@ -68,6 +68,7 @@ const getAction = (item, dispatch) => {
           onClick={() => dispatch({ action: 'schedule', payload: item })}
           color="primary"
           aria-label={`Schedule Report ${item.name}`}
+          size="large"
         >
           <EventIcon />
         </IconButton>
@@ -82,7 +83,6 @@ function ChplReportJobTypesView(props) {
   const { hasAnyRole } = useContext(UserContext);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
-  const classes = useStyles();
 
   // Built from the props on every change, so a report edited and saved opens with its saved values
   const jobTypes = useMemo(() => initialJobTypes
@@ -106,7 +106,7 @@ function ChplReportJobTypesView(props) {
     <Card>
       <CardHeader title="Types of Reports" />
       <CardContent>
-        <TableContainer className={classes.container} component={Paper}>
+        <TableContainer sx={styles.container} component={Paper}>
           <Table
             aria-label="Types of Reports table"
           >
@@ -121,7 +121,7 @@ function ChplReportJobTypesView(props) {
               { jobTypes
                 .map((item) => (
                   <TableRow key={item.name}>
-                    <TableCell className={classes.firstColumn}>
+                    <TableCell sx={styles.firstColumn}>
                       { item.name }
                     </TableCell>
                     <TableCell>

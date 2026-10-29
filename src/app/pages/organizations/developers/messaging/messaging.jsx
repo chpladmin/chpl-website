@@ -16,11 +16,10 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import SendIcon from '@material-ui/icons/Send';
-import SendOutlined from '@material-ui/icons/SendOutlined';
+} from '@mui/material';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import SendIcon from '@mui/icons-material/Send';
+import SendOutlined from '@mui/icons-material/SendOutlined';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
@@ -34,7 +33,7 @@ import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   pageHeader: {
     padding: '32px',
@@ -46,7 +45,7 @@ const useStyles = makeStyles({
     gap: '16px',
     padding: '16px',
     backgroundColor: '#f9f9f9',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -70,20 +69,20 @@ const useStyles = makeStyles({
     top: '110px',
     height: 'min-content',
     width: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       position: 'relative',
       top: 'auto',
     },
   },
   rightColumn: {
-    width: '30%,',
-    [theme.breakpoints.down('md')]: {
+    width: '30%',
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
   rowHeader: {
     paddingTop: '8px',
-    padddingBottom: '8px',
+    paddingBottom: '8px',
   },
   undeliverable: {
     background: palette.secondary,
@@ -107,7 +106,7 @@ const useStyles = makeStyles({
       background: theme.palette.primary.dark,
     },
   },
-});
+};
 
 const validationSchema = yup.object({
   subject: yup
@@ -148,7 +147,6 @@ function ChplMessaging({ dispatch }) {
   const { enqueueSnackbar } = useSnackbar();
   const postMessage = usePostMessage();
   const postMessagePreview = usePostMessagePreview();
-  const classes = useStyles();
 
   let formik;
 
@@ -249,20 +247,20 @@ function ChplMessaging({ dispatch }) {
 
   return (
     <>
-      <div className={classes.pageHeader}>
+      <Box sx={styles.pageHeader}>
         <Typography variant="h1">Messaging</Typography>
-      </div>
+      </Box>
       <Container
         maxWidth="xl"
-        className={classes.pageBody}
+        sx={styles.pageBody}
         id="main-content"
         tabIndex="-1"
       >
         <Box
-          className={classes.stickyBox}
+          sx={styles.stickyBox}
         >
           <Card>
-            <CardContent className={classes.content}>
+            <CardContent sx={styles.content}>
               <Typography variant="h3" component="h2">
                 <strong>
                   Messaging
@@ -273,7 +271,7 @@ function ChplMessaging({ dispatch }) {
                 </strong>
               </Typography>
               <Divider />
-              <Box display="flex" flexDirection="row" gridGap="16px">
+              <Box display="flex" flexDirection="row" gap="16px">
                 <ChplTextField
                   select
                   id="template-select"
@@ -333,58 +331,58 @@ function ChplMessaging({ dispatch }) {
             </CardContent>
           </Card>
           { !queryString().includes('hasUsers=true')
-            && (
-              <Box className={classes.undeliverable}>
-                { undeliverableIsLoading
-                  && (
-                    <CircularProgress />
-                  )}
-                { undeliverableTotalCount === 0 && !undeliverableIsLoading
-                  && (
+          && (
+            <Box sx={styles.undeliverable}>
+              { undeliverableIsLoading
+                && (
+                  <CircularProgress />
+                )}
+              { undeliverableTotalCount === 0 && !undeliverableIsLoading
+                && (
+                  <Typography>
+                    All Developers have at least one active user
+                  </Typography>
+                )}
+              { undeliverableTotalCount > 0
+                && (
+                  <>
                     <Typography>
-                      All Developers have at least one active user
+                      { undeliverableTotalCount !== 1 ? `These ${undeliverableTotalCount} ` : 'This ' }
+                      Developer
+                      { undeliverableTotalCount !== 1 ? 's have ' : ' has ' }
+                      no active users and will not receive this message:
                     </Typography>
-                  )}
-                { undeliverableTotalCount > 0
-                  && (
-                    <>
-                      <Typography>
-                        { undeliverableTotalCount !== 1 ? `These ${undeliverableTotalCount} ` : 'This ' }
-                        Developer
-                        { undeliverableTotalCount !== 1 ? 's have ' : ' has ' }
-                        no active users and will not receive this message:
-                      </Typography>
-                      <List>
-                        { undeliverable.map((item) => (
-                          <ListItem key={item.id}>
-                            <ChplLink
-                              href={`#/organizations/developers/${item.id}`}
-                              text={item.name}
-                              analytics={{
-                                ...analytics,
-                                event: 'Navigate to Developer Page',
-                                label: item.name,
-                              }}
-                              external={false}
-                              router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
-                            />
+                    <List>
+                      { undeliverable.map((item) => (
+                        <ListItem key={item.id}>
+                          <ChplLink
+                            href={`#/organizations/developers/${item.id}`}
+                            text={item.name}
+                            analytics={{
+                              ...analytics,
+                              event: 'Navigate to Developer Page',
+                              label: item.name,
+                            }}
+                            external={false}
+                            router={{ sref: 'organizations.developers.developer', params: { id: item.id } }}
+                          />
+                        </ListItem>
+                      ))}
+                      { undeliverableTotalCount > 25
+                        && (
+                          <ListItem>
+                            ...and
+                            {' '}
+                            {undeliverableTotalCount - 25}
+                            {' '}
+                            more
                           </ListItem>
-                        ))}
-                        { undeliverableTotalCount > 25
-                          && (
-                            <ListItem>
-                              ...and
-                              {' '}
-                              {undeliverableTotalCount - 25}
-                              {' '}
-                              more
-                            </ListItem>
-                          )}
-                      </List>
-                    </>
-                  )}
-              </Box>
-            )}
+                        )}
+                    </List>
+                  </>
+                )}
+            </Box>
+          )}
           <Card bgcolor="white">
             <Box
               padding="16px"
@@ -392,11 +390,11 @@ function ChplMessaging({ dispatch }) {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <Box display="flex" flexDirection="row" gridGap="16px">
+              <Box display="flex" flexDirection="row" gap="16px">
                 <Button
                   onClick={dispatch}
                   variant="outlined"
-                  className={classes.cancelButton}
+                  sx={styles.cancelButton}
                   endIcon={<CloseOutlinedIcon />}
                 >
                   Cancel
@@ -423,9 +421,9 @@ function ChplMessaging({ dispatch }) {
             </Box>
           </Card>
         </Box>
-        <Box className={classes.rightColumn}>
+        <Box sx={styles.rightColumn}>
           <Card>
-            <CardContent className={classes.content}>
+            <CardContent sx={styles.content}>
               <Typography sx={{ mt: 0.5 }} variant="h4" component="h3">
                 <strong>Markdown reference</strong>
               </Typography>
@@ -433,7 +431,7 @@ function ChplMessaging({ dispatch }) {
               <Card>
                 <Table size="small">
                   <TableHead sx={{ py: 4 }}>
-                    <TableRow className={classes.rowHeader}>
+                    <TableRow sx={styles.rowHeader}>
                       <TableCell width="45%">Type ...</TableCell>
                       <TableCell>... to get</TableCell>
                     </TableRow>
@@ -441,7 +439,7 @@ function ChplMessaging({ dispatch }) {
                   <TableBody>
                     <TableRow>
                       <TableCell>
-                        <pre className={classes.code}>_Italic_</pre>
+                        <Box component="pre" sx={styles.code}>_Italic_</Box>
                       </TableCell>
                       <TableCell>
                         <i>Italic</i>
@@ -449,7 +447,7 @@ function ChplMessaging({ dispatch }) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <pre className={classes.code}>**Bold**</pre>
+                        <Box component="pre" sx={styles.code}>**Bold**</Box>
                       </TableCell>
                       <TableCell>
                         <b>Bold</b>
@@ -457,7 +455,7 @@ function ChplMessaging({ dispatch }) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <pre className={classes.code}># Heading 1</pre>
+                        <Box component="pre" sx={styles.code}># Heading 1</Box>
                       </TableCell>
                       <TableCell>
                         <h1>Heading 1</h1>
@@ -465,7 +463,7 @@ function ChplMessaging({ dispatch }) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <pre className={classes.code}>## Heading 2</pre>
+                        <Box component="pre" sx={styles.code}>## Heading 2</Box>
                       </TableCell>
                       <TableCell>
                         <h2>Heading 2</h2>
@@ -473,9 +471,9 @@ function ChplMessaging({ dispatch }) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <pre className={classes.code}>
+                        <Box component="pre" sx={styles.code}>
                           [Link](http://www.example.com)
-                        </pre>
+                        </Box>
                       </TableCell>
                       <TableCell>
                         <a href="http://www.example.com">Link</a>
@@ -483,7 +481,7 @@ function ChplMessaging({ dispatch }) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <pre className={classes.code}>
+                        <Box component="pre" sx={styles.code}>
                           * List
                           <br />
                           * List
@@ -492,7 +490,7 @@ function ChplMessaging({ dispatch }) {
                           * Put four spaces before the &quot;*&quot; to make a sub-bullet
                           <br />
                           * List
-                        </pre>
+                        </Box>
                       </TableCell>
                       <TableCell>
                         <ul>
@@ -507,13 +505,13 @@ function ChplMessaging({ dispatch }) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <pre className={classes.code}>
+                        <Box component="pre" sx={styles.code}>
                           1. One
                           <br />
                           2. Two
                           <br />
                           3. Three
-                        </pre>
+                        </Box>
                       </TableCell>
                       <TableCell>
                         <ol>
@@ -525,7 +523,7 @@ function ChplMessaging({ dispatch }) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <pre className={classes.code}>
+                        <Box component="pre" sx={styles.code}>
                           A paragraph of text
                           <br />
                           <br />
@@ -533,7 +531,7 @@ function ChplMessaging({ dispatch }) {
                           <br />
                           <br />
                           To get multiple paragraphs
-                        </pre>
+                        </Box>
                       </TableCell>
                       <TableCell>
                         A paragraph of text
@@ -560,11 +558,11 @@ function ChplMessaging({ dispatch }) {
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><pre className={classes.code}>Hello |DEVELOPERNAME|!</pre></TableCell>
+                      <TableCell><Box component="pre" sx={styles.code}>Hello |DEVELOPERNAME|!</Box></TableCell>
                       <TableCell>Hello AllScripts!</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><pre className={classes.code}>This message has been sent to |DEVELOPERUSERS|.</pre></TableCell>
+                      <TableCell><Box component="pre" sx={styles.code}>This message has been sent to |DEVELOPERUSERS|.</Box></TableCell>
                       <TableCell>
                         This message has been sent to:
                         <br />

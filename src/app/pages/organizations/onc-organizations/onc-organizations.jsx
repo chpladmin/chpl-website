@@ -1,16 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Chip,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import AddIcon from '@material-ui/icons/Add';
+  Box, Button, Card, CardActions, CardContent, Chip, Typography,
+} from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AddIcon from '@mui/icons-material/Add';
 import { useSnackbar } from 'notistack';
 import { oneOf } from 'prop-types';
 
@@ -29,7 +22,7 @@ import { compareOrganizations } from 'services/sort.service';
 import { AnalyticsContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -56,7 +49,7 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-});
+};
 
 function ChplOncOrganizations({ orgType = 'acb' }) {
   const { hasAnyRole } = useContext(UserContext);
@@ -73,7 +66,6 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
   const atlQuery = useFetchAtls(true);
   const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
   const roles = ['chpl-onc-acb'];
-  const classes = useStyles();
   let analyticsData;
 
   useEffect(() => {
@@ -170,10 +162,10 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
       <ChplPageHeader text={orgType === 'acb' ? 'ONC-ACBs' : 'ONC-ATLs'} />
       <ChplPageBody>
         <AnalyticsContext.Provider value={analyticsData}>
-          <div className={orgs.length > 1 ? classes.container : ''}>
+          <Box sx={orgs.length > 1 ? styles.container : undefined}>
             { orgs.length > 1
               && (
-                <div className={classes.navigation}>
+                <Box sx={styles.navigation}>
                   <Card>
                     { orgs.map((org) => (
                       <Button
@@ -185,18 +177,18 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
                         variant="text"
                         color="primary"
                         endIcon={<ArrowForwardIcon />}
-                        className={classes.menuItems}
+                        sx={styles.menuItems}
                       >
-                        <Box display="flex" flexDirection="row" gridGap={4}>
+                        <Box display="flex" flexDirection="row" gap="4px">
                           { org.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
                           { org.name }
                         </Box>
                       </Button>
                     ))}
                   </Card>
-                </div>
+                </Box>
               )}
-            <Box display="flex" flexDirection="column" gridGap={16}>
+            <Box display="flex" flexDirection="column" gap="16px">
               { activeId
                 && (
                   <>
@@ -254,7 +246,7 @@ function ChplOncOrganizations({ orgType = 'acb' }) {
                   />
                 )}
             </Box>
-          </div>
+          </Box>
         </AnalyticsContext.Provider>
       </ChplPageBody>
     </>

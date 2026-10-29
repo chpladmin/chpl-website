@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { useFetchListings } from 'api/search';

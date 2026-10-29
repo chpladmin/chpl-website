@@ -1,15 +1,11 @@
 import React, { useContext } from 'react';
-import {
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Divider, Typography } from '@mui/material';
 
 import ChplUrlChecker from 'components/url-checker/url-checker';
 import { ChplLink } from 'components/util';
 import { ChangeRequestContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -28,13 +24,12 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr',
     gap: '8px',
   },
-});
+};
 
 function ChplChangeRequestListingSbulEdit() {
   const { analytics } = useAnalyticsContext();
   const { changeRequest, setChangeRequest } = useContext(ChangeRequestContext);
   const { hasAnyRole } = useContext(UserContext);
-  const classes = useStyles();
 
   const getCurrent = () => {
     if (changeRequest.details.listing.certificationResults.find((cr) => cr.criterion.id === 182)?.serviceBaseUrlList) {
@@ -64,15 +59,15 @@ function ChplChangeRequestListingSbulEdit() {
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.detailsContainer}>
+    <Box sx={styles.container}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
           { getCurrent() }
         </Typography>
-      </div>
+      </Box>
       <Divider />
-      <div className={classes.detailsContainer}>
+      <Box sx={styles.detailsContainer}>
         <Typography variant="subtitle1">Submitted details</Typography>
         { hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])
           && (
@@ -87,8 +82,8 @@ function ChplChangeRequestListingSbulEdit() {
               url={changeRequest.details.url}
             />
           )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

@@ -5,7 +5,7 @@ import {
   List,
   ListItem,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { useFetchCodeSets } from 'api/standards';
 import { ChplUpdateIndicator } from 'components/util';
@@ -54,7 +54,7 @@ function ChplCodeSetIndicator({ criterion }) {
   }
 
   return (
-    <Box display="flex" alignItems="center" gridGap={8}>
+    <Box display="flex" alignItems="center" gap="8px">
       <Typography>
         { endDay ? 'Update Required' : 'Current' }
       </Typography>

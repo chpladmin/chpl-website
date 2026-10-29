@@ -9,11 +9,10 @@ import {
   Divider,
   MenuItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CodeIcon from '@material-ui/icons/Code';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+} from '@mui/material';
+import CodeIcon from '@mui/icons-material/Code';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useSelector } from 'react-redux';
 
 import { useFreshAccessToken } from 'api/axios';
@@ -27,7 +26,7 @@ import { eventTrack } from 'services/analytics.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   downloadCard: {
     width: '100%',
@@ -73,7 +72,7 @@ const useStyles = makeStyles({
     gridGap: '16px',
     alignItems: 'center',
   },
-});
+};
 
 const allOptions = [
   'Active products summary',
@@ -105,7 +104,6 @@ function ChplResourcesDownload() {
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('Active products summary');
-  const classes = useStyles();
 
   useEffect(() => {
     const data = {
@@ -153,13 +151,13 @@ function ChplResourcesDownload() {
           >
             Definitions & Guidelines
           </Typography>
-          <Typography className={classes.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
+          <Typography sx={styles.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
           <Divider />
-          <div className={classes.content}>
-            <Box className={classes.downloadSection}>
+          <Box sx={styles.content}>
+            <Box sx={styles.downloadSection}>
               <Card>
                 <CardContent>
-                  <ul className={classes.listSpacing}>
+                  <Box component="ul" sx={styles.listSpacing}>
                     <li>
                       <Typography gutterBottom><strong>Certified Products Summary:</strong></Typography>
                       {' '}
@@ -181,8 +179,8 @@ function ChplResourcesDownload() {
                       {' '}
                       Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
                     </li>
-                  </ul>
-                  <Box className={classes.infoBox}>
+                  </Box>
+                  <Box sx={styles.infoBox}>
                     <InfoOutlinedIcon color="primary" />
                     <Typography>
                       The JSON files have been moved to the
@@ -203,12 +201,12 @@ function ChplResourcesDownload() {
                   </Box>
                 </CardContent>
               </Card>
-              <Card className={classes.downloadCard}>
+              <Card sx={styles.downloadCard}>
                 <CardHeader title="Select A File To Download" />
                 <CardContent>
-                  <Box display="flex" flexDirection="column" gridGap={16}>
+                  <Box display="flex" flexDirection="column" gap="16px">
                     <Typography> To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File or Definition File button as needed.</Typography>
-                    <div className={classes.fullWidth}>
+                    <Box sx={styles.fullWidth}>
                       <ChplTextField
                         select
                         id="download-select"
@@ -221,7 +219,7 @@ function ChplResourcesDownload() {
                           <MenuItem value={item} key={item}>{item}</MenuItem>
                         ))}
                       </ChplTextField>
-                    </div>
+                    </Box>
                   </Box>
                 </CardContent>
                 <CardActions>
@@ -236,23 +234,23 @@ function ChplResourcesDownload() {
                     Data File
                   </Button>
                   { files[selectedOption]?.definition
-                    && (
-                      <Button
-                        fullWidth
-                        color="primary"
-                        variant="text"
-                        id="download-chpl-definition-button"
-                        onClick={() => downloadFile('definition')}
-                      >
-                        Definition File
-                        {' '}
-                        <CodeIcon className={classes.iconSpacing} />
-                      </Button>
-                    )}
+                  && (
+                    <Button
+                      fullWidth
+                      color="primary"
+                      variant="text"
+                      id="download-chpl-definition-button"
+                      onClick={() => downloadFile('definition')}
+                    >
+                      Definition File
+                      {' '}
+                      <CodeIcon sx={styles.iconSpacing} />
+                    </Button>
+                  )}
                 </CardActions>
               </Card>
             </Box>
-            <Box style={{ marginTop: '16px' }}>
+            <Box sx={{ marginTop: '16px' }}>
               <Typography
                 variant="h4"
                 component="h2"
@@ -263,7 +261,7 @@ function ChplResourcesDownload() {
             </Box>
             <Card>
               <CardContent>
-                <ul className={classes.listSpacing}>
+                <Box component="ul" sx={styles.listSpacing}>
                   <li>
                     <Typography gutterBottom><strong>Service Base URL List Availability:</strong></Typography>
                     {' '}
@@ -287,13 +285,13 @@ function ChplResourcesDownload() {
                     Entire collection of surveillance activity reported to the CHPL.
                   </li>
                   { hasAnyRole(['chpl-admin', 'chpl-onc'])
-                    && (
-                      <li>
-                        <Typography gutterBottom><strong>Surveillance (Basic):</strong></Typography>
-                        {' '}
-                        Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
-                      </li>
-                    )}
+                  && (
+                    <li>
+                      <Typography gutterBottom><strong>Surveillance (Basic):</strong></Typography>
+                      {' '}
+                      Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
+                    </li>
+                  )}
                   <li>
                     <Typography gutterBottom><strong>Surveillance Non-Conformities:</strong></Typography>
                     {' '}
@@ -304,10 +302,10 @@ function ChplResourcesDownload() {
                     {' '}
                     Entire collection of Direct Review activity reported to the CHPL.
                   </li>
-                </ul>
+                </Box>
               </CardContent>
             </Card>
-          </div>
+          </Box>
         </div>
       </ChplPageBody>
     </>

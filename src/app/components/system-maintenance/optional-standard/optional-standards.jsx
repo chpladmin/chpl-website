@@ -5,8 +5,8 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-} from '@material-ui/core';
-import MoreOutlinedIcon from '@material-ui/icons/MoreOutlined';
+} from '@mui/material';
+import MoreOutlinedIcon from '@mui/icons-material/MoreOutlined';
 
 import ChplOptionalStandardsView from './optional-standards-view';
 

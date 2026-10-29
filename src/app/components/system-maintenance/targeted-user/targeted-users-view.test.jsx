@@ -12,6 +12,7 @@ import { filters } from './targeted-users';
 import ChplTargetedUsersView from './targeted-users-view';
 
 import { useFetchTargetedUsers } from 'api/standards';
+import widgetReducer from 'components/action-widget/widget.slice';
 import browserInfoReducer from 'components/browser/browserInfo.slice';
 import { FilterProvider } from 'components/filter';
 import pageStateReducer from 'components/page-state/pageState.slice';
@@ -82,7 +83,7 @@ const fieldValue = (card, label) => within(card).getByText(label).closest('div')
 // the page is meant to remember from earlier in the visit
 const renderView = (pageState = {}) => render(
   <Provider store={configureStore({
-    reducer: { browserInfo: browserInfoReducer, pageState: pageStateReducer },
+    reducer: { browserInfo: browserInfoReducer, pageState: pageStateReducer, widget: widgetReducer },
     preloadedState: { browserInfo: { api: '/rest', apiKey: 'test-key' }, pageState },
   })}
   >
@@ -278,7 +279,7 @@ describe('searching the targeted users', () => {
   it('remembers the page when the view is left and opened again', () => {
     respondWith(targetedUsers, 120);
     const store = configureStore({
-      reducer: { browserInfo: browserInfoReducer, pageState: pageStateReducer },
+      reducer: { browserInfo: browserInfoReducer, pageState: pageStateReducer, widget: widgetReducer },
       preloadedState: { browserInfo: { api: '/rest', apiKey: 'test-key' } },
     });
     const view = () => (

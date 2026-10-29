@@ -2,10 +2,10 @@ import React from 'react';
 import {
   Box,
   Checkbox,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { defaultFilter } from 'components/filter';
 import { compareCertificationStatuses, getStatusIcon } from 'services/listing.service';
@@ -13,9 +13,8 @@ import { compareCertificationStatuses, getStatusIcon } from 'services/listing.se
 const getCertificationStatusValueEntry = ({ filter, handleFilterToggle }) => filter.values.map((value) => {
   const labelId = `filter-panel-secondary-items-${(`${value.value}`).replace(/ /g, '_')}`;
   return (
-    <ListItem
+    <ListItemButton
       key={value.value}
-      button
       onClick={() => handleFilterToggle(value)}
       disabled={filter.required && value.selected && filter.values.filter((a) => a.selected).length === 1}
     >
@@ -40,7 +39,7 @@ const getCertificationStatusValueEntry = ({ filter, handleFilterToggle }) => fil
         </ListItemText>
         {getStatusIcon({ name: filter.getLongValueDisplay(value) })}
       </Box>
-    </ListItem>
+    </ListItemButton>
   );
 });
 

@@ -69,7 +69,7 @@ const renderView = () => render(
 );
 
 const openSelect = (name) => {
-  fireEvent.mouseDown(screen.getByRole('button', { name }));
+  fireEvent.mouseDown(screen.getByRole('combobox', { name }));
   return within(screen.getByRole('listbox')).getAllByRole('option').map((option) => option.textContent);
 };
 

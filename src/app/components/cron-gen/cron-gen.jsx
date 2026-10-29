@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   AppBar,
+  Box,
   Card,
   CardContent,
   Checkbox,
@@ -10,8 +11,7 @@ import {
   Tab,
   Tabs,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -21,7 +21,7 @@ import '@js-joda/timezone';
 import { ChplTextField } from 'components/util';
 import theme from 'themes/theme';
 
-const useStyles = makeStyles({
+const styles = {
   cron: {
     display: 'flex',
     gap: '16px',
@@ -59,7 +59,7 @@ const useStyles = makeStyles({
   nthWeekDay: {
     width: '32%',
   },
-});
+};
 
 const validationSchema = yup.object({
   runTime: yup.string()
@@ -74,19 +74,20 @@ const getCheckbox = (display, name, value, onChange, state) => (
   />
 );
 
-function ChplCronGen(props) {
+function ChplCronGen({
+  dispatch,
+  initialValue,
+}) {
   const [cron, setCron] = useState('');
   const [days, setDays] = useState(new Set());
   const [selectedDaysOfMonth, setSelectedDaysOfMonth] = useState(new Set().add(`${jsJoda.LocalDate.now().dayOfMonth()}`));
   const [nthWeekday, setNthWeekday] = useState('1');
   const [nthWeekdayDay, setNthWeekdayDay] = useState('2');
   const [dayType, setDayType] = useState('daily');
-  const classes = useStyles();
-
   let formik;
 
   useEffect(() => {
-    const [, minute, hour, dom, , day] = props.initialValue.split(' ');
+    const [, minute, hour, dom, , day] = initialValue.split(' ');
     const time = jsJoda.ZonedDateTime
       .of3(jsJoda.LocalDate.now(),
         jsJoda.LocalTime.parse(`${hour.length === 1 ? `0${hour}` : hour}:${minute.length === 1 ? `0${minute}` : minute}`),
@@ -110,7 +111,7 @@ function ChplCronGen(props) {
       setSelectedDaysOfMonth(() => new Set(dom.split(',')));
       setDayType('dayOfMonth');
     }
-    setCron(props.initialValue);
+    setCron(initialValue);
   }, []);
 
   const handleDays = (event) => {
@@ -167,7 +168,7 @@ function ChplCronGen(props) {
           // no default
       }
       setCron(updated);
-      props.dispatch(updated);
+      dispatch(updated);
     } catch {
       // noop
     }
@@ -192,10 +193,10 @@ function ChplCronGen(props) {
   return (
     <Card>
       <CardContent>
-        <div className={classes.cron}>
+        <Box sx={styles.cron}>
           <Typography variant="subtitle2">Schedule:</Typography>
-          <code className={classes.cronValue}>{cron}</code>
-        </div>
+          <Box component="code" sx={styles.cronValue}>{cron}</Box>
+        </Box>
         <AppBar elevation={1} position="static" color="transparent">
           <Tabs
             indicatorColor="primary"
@@ -210,7 +211,7 @@ function ChplCronGen(props) {
         </AppBar>
         { dayType === 'daily'
           && (
-            <div className={classes.dailyContainer}>
+            <Box sx={styles.dailyContainer}>
               <Typography variant="subtitle2">Every:</Typography>
               <div>
                 { getCheckbox('Sunday', 'days', 'SUN', handleDays, days) }
@@ -221,20 +222,20 @@ function ChplCronGen(props) {
                 { getCheckbox('Friday', 'days', 'FRI', handleDays, days) }
                 { getCheckbox('Saturday', 'days', 'SAT', handleDays, days) }
               </div>
-            </div>
+            </Box>
           )}
         { dayType === 'dayOfMonth'
           && (
-            <div className={classes.dailyContainer}>
+            <Box sx={styles.dailyContainer}>
               <Typography variant="subtitle2">Every:</Typography>
               <div>
                 { Array.from({ length: 31 }, (_, i) => i + 1).map((day) => getCheckbox(`${day}`, 'daysOfMonth', `${day}`, handleDaysOfMonth, selectedDaysOfMonth))}
               </div>
-            </div>
+            </Box>
           )}
         { dayType === 'nthWeekday'
           && (
-            <div className={classes.nthWeekDayContainer}>
+            <Box sx={styles.nthWeekDayContainer}>
               <Typography variant="subtitle2">On the</Typography>
               <ChplTextField
                 select
@@ -243,7 +244,7 @@ function ChplCronGen(props) {
                 label="Nth"
                 value={nthWeekday}
                 onChange={handleNthWeekday}
-                className={classes.nthWeekDay}
+                sx={styles.nthWeekDay}
               >
                 <MenuItem value="1" key="first">First</MenuItem>
                 <MenuItem value="2" key="second">Second</MenuItem>
@@ -258,7 +259,7 @@ function ChplCronGen(props) {
                 label="Day"
                 value={nthWeekdayDay}
                 onChange={handleNthWeekdayDay}
-                className={classes.nthWeekDay}
+                sx={styles.nthWeekDay}
               >
                 <MenuItem value="1" key="sunday">Sunday</MenuItem>
                 <MenuItem value="2" key="monday">Monday</MenuItem>
@@ -269,7 +270,7 @@ function ChplCronGen(props) {
                 <MenuItem value="7" key="saturday">Saturday</MenuItem>
               </ChplTextField>
               <Typography variant="subtitle2">of the month</Typography>
-            </div>
+            </Box>
           )}
         <Typography gutterBottom variant="subtitle2">At:</Typography>
         <ChplTextField
@@ -284,7 +285,7 @@ function ChplCronGen(props) {
           error={formik.touched.runTime && !!formik.errors.runTime}
           helperText={formik.touched.runTime && formik.errors.runTime}
         />
-        <FormHelperText className={classes.helperTextSpacing}> All times should be entered as Eastern Time (ET)</FormHelperText>
+        <FormHelperText sx={styles.helperTextSpacing}> All times should be entered as Eastern Time (ET)</FormHelperText>
       </CardContent>
     </Card>
   );

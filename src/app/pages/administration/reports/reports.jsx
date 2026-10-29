@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  CircularProgress,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, CircularProgress } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import { useFetchAcbs } from 'api/acbs';
@@ -19,13 +16,13 @@ import ChplReportJobTypesView from 'components/jobs/report-job-types-view';
 import ChplUserTriggersView from 'components/jobs/user-triggers-view';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 
-const useStyles = makeStyles({
+const styles = {
   containerTrigger: {
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
   },
-});
+};
 
 function ChplReports() {
   const acbQuery = useFetchAcbs(true);
@@ -40,7 +37,6 @@ function ChplReports() {
   const [job, setJob] = useState(undefined);
   const [jobTypes, setJobTypes] = useState([]);
   const [userTriggers, setUserTriggers] = useState([]);
-  const classes = useStyles();
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
@@ -115,7 +111,7 @@ function ChplReports() {
       <ChplPageBody>
         { !job
           && (
-            <div className={classes.containerTrigger}>
+            <Box sx={styles.containerTrigger}>
               <div>
                 { (userQuery.isLoading || !userQuery.isSuccess)
                   && (
@@ -143,7 +139,7 @@ function ChplReports() {
                     />
                   )}
               </div>
-            </div>
+            </Box>
           )}
         { job
           && (

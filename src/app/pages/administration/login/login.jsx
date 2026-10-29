@@ -1,20 +1,16 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Container } from '@mui/material';
 import { func, shape } from 'prop-types';
 
 import ChplLogin from 'components/login/login';
 import { goToState } from 'services/navigation.service';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   fixFooterSpacing: {
     minHeight: 'calc(100vh - 100px)',
   },
-});
+};
 
 // `returnTo` is a ui-router TargetState resolved by the login state. It is
 // absent when this renders as /administration's default content, in which case
@@ -29,7 +25,6 @@ function ChplLoginPage({
   const state = returnTo.state();
   const params = returnTo.params();
   const options = { ...returnTo.options(), reload: true };
-  const classes = useStyles();
 
   const handleLogin = (action) => {
     if (action === 'loggedIn') {
@@ -40,7 +35,7 @@ function ChplLoginPage({
   return (
     <Container disableGutters maxWidth={false} id="login-component">
       <Box py="4vh" bgcolor={palette.background}>
-        <Container className={classes.fixFooterSpacing} maxWidth="xs">
+        <Container sx={styles.fixFooterSpacing} maxWidth="xs">
           <ChplLogin
             dispatch={handleLogin}
           />
