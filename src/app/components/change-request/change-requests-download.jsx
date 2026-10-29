@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-} from '@material-ui/core';
-import CloudDownloadOutlinedIcon from '@material-ui/icons/CloudDownloadOutlined';
+} from '@mui/material';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { useSnackbar } from 'notistack';
 import { object, number, string } from 'prop-types';
 
@@ -53,7 +53,6 @@ function ChplChangeRequestsDownload({
 
   return (
     <Button
-      fullWidth
       color="primary"
       variant="outlined"
       onClick={download}

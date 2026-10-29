@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-  IconButton,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+  Box, Card, CardContent, CardHeader, CircularProgress, IconButton, MenuItem,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   func, number, object, oneOfType, string,
 } from 'prop-types';
@@ -22,12 +15,12 @@ import { isDateBetweenInclusive } from 'services/date-util';
 import { sortNonconformityTypes } from 'services/surveillance.service';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   nonConformityCard: {
     marginBottom: '8px',
   },
-});
+};
 
 const validationSchema = yup.object({
   capApprovalDay: yup.date(),
@@ -78,7 +71,6 @@ function ChplNonConformityEdit({
 }) {
   const { data, isLoading, isError } = useFetchNonConformityTypes();
   const [nonConformityTypes, setNonConformityTypes] = useState([]);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -144,19 +136,19 @@ function ChplNonConformityEdit({
 
   return (
     <>
-      <Card className={classes.nonConformityCard}>
+      <Card sx={styles.nonConformityCard}>
         <CardHeader
           title="Non-Conformity"
           action={(
             <ChplTooltip placement="left" title="Remove Non-Conformity">
-              <IconButton onClick={remove}>
+              <IconButton onClick={remove} size="large">
                 <DeleteIcon color="error" />
               </IconButton>
             </ChplTooltip>
-          )}
+        )}
         />
         <CardContent>
-          <Box display="flex" gridGap="16px" flexDirection="column" justifyContent="space-between" pb={2}>
+          <Box display="flex" gap="16px" flexDirection="column" justifyContent="space-between" pb={2}>
             <ChplTextField
               select
               id="type"
@@ -178,7 +170,7 @@ function ChplNonConformityEdit({
                 </MenuItem>
               ))}
             </ChplTextField>
-            <Box display="flex" gridGap="16px" flexDirection="row">
+            <Box display="flex" gap="16px" flexDirection="row">
               <ChplTextField
                 type="date"
                 id="date-of-determination"
@@ -203,7 +195,7 @@ function ChplNonConformityEdit({
                 helperText={formik.touched.capApprovalDay && formik.errors.capApprovalDay}
               />
             </Box>
-            <Box display="flex" gridGap="16px" flexDirection="row">
+            <Box display="flex" gap="16px" flexDirection="row">
               <ChplTextField
                 type="date"
                 id="cap-start-day"
@@ -227,7 +219,7 @@ function ChplNonConformityEdit({
                 helperText={formik.touched.capEndDay && formik.errors.capEndDay}
               />
             </Box>
-            <Box display="flex" gridGap="16px" flexDirection="row">
+            <Box display="flex" gap="16px" flexDirection="row">
               <ChplTextField
                 type="date"
                 id="cap-must-complete-day"
@@ -251,7 +243,7 @@ function ChplNonConformityEdit({
                 helperText={formik.touched.nonconformityCloseDay && formik.errors.nonconformityCloseDay}
               />
             </Box>
-            <Box display="flex" gridGap="16px" flexDirection="row">
+            <Box display="flex" gap="16px" flexDirection="row">
               <ChplTextField
                 type="number"
                 id="sites-passed"
@@ -279,7 +271,7 @@ function ChplNonConformityEdit({
                 helperText={formik.touched.totalSites && formik.errors.totalSites}
               />
             </Box>
-            <Box display="flex" gridGap="16px" flexDirection="column">
+            <Box display="flex" gap="16px" flexDirection="column">
               <ChplTextField
                 id="summary"
                 name="summary"
@@ -304,7 +296,7 @@ function ChplNonConformityEdit({
                 helperText={formik.touched.findings && formik.errors.findings}
               />
             </Box>
-            <Box display="flex" gridGap="16px" flexDirection="column">
+            <Box display="flex" gap="16px" flexDirection="column">
               <ChplTextField
                 id="developer-explanation"
                 name="developerExplanation"

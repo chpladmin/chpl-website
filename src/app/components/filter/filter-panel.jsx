@@ -9,10 +9,14 @@ import {
   Popover,
   Switch,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { number } from 'prop-types';
+} from '@mui/material';
+import {
+  number,
+  object,
+  oneOfType,
+  string,
+} from 'prop-types';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 import { useFilterContext } from './filter-context';
 
@@ -20,7 +24,7 @@ import { eventTrack } from 'services/analytics.service';
 import { compareStrings } from 'services/sort.service';
 import { palette, theme } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   advancedSearchButton: {
     color: palette.black,
   },
@@ -56,14 +60,21 @@ const useStyles = makeStyles({
   filterBold: {
     fontWeight: '600',
   },
+  // Just under the theme's 1em, so the longest name still fits half a row when it's selected and bold
+  filterCategoryButton: {
+    fontSize: '0.9em',
+  },
+  // Two categories to a row, e.g. Certification Criteria beside Certification Date
   filterContainer: {
     display: 'grid',
-    gridTemplateColumns: ({ filterGridMinColWidth }) => `repeat(auto-fit, minmax(${filterGridMinColWidth}px, 1fr))`,
-    justifyItems: 'start',
-    alignItems: 'start',
+    gridTemplateColumns: 'minmax(200px, 1fr)',
+    alignItems: 'stretch',
     gap: '16px',
     padding: '0 8px',
     marginTop: '16px',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+    },
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -115,10 +126,19 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '8px',
   },
-});
+};
 
-function ChplFilterPanel({ filterGridMinColWidth }) {
-  const classes = useStyles({ filterGridMinColWidth });
+// The panel is as wide as its search bar, less the space the bar's buttons
+// take. extraWidth, a CSS length such as '300px', widens it for a page whose
+// filter names need more room than that. width replaces the size altogether,
+// with any sx width, including one that changes at each breakpoint
+const getPanelWidth = (searchBarWidth, extraWidth) => {
+  const usual = searchBarWidth ? `${searchBarWidth - 284}px` : '100vw - 316px';
+  if (extraWidth) { return `calc(${usual} + ${extraWidth})`; }
+  return searchBarWidth ? usual : `calc(${usual})`;
+};
+
+function ChplFilterPanel({ extraWidth = undefined, width = undefined }) {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [panelWidth, setPanelWidth] = useState(null);
@@ -161,7 +181,6 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
       });
     }
     setOpen(false);
-    setPanelWidth(null);
   };
 
   const handleAction = (action) => {
@@ -237,21 +256,34 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
   return (
     <>
       <Button
-        className={classes.advancedSearchButton}
+        sx={styles.advancedSearchButton}
         variant="text"
         id="filter-panel-toggle"
         onClick={handleClick}
       >
         Filters
         {' '}
-        <FilterListIcon className={classes.iconSpacing} />
+        <FilterListIcon sx={styles.iconSpacing} />
       </Button>
       <Popover
         id="filter-panel-form"
         open={open}
         anchorEl={anchor}
         onClose={handleClose}
-        TransitionProps={{ onExited: () => { setAnchor(null); setActiveCategoryKey(''); } }}
+        // Everything the panel is sized and filled from stays put until it has finished closing,
+        // so the closing animation is not interrupted by the panel changing width or content
+        transitionDuration={{ enter: 260, exit: 180 }}
+        TransitionProps={{
+          easing: {
+            enter: theme.transitions.easing.easeOut,
+            exit: theme.transitions.easing.sharp,
+          },
+          onExited: () => {
+            setAnchor(null);
+            setActiveCategoryKey('');
+            setPanelWidth(null);
+          },
+        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -261,8 +293,8 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
           horizontal: 'right',
         }}
         PaperProps={{
-          style: {
-            width: panelWidth ? `${panelWidth - 284}px` : 'calc(100vw - 316px)',
+          sx: {
+            width: width ?? getPanelWidth(panelWidth, extraWidth),
             maxWidth: 'calc(100vw - 32px)',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
@@ -273,9 +305,9 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
           },
         }}
       >
-        <div className={classes.filterPanelContainer}>
-          <div>
-            <div className={classes.filterPanelPrimary}>
+        <Box sx={styles.filterPanelContainer}>
+          <Box>
+            <Box sx={styles.filterPanelPrimary}>
               <List
                 dense
                 subheader={(
@@ -284,7 +316,7 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
                     component="div"
                     id="filter-panel-primary-subheader"
                   >
-                    <div className={classes.filterHeaderContainer}>
+                    <Box sx={styles.filterHeaderContainer}>
                       <Typography variant="subtitle1"> Filter By: </Typography>
                       <ButtonGroup
                         variant="text"
@@ -298,38 +330,38 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
                           Reset All Filters
                         </Button>
                       </ButtonGroup>
-                    </div>
+                    </Box>
                   </ListSubheader>
                 )}
               >
-                <div className={classes.filterSubHeaderContainer}>
-                  <div className={classes.filterContainer}>
+                <Box sx={styles.filterSubHeaderContainer}>
+                  <Box sx={styles.filterContainer}>
                     { filters.map((f) => (
                       <Button
                         fullWidth
                         key={f.key}
-                        color={f === activeCategory ? 'default' : 'primary'}
+                        color={f === activeCategory ? 'inherit' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
-                        style={{ whiteSpace: f.wrapText ? 'normal' : 'nowrap' }}
+                        sx={[styles.filterCategoryButton, { whiteSpace: f.wrapText ? 'normal' : 'nowrap' }]}
                         variant="outlined"
                         onClick={() => handleCategoryToggle(f)}
                       >
-                        <span className={f === activeCategory ? classes.filterBold : undefined}>
+                        <Box component="span" sx={f === activeCategory ? styles.filterBold : undefined}>
                           {f.getFilterDisplay(f)}
-                        </span>
+                        </Box>
                       </Button>
                     ))}
-                  </div>
-                </div>
+                  </Box>
+                </Box>
               </List>
-            </div>
-          </div>
-          <div className={classes.filterPanelSecondary}>
+            </Box>
+          </Box>
+          <Box sx={styles.filterPanelSecondary}>
             {!activeCategory && (
               <Box mt={2}>
-                <Typography className={classes.directionText} variant="subtitle1" gutterBottom>Select a filter to begin</Typography>
+                <Typography sx={styles.directionText} variant="subtitle1" gutterBottom>Select a filter to begin</Typography>
                 <Typography variant="body1">To narrow down your search results, choose a filter category from the left-hand panel.</Typography>
-                <Typography variant="body1">Then, select one or more filter options to apply to your search.</Typography>
+                <Typography sx={{ mt: 2 }} variant="body1">Then, select one or more filter options to apply to your search.</Typography>
               </Box>
             )}
             { activeCategory?.values.length > 0 && (
@@ -339,13 +371,13 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
                   <ListSubheader
                     component="div"
                     id="filter-panel-secondary-subheader"
-                    className={classes.clearResetContainer}
+                    sx={styles.clearResetContainer}
                     disableGutters
                   >
-                    <Typography variant="subtitle1" className={classes.clearResetTitle}>
+                    <Typography variant="subtitle1" sx={styles.clearResetTitle}>
                       { activeCategory.getFilterDisplay(activeCategory) }
                     </Typography>
-                    <div className={classes.secondaryPanelOptions}>
+                    <Box sx={styles.secondaryPanelOptions}>
                       { activeCategory.operatorKey
                         && (
                           <FormControlLabel
@@ -392,11 +424,11 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
                           Reset
                         </Button>
                       </ButtonGroup>
-                    </div>
+                    </Box>
                   </ListSubheader>
                 )}
               >
-                <div className={classes.filterGroupTwoContainer}>
+                <Box sx={styles.filterGroupTwoContainer}>
                   { activeCategory.disabled
                     && (
                       <>
@@ -415,12 +447,12 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
                     handleFilterToggle,
                     handleFilterUpdate,
                   })}
-                </div>
+                </Box>
               </List>
             )}
-          </div>
-        </div>
-        <div className={classes.filterPanelFooter}>
+          </Box>
+        </Box>
+        <Box sx={styles.filterPanelFooter}>
           <Button
             color="primary"
             variant="outlined"
@@ -429,7 +461,7 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
           >
             Close
           </Button>
-        </div>
+        </Box>
       </Popover>
     </>
   );
@@ -438,5 +470,6 @@ function ChplFilterPanel({ filterGridMinColWidth }) {
 export default ChplFilterPanel;
 
 ChplFilterPanel.propTypes = {
-  filterGridMinColWidth: number.isRequired,
+  extraWidth: string,
+  width: oneOfType([number, string, object]),
 };

@@ -1,30 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import {
-  TextField,
-  makeStyles,
-} from '@material-ui/core';
+import React from 'react';
+import { TextField } from '@mui/material';
 import { string } from 'prop-types';
 
-const useStyles = makeStyles({
+// native pickers always show a placeholder (e.g. mm/dd/yyyy), so their label has to stay shrunk
+const pickerTypes = ['date', 'datetime-local', 'month', 'time', 'week'];
+
+const styles = {
   longLabelFix: {
     padding: '0 4px',
     background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,1) 21%, rgba(255,255,255,1) 74%, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 76%, rgba(255,255,255,0) 100%)',
   },
-  date: {
-    height: '64px',
-    display: 'inline-flex',
-    paddingTop: '16px',
-  },
-});
+};
 
 function ChplTextField(props) {
-  const { type = undefined } = props;
-  const classes = useStyles();
-  const [isDate, setIsDate] = useState(false);
-
-  useEffect(() => {
-    setIsDate(type === 'date');
-  }, []);
+  const { type } = props;
 
   /* eslint-disable react/jsx-props-no-spreading */
   return (
@@ -32,8 +21,10 @@ function ChplTextField(props) {
       fullWidth
       variant="outlined"
       size="small"
-      InputLabelProps={{ classes: { root: classes.longLabelFix } }}
-      InputProps={{ className: isDate ? classes.date : '' }}
+      InputLabelProps={{
+        sx: styles.longLabelFix,
+        ...(pickerTypes.includes(type) && { shrink: true }),
+      }}
       {...props}
     />
   );

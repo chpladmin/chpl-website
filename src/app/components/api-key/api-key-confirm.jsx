@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, CardHeader, Typography,
+} from '@mui/material';
 import { string } from 'prop-types';
 
 import { usePostConfirmApiKey } from 'api/api-keys';
 
-const useStyles = makeStyles({
+const styles = {
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr 1fr',
@@ -19,13 +15,12 @@ const useStyles = makeStyles({
   centeredGridItem: {
     gridColumn: '2 / 4',
   },
-});
+};
 
 function ChplApiKeyConfirm({ hash }) {
   const { mutate } = usePostConfirmApiKey();
   const [apiKey, setApiKey] = useState({});
   const [confirmError, setConfirmError] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     mutate(hash, {
@@ -39,8 +34,8 @@ function ChplApiKeyConfirm({ hash }) {
   }, []);
 
   return (
-    <div className={classes.grid}>
-      <div className={classes.centeredGridItem}>
+    <Box sx={styles.grid}>
+      <Box sx={styles.centeredGridItem}>
         <Card>
           <CardHeader title="API Key Confirmation" />
           <CardContent>
@@ -75,8 +70,8 @@ function ChplApiKeyConfirm({ hash }) {
               )}
           </CardContent>
         </Card>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

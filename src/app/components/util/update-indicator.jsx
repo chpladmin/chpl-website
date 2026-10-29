@@ -1,13 +1,8 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  IconButton,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import UpdateIcon from '@material-ui/icons/Update';
-import WarningIcon from '@material-ui/icons/Warning';
+import { Box, IconButton, Typography } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import UpdateIcon from '@mui/icons-material/Update';
+import WarningIcon from '@mui/icons-material/Warning';
 import * as jsJoda from '@js-joda/core';
 import { string } from 'prop-types';
 
@@ -17,7 +12,7 @@ import { isListingActive } from 'services/listing.service';
 import { CriterionContext, ListingContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   updateRequired: {
     color: palette.error,
   },
@@ -30,7 +25,7 @@ const useStyles = makeStyles({
   additionalInformation: {
     paddingTop: '8px',
   },
-});
+};
 
 function ChplUpdateIndicator({
   additionalInformation = undefined,
@@ -39,7 +34,6 @@ function ChplUpdateIndicator({
 }) {
   const { criterion } = useContext(CriterionContext);
   const { listing } = useContext(ListingContext);
-  const classes = useStyles();
 
   if (listing.chplProductNumber
       && (!isListingActive(listing)
@@ -58,15 +52,15 @@ function ChplUpdateIndicator({
           </Typography>
           { additionalInformation
             && (
-              <Typography variant="body1" align="left" className={classes.additionalInformation}>
+              <Typography variant="body1" align="left" sx={styles.additionalInformation}>
                 { additionalInformation }
               </Typography>
             )}
         </Box>
       )}
       >
-        <IconButton>
-          <UpdateIcon className={classes.updateNeeded} />
+        <IconButton size="large">
+          <UpdateIcon sx={styles.updateNeeded} />
         </IconButton>
       </ChplTooltip>
     );
@@ -83,15 +77,15 @@ function ChplUpdateIndicator({
           </Typography>
           { additionalInformation
             && (
-              <Typography variant="body1" align="left" className={classes.additionalInformation}>
+              <Typography variant="body1" align="left" sx={styles.additionalInformation}>
                 { additionalInformation }
               </Typography>
             )}
         </Box>
       )}
       >
-        <IconButton>
-          <WarningIcon className={classes.updateRequired} />
+        <IconButton size="large">
+          <WarningIcon sx={styles.updateRequired} />
         </IconButton>
       </ChplTooltip>
     );
@@ -108,15 +102,15 @@ function ChplUpdateIndicator({
           </Typography>
           { additionalInformation
             && (
-              <Typography variant="body1" align="left" className={classes.additionalInformation}>
+              <Typography variant="body1" align="left" sx={styles.additionalInformation}>
                 { additionalInformation }
               </Typography>
             )}
         </Box>
       )}
       >
-        <IconButton>
-          <CheckCircleIcon className={classes.alreadyUpdated} />
+        <IconButton size="large">
+          <CheckCircleIcon sx={styles.alreadyUpdated} />
         </IconButton>
       </ChplTooltip>
     );

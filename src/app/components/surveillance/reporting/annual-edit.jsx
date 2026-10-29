@@ -1,12 +1,7 @@
 import React from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Card, CardContent, Divider, Typography,
+} from '@mui/material';
 import { func, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
@@ -17,7 +12,7 @@ import { ChplActionBar, useActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -44,7 +39,7 @@ const useStyles = makeStyles({
     margin: '8px 0',
     whiteSpace: 'pre-line',
   },
-});
+};
 
 const validationSchema = yup.object({
   obstacleSummary: yup.string(),
@@ -58,7 +53,6 @@ function ChplAnnualEdit({
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: deleteReport } = useDeleteAnnual();
   const { mutate: putReport } = usePutAnnual();
-  const classes = useStyles();
   let formik;
   let updateActionBar;
 
@@ -130,9 +124,9 @@ function ChplAnnualEdit({
   });
 
   return (
-    <div className={classes.container}>
-      <Box className={classes.stickyColumn}>
-        <Card className={classes.reportInfoCard}>
+    <Box sx={styles.container}>
+      <Box sx={styles.stickyColumn}>
+        <Card sx={styles.reportInfoCard}>
           <CardContent>
             <Typography variant="h6" component="h2">
               <strong>{`${report.acb?.name} Annual Surveillance Reporting`}</strong>
@@ -163,7 +157,7 @@ function ChplAnnualEdit({
               helperText={formik.touched.obstacleSummary && formik.errors.obstacleSummary}
             />
           </Box>
-          <Box className={classes.summaryGroup}>
+          <Box sx={styles.summaryGroup}>
             <Typography variant="h6" component="h2">
               <strong>Priority Changes From Findings Summary</strong>
             </Typography>
@@ -185,7 +179,7 @@ function ChplAnnualEdit({
         </CardContent>
       </Card>
       <ChplActionBar dispatch={handleDispatch} />
-    </div>
+    </Box>
   );
 }
 

@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  CircularProgress,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+  Button, Card, CardHeader, CardContent, CircularProgress, Typography,
+} from '@mui/material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useDispatch } from 'react-redux';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -25,7 +19,7 @@ import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   grid: {
     display: 'grid',
@@ -38,7 +32,7 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     color: palette.black,
   },
-});
+};
 
 const validationSchema = yup.object({
   password: yup.string()
@@ -54,7 +48,6 @@ function ChplSignin({ dispatch }) {
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePostLogin();
   const [isProcessing, setIsProcessing] = useState(false);
-  const classes = useStyles();
   let formik;
 
   const catchEnter = (e, target) => {
@@ -144,8 +137,8 @@ function ChplSignin({ dispatch }) {
 
   return (
     <Card style={{ border: 'none' }}>
-      <CardHeader fontWeight="bold" className={classes.loginHeader} title="Login required" />
-      <CardContent className={classes.grid}>
+      <CardHeader fontWeight="bold" sx={styles.loginHeader} title="Login required" />
+      <CardContent sx={styles.grid}>
         <ChplTextField
           id="user-name"
           name="userName"
@@ -179,7 +172,7 @@ function ChplSignin({ dispatch }) {
           endIcon={<VpnKeyIcon />}
           disabled={isProcessing}
         >
-          { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
+          { isProcessing && <CircularProgress size={24} sx={styles.buttonProgress} /> }
           Log In
         </Button>
         <Button

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -8,10 +9,9 @@ import {
   Divider,
   MenuItem,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { func, object } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -20,7 +20,7 @@ import { useFetchProductsByDeveloper } from 'api/product';
 import { ChplTextField } from 'components/util';
 import { compareStrings } from 'services/sort.service';
 
-const useStyles = makeStyles({
+const styles = {
   buttonCard: {
     padding: '32px',
     display: 'flex',
@@ -95,7 +95,7 @@ const useStyles = makeStyles({
   verticalDivider: {
     height: '25%',
   },
-});
+};
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -107,7 +107,6 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
   const [selectedProduct, setSelectedProduct] = useState('');
   const [products, setProducts] = useState([]);
   const [isCreating, setIsCreating] = useState(true);
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -163,18 +162,17 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
 
   return (
     <Container maxWidth="md">
-      <div className={classes.developerConfirm}>
-        <div className={classes.developerSubContainer}>
+      <Box sx={styles.developerConfirm}>
+        <Box sx={styles.developerSubContainer}>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
             disabled={products?.length === 0}
-            className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+            sx={[styles.buttonCard, !isCreating && styles.buttonCardFocused]}
             onClick={() => handleCreationToggle(false)}
           >
-            <span className={classes.buttonContent}>
-              <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+            <Box component="span" sx={styles.buttonContent}>
+              <CheckCircleIcon color="primary" sx={styles.extraLargeIcons} />
               { selectedProduct
                 ? (
                   <>
@@ -185,33 +183,32 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
                     Choose A Product To Use
                   </>
                 )}
-            </span>
+            </Box>
           </Button>
-          <div className={classes.orContainer}>
+          <Box sx={styles.orContainer}>
             <Divider />
             <Typography>OR</Typography>
             <Divider />
-          </div>
+          </Box>
           <Button
             variant="outlined"
-            color="default"
             fullWidth
-            className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+            sx={[styles.buttonCard, isCreating && styles.buttonCardFocused]}
             onClick={() => handleCreationToggle(true)}
           >
-            <span className={classes.buttonContent}>
-              <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+            <Box component="span" sx={styles.buttonContent}>
+              <AddCircleIcon color="primary" sx={styles.extraLargeIcons} />
               Create a Product
-            </span>
+            </Box>
           </Button>
-        </div>
+        </Box>
         <Divider />
         {isCreating
           ? (
             <Card>
               <CardHeader title="Create A New Product" />
               <CardContent>
-                <div className={classes.formContainer}>
+                <Box sx={styles.formContainer}>
                   <ChplTextField
                     id="name"
                     name="name"
@@ -222,7 +219,7 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
                     onChange={handleChange}
                     onBlur={formik.handleBlur}
                   />
-                </div>
+                </Box>
               </CardContent>
             </Card>
           ) : (
@@ -247,7 +244,7 @@ function ChplConfirmProduct({ developer, product: initialProduct, dispatch }) {
               </CardContent>
             </Card>
           )}
-      </div>
+      </Box>
     </Container>
   );
 }
