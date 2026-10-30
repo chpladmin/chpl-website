@@ -3,7 +3,7 @@ import { lazy } from 'react';
 const states = [{
   name: 'listing',
   url: '/listing/{id}',
-  component: lazy(() => import('pages/listing/listing-wrapper')),
+  component: lazy(() => import('pages/listing/listing')),
   // replaces the chplListing Angular component, which existed only to read
   // $stateParams.id and hand it to the bridge as a binding
   resolve: [

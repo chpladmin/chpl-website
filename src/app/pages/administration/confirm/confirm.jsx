@@ -15,6 +15,7 @@ import {
   ChplConfirmProgress,
   ChplConfirmVersion,
 } from 'components/listing/confirm';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { goToState } from 'services/navigation.service';
 import { PendingListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -334,52 +335,57 @@ function ChplConfirm({ id }) {
   };
 
   return (
-    <Container maxWidth="lg">
-      <PendingListingContext.Provider value={pendingListingState}>
-        <Box sx={styles.container}>
-          <Container maxWidth="md">
-            <Typography variant="h6">
-              {`Inspecting Listing: ${pending.chplProductNumber}`}
-            </Typography>
-          </Container>
-          <ChplConfirmProgress
-            value={getProgress(stage)}
-            canNext={canAct('next')}
-            canPrevious={canAct('previous')}
-            dispatch={handleProgressDispatch}
-          />
-          { stage === 'developer' && staged
-            && (
-              <ChplConfirmDeveloper
-                developer={staged}
-                listing={pending}
-                dispatch={handleDeveloperDispatch}
+    <>
+      <ChplPageHeader text="Confirm Pending Listing" />
+      <ChplPageBody>
+        <Container maxWidth="lg">
+          <PendingListingContext.Provider value={pendingListingState}>
+            <Box sx={styles.container}>
+              <Container maxWidth="md">
+                <Typography variant="h6">
+                  {`Inspecting Listing: ${pending.chplProductNumber}`}
+                </Typography>
+              </Container>
+              <ChplConfirmProgress
+                value={getProgress(stage)}
+                canNext={canAct('next')}
+                canPrevious={canAct('previous')}
+                dispatch={handleProgressDispatch}
               />
-            )}
-          { stage === 'product'
-            && (
-              <ChplConfirmProduct
-                product={staged}
-                developer={pending.developer}
-                dispatch={handleProductDispatch}
-              />
-            )}
-          { stage === 'version'
-            && (
-              <ChplConfirmVersion
-                version={staged}
-                product={pending.product}
-                dispatch={handleVersionDispatch}
-              />
-            )}
-          { stage === 'listing'
-            && (
-              <ChplConfirmListing />
-            )}
-          <ChplActionBar dispatch={handleActionDispatch} />
-        </Box>
-      </PendingListingContext.Provider>
-    </Container>
+              { stage === 'developer' && staged
+                && (
+                  <ChplConfirmDeveloper
+                    developer={staged}
+                    listing={pending}
+                    dispatch={handleDeveloperDispatch}
+                  />
+                )}
+              { stage === 'product'
+                && (
+                  <ChplConfirmProduct
+                    product={staged}
+                    developer={pending.developer}
+                    dispatch={handleProductDispatch}
+                  />
+                )}
+              { stage === 'version'
+                && (
+                  <ChplConfirmVersion
+                    version={staged}
+                    product={pending.product}
+                    dispatch={handleVersionDispatch}
+                  />
+                )}
+              { stage === 'listing'
+                && (
+                  <ChplConfirmListing />
+                )}
+              <ChplActionBar dispatch={handleActionDispatch} />
+            </Box>
+          </PendingListingContext.Provider>
+        </Container>
+      </ChplPageBody>
+    </>
   );
 }
 

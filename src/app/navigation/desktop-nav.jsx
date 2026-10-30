@@ -6,6 +6,7 @@ import React, {
 import { Box, Button, ClickAwayListener } from '@mui/material';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { func } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   developerGuideRoles,
@@ -13,15 +14,10 @@ import {
   shortcutItems,
 } from './navigation-menu-items';
 
+import { closeWidget, toggleWidget } from 'components/action-widget/widget.slice';
 import { ChplLink } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
-import {
-  CmsContext,
-  CompareContext,
-  UserContext,
-  useAnalyticsContext,
-  useHashContext,
-} from 'shared/contexts';
+import { UserContext, useAnalyticsContext, useHashContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const styles = {
@@ -106,14 +102,10 @@ function ChplDesktopNav({
   onSearchClick,
 }) {
   const analytics = useAnalyticsContext();
-  const {
-    isOpen: cmsIsOpen,
-    setIsOpen: setCmsIsOpen,
-  } = useContext(CmsContext);
-  const {
-    isOpen: compareIsOpen,
-    setIsOpen: setCompareIsOpen,
-  } = useContext(CompareContext);
+  const dispatch = useDispatch();
+  const openWidget = useSelector((state) => state.widget.open);
+  const cmsIsOpen = openWidget === 'cms';
+  const compareIsOpen = openWidget === 'compare';
   const { hasAnyRole } = useContext(UserContext);
   const resourcesButtonRef = useRef(null);
   const shortcutsButtonRef = useRef(null);
@@ -122,21 +114,25 @@ function ChplDesktopNav({
   const { currentHash } = useHashContext();
   const resourceItems = getResourceItems({ includeDeveloperGuide: hasAnyRole(developerGuideRoles) });
 
-  const closeAllNavOverlays = () => {
-    setCmsIsOpen(false);
-    setCompareIsOpen(false);
+  const closeNavMenus = () => {
     setResourcesOpen(false);
     setShortcutsOpen(false);
   };
 
+  const closeAllNavOverlays = () => {
+    dispatch(closeWidget());
+    closeNavMenus();
+  };
+
+  // Toggling one widget also closes the other, since only one is ever open
   const toggleCmsWidget = () => {
-    closeAllNavOverlays();
-    setCmsIsOpen(!cmsIsOpen);
+    closeNavMenus();
+    dispatch(toggleWidget('cms'));
   };
 
   const toggleCompareWidget = () => {
-    closeAllNavOverlays();
-    setCompareIsOpen(!compareIsOpen);
+    closeNavMenus();
+    dispatch(toggleWidget('compare'));
   };
 
   const toggleResources = () => {

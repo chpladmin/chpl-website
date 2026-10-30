@@ -7,7 +7,7 @@ import ChplChangeRequests from './change-requests';
 
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 
-function ChplChangeRequestsWrapper(props) {
+function ChplChangeRequestsPage(props) {
   const {
     disallowedFilters = [],
     bonusQuery = '',
@@ -30,9 +30,9 @@ function ChplChangeRequestsWrapper(props) {
   );
 }
 
-export default ChplChangeRequestsWrapper;
+export default ChplChangeRequestsPage;
 
-ChplChangeRequestsWrapper.propTypes = {
+ChplChangeRequestsPage.propTypes = {
   disallowedFilters: arrayOf(string),
   bonusQuery: string,
   dispatch: func,

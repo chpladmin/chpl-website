@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { useFreshAccessToken } from 'api/axios';
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplQuestionableActivityDetails from 'components/activity/questionable-activity-details';
+import { usePageState } from 'components/page-state';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -27,7 +28,6 @@ import {
 } from 'components/filter';
 import { getDisplayDateFormat } from 'services/date-util';
 import { eventTrack } from 'services/analytics.service';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
 function ChplQuestionableActivityView() {
@@ -37,10 +37,10 @@ function ChplQuestionableActivityView() {
   const storageKey = 'storageKey-questionableActivity';
   const { analytics } = useAnalyticsContext();
   const [activities, setActivities] = useState([]);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'activity_date');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'activity_date');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = usePageState(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
 
   const filterContext = useFilterContext();

@@ -17,7 +17,6 @@ import {
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 import { AnalyticsContext, useAnalyticsContext } from 'shared/contexts';
-import { useLocalStorage } from 'services/storage.service';
 
 const staticFilters = [
   certificationDate,
@@ -51,7 +50,7 @@ function ChplListingsPage() {
   const previouslyViewed = useSelector((state) => state.browserInfo.previouslyViewed);
   const { analytics } = useAnalyticsContext();
   const [filters, setFilters] = useState(staticFilters);
-  const [favorites] = useLocalStorage('favorites', []);
+  const favorites = useSelector((state) => state.browserInfo.favorites);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const cqmQuery = useFetchCqms();
@@ -169,7 +168,7 @@ function ChplListingsPage() {
       return `listingIds=${[...previouslyViewed].sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     if (value === 'Favorites' && favorites.length > 0) {
-      return `listingIds=${[...favorites].map((fav) => fav.id).sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+      return `listingIds=${[...favorites].sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     return null;
   };
