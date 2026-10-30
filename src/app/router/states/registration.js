@@ -14,7 +14,7 @@ const states = [{
 }, {
   name: 'registration.create-user',
   url: '/create-user/{hash}',
-  component: lazy(() => import('pages/registration/register-user-wrapper')),
+  component: lazy(() => import('pages/registration/register-user')),
   params: {
     hash: { squash: true, value: null },
   },

@@ -55,7 +55,7 @@ function ChplRegisterUser({ hash }) {
     if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb', 'chpl-cms-staff', 'chpl-developer'])) {
       handleDispatch('authorize', {});
     }
-  }, [hash]);
+  }, []);
 
   handleDispatch = (action, payload) => {
     let packet;
@@ -97,7 +97,7 @@ function ChplRegisterUser({ hash }) {
             enqueueSnackbar('Your account has been created. Please check your email for your temporary password', {
               variant: 'success',
             });
-            setState('login');
+            goToState('search');
           },
           onError: (error) => {
             let errorMessage;
