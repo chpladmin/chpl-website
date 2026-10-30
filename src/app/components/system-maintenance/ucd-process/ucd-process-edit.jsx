@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -19,7 +19,7 @@ const validationSchema = yup.object({
     .required('Field is required'),
 });
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -31,13 +31,12 @@ const useStyles = makeStyles({
     gap: '8px',
     flexWrap: 'wrap',
   },
-});
+};
 
 function ChplUcdProcessEdit({
   dispatch, isProcessing, ucdProcess: initialUcdProcess, errors: propsErrors = [],
 }) {
   const [ucdProcess, setUcdProcess] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -84,7 +83,7 @@ function ChplUcdProcessEdit({
   });
 
   return (
-    <div className={classes.container}>
+    <Box sx={styles.container}>
       <ChplTextField
         id="name"
         name="name"
@@ -97,7 +96,7 @@ function ChplUcdProcessEdit({
         helperText={formik.touched.name && formik.errors.name}
       />
       <ChplActionBar dispatch={handleDispatch} />
-    </div>
+    </Box>
   );
 }
 

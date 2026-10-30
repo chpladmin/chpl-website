@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  Box,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { Box, Divider, Typography } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
   bool,
   number,
@@ -18,7 +13,7 @@ import {
 import { ChplLink } from 'components/util';
 import { utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   root: {
     display: 'grid',
@@ -51,22 +46,20 @@ const useStyles = makeStyles({
     color: 'red',
     marginLeft: '6px',
   },
-});
+};
 
 function ChplUrlCheckerResponse({ response }) {
-  const classes = useStyles();
-
   const displayStatusIcon = (passed) => (passed ? (
-    <CheckCircleIcon fontSize="small" className={classes.greenIcon} />
+    <CheckCircleIcon fontSize="small" sx={styles.greenIcon} />
   ) : (
-    <CancelIcon fontSize="small" className={classes.redIcon} />
+    <CancelIcon fontSize="small" sx={styles.redIcon} />
   ));
 
   return (
-    <Box className={classes.root}>
-      <div className={classes.section}>
-        <Typography className={classes.sectionTitle}>Status:</Typography>
-        <Typography className={classes.statusRow}>
+    <Box sx={styles.root}>
+      <Box sx={styles.section}>
+        <Typography sx={styles.sectionTitle}>Status:</Typography>
+        <Typography sx={styles.statusRow}>
           {response.passed ? 'Passed' : 'Failure'}
           {displayStatusIcon(response.passed)}
         </Typography>
@@ -79,27 +72,27 @@ function ChplUrlCheckerResponse({ response }) {
               <Typography variant="body2">{response.errorMessage}</Typography>
             </>
           )}
-      </div>
+      </Box>
 
-      <Divider className={classes.divider} />
+      <Divider sx={styles.divider} />
 
-      <div className={classes.section}>
-        <Typography className={classes.sectionTitle}>URL:</Typography>
+      <Box sx={styles.section}>
+        <Typography sx={styles.sectionTitle}>URL:</Typography>
         <Typography variant="body2">
           {response.url}
         </Typography>
-      </div>
+      </Box>
 
-      <Divider className={classes.divider} />
+      <Divider sx={styles.divider} />
 
-      <div className={classes.section}>
-        <Typography className={classes.sectionTitle}>Assertions</Typography>
+      <Box sx={styles.section}>
+        <Typography sx={styles.sectionTitle}>Assertions</Typography>
         {response.httpResponseAssertion?.actualValue ? (
           <>
             <Typography variant="body2">
               HTTP Status Code:
             </Typography>
-            <Typography variant="body2" className={classes.statusRow}>
+            <Typography variant="body2" sx={styles.statusRow}>
               {response.httpResponseAssertion.actualValue}
               {displayStatusIcon(response.httpResponseAssertion?.passed)}
             </Typography>
@@ -116,39 +109,39 @@ function ChplUrlCheckerResponse({ response }) {
             <Typography variant="body2">
               No HTTP Status Code Available:
             </Typography>
-            <Typography variant="body2" className={classes.statusRow}>
+            <Typography variant="body2" sx={styles.statusRow}>
               The HTTP response code could not be retrieved or is unavailable.
               {displayStatusIcon(response.httpResponseAssertion?.passed)}
             </Typography>
           </>
         )}
 
-        <Divider className={classes.assertionDivider} />
+        <Divider sx={styles.assertionDivider} />
 
         <Typography variant="body2">
           Response Time (in milliseconds):
         </Typography>
         {response.responseTimeAssertion?.actualValue
           ? (
-            <Typography variant="body2" className={classes.statusRow}>
+            <Typography variant="body2" sx={styles.statusRow}>
               {response.responseTimeAssertion.actualValue}
               {displayStatusIcon(response.responseTimeAssertion?.passed)}
             </Typography>
           ) : (
-            <Typography variant="body2" className={classes.statusRow}>
+            <Typography variant="body2" sx={styles.statusRow}>
               The response time is empty or unavailable.
               {displayStatusIcon(response.responseTimeAssertion?.passed)}
             </Typography>
           )}
 
-        <Divider className={classes.assertionDivider} />
+        <Divider sx={styles.assertionDivider} />
 
         {response.bodyNotEmptyAssertion?.actualValue ? (
           <>
             <Typography variant="body2">
               Body Content:
             </Typography>
-            <Typography variant="body2" className={classes.statusRow}>
+            <Typography variant="body2" sx={styles.statusRow}>
               {response.bodyNotEmptyAssertion.actualValue
                 ? response.bodyNotEmptyAssertion.actualValue
                 : 'Empty body content'}
@@ -160,13 +153,13 @@ function ChplUrlCheckerResponse({ response }) {
             <Typography variant="body2">
               No Content Available:
             </Typography>
-            <Typography variant="body2" className={classes.statusRow}>
+            <Typography variant="body2" sx={styles.statusRow}>
               The body content is empty or unavailable.
               {displayStatusIcon(response.bodyNotEmptyAssertion?.passed)}
             </Typography>
           </>
         )}
-      </div>
+      </Box>
     </Box>
   );
 }

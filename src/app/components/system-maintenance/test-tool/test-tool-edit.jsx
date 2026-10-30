@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Chip,
-  Divider,
-  MenuItem,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Chip, Divider, MenuItem,
+} from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -28,7 +24,7 @@ const validationSchema = yup.object({
   startDay: yup.date(),
 });
 
-const useStyles = makeStyles({
+const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -45,7 +41,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '16px',
   },
-});
+};
 
 function ChplTestToolEdit({
   criterionOptions,
@@ -57,7 +53,6 @@ function ChplTestToolEdit({
   const [criteria, setCriteria] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [testTool, setTestTool] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -123,8 +118,8 @@ function ChplTestToolEdit({
   });
 
   return (
-    <div className={classes.container}>
-      <Box className={classes.horizontalInput}>
+    <Box sx={styles.container}>
+      <Box sx={styles.horizontalInput}>
         <ChplTextField
           id="value"
           name="value"
@@ -137,7 +132,7 @@ function ChplTestToolEdit({
           helperText={formik.touched.value && formik.errors.value}
         />
       </Box>
-      <Box className={classes.horizontalInput}>
+      <Box sx={styles.horizontalInput}>
         <ChplTextField
           id="start-day"
           name="startDay"
@@ -183,7 +178,7 @@ function ChplTestToolEdit({
             </MenuItem>
           ))}
       </ChplTextField>
-      <div className={classes.chips}>
+      <Box sx={styles.chips}>
         { [...criteria]
           .sort(sortCriteria)
           .map((item) => (
@@ -195,9 +190,9 @@ function ChplTestToolEdit({
               variant="outlined"
             />
           ))}
-      </div>
+      </Box>
       <ChplActionBar dispatch={handleDispatch} />
-    </div>
+    </Box>
   );
 }
 

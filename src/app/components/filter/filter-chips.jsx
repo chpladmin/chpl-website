@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  FormControlLabel,
-  Switch,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+  Box, Button, Card, CardContent, Chip, FormControlLabel, Switch, Typography,
+} from '@mui/material';
 import { bool } from 'prop-types';
 
 import { useFilterContext } from './filter-context';
@@ -18,7 +11,7 @@ import { getStatusIcon } from 'services/listing.service';
 import { compareStrings } from 'services/sort.service';
 import { palette } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   filterContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -60,11 +53,11 @@ const useStyles = makeStyles({
       whiteSpace: 'normal',
       wordBreak: 'break-word',
     },
-  },
-  chipDeleteIcon: {
-    order: -2,
-    marginLeft: '5px',
-    marginRight: '-4px',
+    '& .MuiChip-deleteIcon': {
+      order: -2,
+      marginLeft: '5px',
+      marginRight: '-4px',
+    },
   },
   chipLabel: {
     alignItems: 'center',
@@ -76,12 +69,11 @@ const useStyles = makeStyles({
     maxHeight: '50vh',
     overflowY: 'auto',
   },
-});
+};
 
 function ChplFilterChips({ horizontal = false }) {
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
-  const classes = useStyles();
   const DISPLAY_MAX = 7;
 
   useEffect(() => {
@@ -146,25 +138,26 @@ function ChplFilterChips({ horizontal = false }) {
   const getChipLabel = (f, labelText, iconName) => {
     if (f.key !== 'certificationStatuses') { return labelText; }
     return (
-      <span className={classes.chipLabel}>
+      <Box component="span" sx={styles.chipLabel}>
         { labelText }
         { getStatusIcon({ name: iconName }) }
-      </span>
+      </Box>
     );
   };
 
   return (
-    <span className={classes.filterContainer} id="filter-chips">
-      <Card className={classes.card}>
+    <Box component="span" sx={styles.filterContainer} id="filter-chips">
+      <Card sx={styles.card}>
         <CardContent>
           <Typography variant="subtitle2">Filters Applied:</Typography>
-          <div className={classes.filterChipsContainer}>
+          <Box sx={styles.filterChipsContainer}>
             { filters.map((f) => (
-              <span
-                className={horizontal ? `${classes.filterSelectedContainer} ${classes.filterSelectedContainerHorizontal}` : classes.filterSelectedContainer}
+              <Box
+                component="span"
+                sx={[styles.filterSelectedContainer, horizontal && styles.filterSelectedContainerHorizontal]}
                 key={f.key}
               >
-                <Typography variant="body1" className={horizontal ? classes.filterGroupTitleHorizontal : undefined}>
+                <Typography variant="body1" sx={horizontal ? styles.filterGroupTitleHorizontal : undefined}>
                   <strong>
                     {f.getFilterDisplay(f)}
                   </strong>
@@ -206,7 +199,7 @@ function ChplFilterChips({ horizontal = false }) {
                         onDelete={() => removeChip(f, v)}
                         variant="outlined"
                         disabled={f.required && f.values.length === 1}
-                        classes={{ root: classes.chip, deleteIcon: classes.chipDeleteIcon }}
+                        sx={styles.chip}
                       />
                     </React.Fragment>
                   ))}
@@ -220,12 +213,12 @@ function ChplFilterChips({ horizontal = false }) {
                     { f.showAll ? 'Show Fewer' : `Show ${f.values.length - DISPLAY_MAX} More` }
                   </Button>
                 )}
-              </span>
+              </Box>
             ))}
-          </div>
+          </Box>
         </CardContent>
       </Card>
-    </span>
+    </Box>
   );
 }
 

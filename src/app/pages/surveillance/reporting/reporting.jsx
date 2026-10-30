@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+  Box, Button, Card, CardContent, Chip, Typography,
+} from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import { useFetchAcbs } from 'api/acbs';
 import ChplReport from 'components/surveillance/reporting/report';
@@ -16,7 +10,7 @@ import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { compareOrganizations } from 'services/sort.service';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   container: {
     display: 'flex',
@@ -25,7 +19,7 @@ const useStyles = makeStyles({
     gap: '16px',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
-      gridTemplateColumns: '1fr 3fr',
+      gridTemplateColumns: '1.5fr 4fr',
       alignItems: 'start',
     },
   },
@@ -38,14 +32,13 @@ const useStyles = makeStyles({
       fontWeight: 600,
     },
   },
-});
+};
 
 function ChplSurveillanceReporting() {
   const acbQuery = useFetchAcbs(true);
   const [acbs, setAcbs] = useState([]);
   const [activeAcb, setActiveAcb] = useState(undefined);
   const [state, setState] = useState('');
-  const classes = useStyles();
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
@@ -77,54 +70,54 @@ function ChplSurveillanceReporting() {
     <>
       <ChplPageHeader text="Surveillance Reporting" />
       <ChplPageBody>
-        <div className={(acbs.length > 1 && state === '') ? classes.container : ''}>
+        <Box sx={(acbs.length > 1 && state === '') ? styles.container : undefined}>
           { acbs.length > 1 && state === ''
-            && (
-              <Card>
-                { acbs.map((acb) => (
-                  <Button
-                    key={acb.name}
-                    onClick={() => navigate(acb)}
-                    disabled={acbs.find((o) => o.id === activeAcb?.id)?.name === acb.name}
-                    id={`acb-navigation-${acb.name}`}
-                    fullWidth
-                    variant="text"
-                    color="primary"
-                    endIcon={<ArrowForwardIcon />}
-                    className={classes.menuItems}
-                  >
-                    <Box display="flex" flexDirection="row" gridGap={4}>
-                      { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
-                      { acb.name }
-                    </Box>
-                  </Button>
-                ))}
-              </Card>
-            )}
+          && (
+            <Card>
+              { acbs.map((acb) => (
+                <Button
+                  key={acb.name}
+                  onClick={() => navigate(acb)}
+                  disabled={acbs.find((o) => o.id === activeAcb?.id)?.name === acb.name}
+                  id={`acb-navigation-${acb.name}`}
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  sx={styles.menuItems}
+                >
+                  <Box display="flex" flexDirection="row" gap="4px">
+                    { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
+                    { acb.name }
+                  </Box>
+                </Button>
+              ))}
+            </Card>
+          )}
           { !activeAcb
-            && (
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" gutterBottom component="h2">
-                    <strong>Quarterly and Annual Surveillance Reporting</strong>
-                  </Typography>
-                  <Typography gutterBottom>
-                    To view detailed quarterly and annual reports, start by selecting an ONC-ACB from the menu on the left.
-                  </Typography>
-                  <Typography>
-                    Once selected, the corresponding reports will appear here, giving you access to key performance data and year-end summaries.
-                  </Typography>
-                </CardContent>
-              </Card>
-            )}
+          && (
+            <Card>
+              <CardContent>
+                <Typography variant="h5" gutterBottom component="h2">
+                  <strong>Quarterly and Annual Surveillance Reporting</strong>
+                </Typography>
+                <Typography gutterBottom>
+                  To view detailed quarterly and annual reports, start by selecting an ONC-ACB from the menu on the left.
+                </Typography>
+                <Typography>
+                  Once selected, the corresponding reports will appear here, giving you access to key performance data and year-end summaries.
+                </Typography>
+              </CardContent>
+            </Card>
+          )}
           { activeAcb
-            && (
-              <ChplReport
-                acb={activeAcb}
-                dispatch={handleDispatch}
-              />
-            )}
-        </div>
+          && (
+            <ChplReport
+              acb={activeAcb}
+              dispatch={handleDispatch}
+            />
+          )}
+        </Box>
       </ChplPageBody>
     </>
   );

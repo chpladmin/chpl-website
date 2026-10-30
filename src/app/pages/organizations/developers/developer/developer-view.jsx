@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Box,
-  makeStyles,
-} from '@material-ui/core';
+import { Box } from '@mui/material';
 import { func } from 'prop-types';
 
 import { useFetchUsersAtDeveloper } from 'api/developer';
@@ -18,7 +15,7 @@ import ChplUsers from 'components/user/users';
 import { DeveloperContext, FlagContext, UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles({
+const styles = {
   ...utilStyles,
   focus: {
     display: 'flex',
@@ -28,7 +25,7 @@ const useStyles = makeStyles({
   lefthandContainer: {
     width: '33%',
     minWidth: '33%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
       minWidth: '100%',
     },
@@ -44,7 +41,7 @@ const useStyles = makeStyles({
     paddingTop: '16px',
     gap: '32px',
     minHeight: 'calc(100vh - 290px)',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -54,7 +51,7 @@ const useStyles = makeStyles({
     gap: '32px',
     width: '100%',
   },
-});
+};
 
 const isActive = (statuses) => statuses.length === 0 || statuses.every((status) => status.endDay);
 
@@ -62,36 +59,35 @@ function ChplDeveloperView({ dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { demographicChangeRequestIsOn, insightsDisplayIsOn } = useContext(FlagContext);
   const { developer } = useContext(DeveloperContext);
-  const usersQuery = useFetchUsersAtDeveloper({
-    developer,
-    enabled: hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn(developer)),
-  });
-  const [state, setState] = useState('view');
-  const [users, setUsers] = useState([]);
-  const classes = useStyles();
-
-  useEffect(() => {
-    if (usersQuery.isLoading || !usersQuery.isSuccess) { return; }
-    setUsers(usersQuery.data.users);
-  }, [usersQuery.data, usersQuery.isLoading, usersQuery.isSuccess]);
-
   const can = (action) => {
-    if (!hasAuthorityOn(developer)) { return false; } // basic authentication
-    if (action === 'manageTracking') { return hasAnyRole(['chpl-developer']); } // only DEVELOPER can manage tracking
+    if (action === 'manageTracking') { return hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }); } // only DEVELOPER can manage tracking
     if (action === 'split-developer' && developer.products.length < 2) { return false; } // cannot split developer without at least two products
     if (hasAnyRole(['chpl-admin', 'chpl-onc'])) { return true; } // can do everything
     if (action === 'join') { return false; } // if not above roles, can't join
     if (action === 'split-developer') { return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); } // ACB can split
     if (action === 'edit') {
       if (demographicChangeRequestIsOn) {
-        return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb', 'chpl-developer']); // Developer can only edit based on flag
+        return isActive(developer.statuses) && (hasAnyRole(['chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }))); // Developer can only edit based on flag
       }
       return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb']); // ACB can only edit Active
     }
-    if (action === 'manageUsers') { return isActive(developer.statuses) && hasAnyRole(['chpl-onc-acb', 'chpl-developer']); }
+    if (action === 'manageUsers') { return isActive(developer.statuses) && (hasAnyRole(['chpl-onc-acb']) || (hasAnyRole(['chpl-developer']) && hasAuthorityOn({ id: developer.id }))); }
     console.error(`Unknown "can" action: ${action}`);
     return false;
   };
+
+  const canManageUsers = can('manageUsers');
+  const usersQuery = useFetchUsersAtDeveloper({
+    developer,
+    enabled: canManageUsers,
+  });
+  const [state, setState] = useState('view');
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    if (usersQuery.isLoading || !usersQuery.isSuccess) { return; }
+    setUsers(usersQuery.data.users);
+  }, [usersQuery.data, usersQuery.isLoading, usersQuery.isSuccess]);
 
   const handleProductDispatch = ({ action, payload }) => {
     switch (action) {
@@ -124,11 +120,11 @@ function ChplDeveloperView({ dispatch }) {
   };
 
   return (
-    <Box className={`${state === 'view' ? classes.mainContent : classes.focus}`}>
-      <Box className={classes.lefthandContainer}>
+    <Box sx={state === 'view' ? styles.mainContent : styles.focus}>
+      <Box sx={styles.lefthandContainer}>
         { state === 'view'
           && (
-            <Box className={classes.lefthandColumn}>
+            <Box sx={styles.lefthandColumn}>
               <ChplDeveloperViewDetails
                 developer={developer}
                 dispatch={dispatch}
@@ -158,25 +154,25 @@ function ChplDeveloperView({ dispatch }) {
             </Box>
           )}
       </Box>
-      <Box className={classes.righthandColumn}>
+      <Box sx={styles.righthandColumn}>
         {state === 'view' && (
-          <>
-            {can('manageTracking') && (
-              <ChplChangeRequests
-                disallowedFilters={['submittedDateTime', 'searchTerm']}
-                bonusQuery={`&developerId=${developer.id}`}
-                dispatch={dispatch}
-                embedded
-                useFooterSpacing={false}
-              />
-            )}
-            <ChplDirectReviews developer={developer} />
-          </>
+        <>
+          {can('manageTracking') && (
+          <ChplChangeRequests
+            disallowedFilters={['submittedDateTime', 'searchTerm']}
+            bonusQuery={`&developerId=${developer.id}`}
+            dispatch={dispatch}
+            embedded
+            useFooterSpacing={false}
+          />
+          )}
+          <ChplDirectReviews developer={developer} />
+        </>
         )}
         {state === 'view' && (
-          <ChplProducts developer={developer} dispatch={handleProductDispatch} />
+        <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
-        {(state === 'view' || state === 'editUser') && (
+        {(state === 'view' || state === 'editUser') && canManageUsers && (
           <ChplUsers
             users={users}
             dispatch={handleUserDispatch}
