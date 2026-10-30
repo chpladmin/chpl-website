@@ -1,9 +1,10 @@
 # Stage 1: Build the web application
-FROM node:lts-alpine AS build-stage
+FROM node:24-alpine AS build-stage
 
 WORKDIR /app
 
-RUN corepack enable
+# Node 25+ no longer bundles corepack so install it explicitly
+RUN npm install -g corepack && corepack enable
 
 # .yarnrc.yml (sets nodeLinker: node-modules) and the tracked .yarn/ subdirs must be
 # present for this first install, or it silently runs under Yarn's default PnP linker
