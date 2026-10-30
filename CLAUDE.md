@@ -69,20 +69,28 @@ Things worth knowing before changing routes:
 - **Do not call `router.start()`.** The `<UIRouter>` component starts it, and starting twice throws.
 - `src/app/services/navigation.service.js` is the single seam for imperative navigation; prefer it (or the `@uirouter/react` hooks) over touching the router directly.
 
-### Per-page React file trio
+### Per-page React files
 
-Most pages/features under `src/app/pages/**` and `src/app/components/**` follow a three-file pattern:
-- `x-wrapper.jsx` — wraps the page in `AppWrapper` (global providers) and is what a route points at.
-- `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own.
+Most pages/features under `src/app/pages/**` and `src/app/components/**` split into two files:
+- `x.jsx` — the container: fetches data via react-query hooks from `api/*`, holds local state/context, has no markup logic of its own. A route points straight at it, and a page renders its own `ChplPageHeader` / `ChplPageBody`.
 - `x-view.jsx` — presentational component, receives data/handlers as props.
+
+Don't add a `x-wrapper.jsx` that only passes props through to `x.jsx`. Those existed to bridge AngularJS, and `AppWrapper` is mounted once in `router/app-root.jsx`, not per page. When a component is a page on its own route but is also embedded in other pages without the page frame, its route gets a `x-page.jsx` that adds the frame around it (e.g. `components/change-request/change-requests-page.jsx`). The remaining `*-wrapper.jsx` files are real providers (`app-wrapper`, `api-wrapper`, `flag-wrapper`, `user-wrapper`, `snackbar-wrapper`, `url-checker-wrapper`).
 
 ### Provider stack
 
-`src/app/app-wrapper.jsx` composes the global provider tree every page mounts into (Redux `Provider` → `CookiesProvider` → MUI `ThemeProvider` → Snackbar → `ApiWrapper` (axios + react-query) → `UserWrapper` → `FlagWrapper` (feature flags) → `CompareWrapper` → `CmsWrapper` → analytics/hash contexts → `ChplAppLayout`). When adding a new cross-cutting concern, it likely belongs as another layer here rather than threaded through props.
+`src/app/app-wrapper.jsx` composes the global provider tree every page mounts into (Redux `Provider` → `CookiesProvider` → MUI `ThemeProvider` → Snackbar → `ApiWrapper` (axios + react-query) → `UserWrapper` → `FlagWrapper` (feature flags) → analytics/hash contexts → `ChplAppLayout`). When adding a new cross-cutting concern, it likely belongs as another layer here rather than threaded through props.
 
-- **Redux** (`@reduxjs/toolkit`, `src/app/store.js`): only two slices exist — `browserInfo` and `userInfo` — persisted to `localStorage` under key `chplState` via custom middleware. Most other shared state uses React Context instead of Redux; check `src/app/shared/contexts/` before adding a new Redux slice.
+- **Redux** (`@reduxjs/toolkit`, `src/app/store.js`): five slices, three of them persisted to `localStorage` under key `chplState` via custom middleware.
+  - `browserInfo` (persisted): the API location and key, previously compared and viewed listing ids, favorited listing ids, the CMS IDs entered on the CMS ID Reverse Lookup page, and the listings in the compare and CMS ID widgets. The widget lists hold `summarizeListing` summaries (`services/listing.service`), not whole listings.
+  - `userInfo` (persisted): the logged-in user.
+  - `widget` (persisted): which widget panel is open, `'cms'`, `'compare'` or `null`; opening one closes the other.
+  - `actionBar` (never persisted): the page's action bar.
+  - `pageState` (never persisted): what a page remembers while the user moves around the app, such as a table's sort, page and page size, or a filter panel's selections and search term, keyed by the page's `storageKey`. Read and write it with `usePageState(key, default)` from `components/page-state`, which works like `useState`. A reload starts it empty.
+
+  Keep browser-side state in a slice, not in `localStorage` or `sessionStorage` keys of its own: a persisted slice for state that should survive a reload, `pageState` for state that shouldn't. When moving an existing `localStorage` key into a persisted slice, carry its value over once in `store.js` and then delete the key, as `LEGACY_KEYS` does. Session-only values aren't carried over. Most other shared state uses React Context instead of Redux; check `src/app/shared/contexts/` before adding a new Redux slice.
 - **Data fetching**: `@tanstack/react-query`, with hooks defined per-domain in `src/app/api/*.jsx` (e.g. `useFetchAcbs`, `useFetchCriteria`). `src/app/api/api-wrapper.jsx` sets up the shared `QueryClient` and axios provider; devtools show automatically in dev mode.
-- **Contexts**: `src/app/shared/contexts/` holds domain contexts (analytics, compare, developer, flags, hash, listing, pending-listing, user, etc.) re-exported from `contexts/index.js`.
+- **Contexts**: `src/app/shared/contexts/` holds domain contexts (analytics, developer, flags, hash, listing, pending-listing, user, etc.) re-exported from `contexts/index.js`.
 - **Shared PropTypes shapes**: `src/app/shared/prop-types/` — reuse these shapes for domain objects (listing, developer, acb, criterion, ...) instead of redefining inline.
 
 ### Module resolution
@@ -236,3 +244,23 @@ Fill in these rows when drafting, and leave the rest blank for people to complet
 
 - Include only manual checks. Leave out anything automated, such as `yarn test`, `yarn lint`, `yarn build`, or bundle and grep checks: the build process runs those, so the testers never do. Report automated results in the PR description's testing section instead.
 - Number the sections from 1, starting with the first manual check. The header table is not numbered.
+
+### Test step tables
+
+Every table of test steps, in every section, has these ten columns in this order:
+
+```markdown
+| ID | Role(s) | Test Case Description | Test Steps | Test Data / Notes | Expected Result | Actual Result | Test Result | Automation? | Comments |
+|---|---|---|---|---|---|---|---|---|---|
+```
+
+Fill in the first six with your best guess, and leave the last four (Actual Result, Test Result, Automation?, Comments) empty for the testers.
+
+- **ID**: `<section>.<row>`, e.g. `3.2`. Other rows and sections may refer to a row by its ID.
+- **Role(s)**: who runs the row, using the CHPL role names `ROLE_ADMIN`, `ROLE_ONC`, `ROLE_ACB` and `ROLE_DEVELOPER`, plus `Anonymous` for logged out, `Any logged-in` and `Any`. Comma-separate several. The role goes here, not in a section's introduction or in the steps.
+- **Test Case Description**: a short phrase saying what the row verifies.
+- **Test Steps**: the actions only, as a numbered list with one step per line. Table cells can't hold real line breaks, so separate the steps with `<br>`: `1. Open #/search<br>2. Click **Compare** on three listings`.
+- **Test Data / Notes**: addresses, the listings, accounts or flag states the row needs, which earlier row it continues from, and comparisons against STG ("on STG this still shows the earlier list").
+- **Expected Result**: what the tester should see, as an unnumbered `•` list separated by `<br>`, each item naming the step it applies to: `• Step 2: the widget opens listing all three<br>• Step 3: the compare page opens`.
+
+A section can keep a short introduction above its table for shared, non-role setup, such as "Have listings in both widgets."

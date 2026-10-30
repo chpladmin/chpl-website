@@ -3,7 +3,7 @@ import { lazy } from 'react';
 const states = [{
   name: 'compliance-dashboard',
   url: '/compliance-dashboard',
-  component: lazy(() => import('pages/compliance-dashboard/compliance-dashboard-wrapper')),
+  component: lazy(() => import('pages/compliance-dashboard/compliance-dashboard')),
   data: {
     title: 'Compliance Dashboard',
     roles: ['chpl-admin', 'chpl-onc'],

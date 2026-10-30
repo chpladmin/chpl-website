@@ -21,6 +21,7 @@ const getDisplay = (sw) => (
         && (
         <>
           <Box component="span" sx={styles.invalidData}>{ sw.certifiedProductNumber }</Box>
+          {' '}
           (this CHPL Product Number is invalid)
         </>
         )}
