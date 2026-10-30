@@ -18,6 +18,7 @@ import {
   usePostUcdProcess,
   usePutUcdProcess,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplUcdProcesses() {
   const { data, isLoading, isSuccess } = useFetchUcdProcesses();
@@ -124,7 +125,10 @@ function ChplUcdProcesses() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        label="Loading UCD processes"
+      />
     );
   }
 

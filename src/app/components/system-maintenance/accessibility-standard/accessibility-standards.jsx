@@ -18,6 +18,7 @@ import {
   usePostAccessibilityStandard,
   usePutAccessibilityStandard,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplAccessibilityStandards() {
   const { data, isLoading, isSuccess } = useFetchAccessibilityStandards();
@@ -124,7 +125,10 @@ function ChplAccessibilityStandards() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        label="Loading accessibility standards"
+      />
     );
   }
 

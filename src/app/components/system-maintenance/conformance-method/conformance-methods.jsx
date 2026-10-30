@@ -19,6 +19,7 @@ import {
   usePostConformanceMethod,
   usePutConformanceMethod,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplConformanceMethods() {
   const { data, isLoading, isSuccess } = useFetchConformanceMethods();
@@ -132,7 +133,12 @@ function ChplConformanceMethods() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        controls={2}
+        editable
+        fieldGroups={[2]}
+        label="Loading conformance methods"
+      />
     );
   }
 

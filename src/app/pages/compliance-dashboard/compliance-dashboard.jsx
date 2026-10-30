@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Box, Card, CardContent, CardHeader, Grid,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  Typography,
 } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
+import { ChplSkeletonCard } from 'components/util';
+import { utilStyles } from 'themes';
 
 const styles = {
   reportCard: {
@@ -18,6 +25,9 @@ const styles = {
     '&:last-child': {
       paddingBottom: '0 !important',
     },
+  },
+  unavailable: {
+    padding: '16px',
   },
   iframe: {
     border: 'none',
@@ -57,30 +67,66 @@ const reports = [{
   isWide: true,
 }];
 
+// Report heights before the metadata gives the real ones
+const defaultHeight = (report) => (report.isWide ? 600 : 400);
+
+const loadingStyles = {
+  header: {
+    padding: '16px',
+  },
+};
+
+// The dashboard's grid of report cards: the narrow column beside the wide one,
+// each card its report's usual height under a title
+function ChplComplianceDashboardLoading() {
+  const buildCard = (report) => (
+    <Grid item xs={12} key={report.title}>
+      <ChplSkeletonCard>
+        <Box sx={loadingStyles.header}>
+          <Skeleton variant="text" width="60%" height={32} />
+        </Box>
+        <Box height={defaultHeight(report)} />
+      </ChplSkeletonCard>
+    </Grid>
+  );
+
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading compliance reports</Box>
+      <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start" aria-hidden="true">
+        <Grid item xs={12} md={4}>
+          <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
+            { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Grid container spacing={4}>
+            { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
+          </Grid>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
+
 function ChplComplianceDashboard() {
-  const [reportMetadata, setReportMetadata] = useState([]);
   const { data, isLoading, isSuccess } = useFetchReportMetadata('onc-dashboard');
 
-  useEffect(() => {
-    if (isLoading || !isSuccess) { return; }
-    setReportMetadata(data);
-  }, [data, isLoading, isSuccess]);
+  if (isLoading) {
+    return <ChplComplianceDashboardLoading />;
+  }
+
+  const reportMetadata = isSuccess ? data : [];
 
   const buildCard = (report) => {
-    const displayData = reportMetadata.find((r) => r.title === report.title) ?? {
-      isLoading: true,
-      title: `Not yet implemented - ${report.title}`,
-      height: report.isWide ? 600 : 400,
-    };
+    const displayData = reportMetadata.find((r) => r.title === report.title);
 
     return (
       <Grid item xs={12} key={report.title}>
         <Card sx={styles.reportCard}>
-          <CardHeader title={displayData.title} />
+          <CardHeader title={report.title} />
           <CardContent sx={styles.reportCardContent}>
-            { displayData.isLoading ? (
-              <Skeleton variant="rectangular" height={displayData.height} />
-            ) : (
+            { displayData ? (
               <Box
                 component="iframe"
                 title={displayData.title}
@@ -88,6 +134,8 @@ function ChplComplianceDashboard() {
                 height={displayData.height}
                 src={displayData.url}
               />
+            ) : (
+              <Typography sx={styles.unavailable}>This report is not available</Typography>
             )}
           </CardContent>
         </Card>
@@ -96,7 +144,7 @@ function ChplComplianceDashboard() {
   };
 
   return (
-    <Grid container sx={{ width: `calc(100% + 64px)` }} spacing={2} alignItems="flex-start">
+    <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start">
       <Grid item xs={12} md={4}>
         <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
           { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }

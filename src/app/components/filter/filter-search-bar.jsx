@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import {
   arrayOf,
   bool,
@@ -15,7 +15,8 @@ import ChplFilterQuickFilters from './filter-quick-filters';
 import ChplFilterSearchTerm from './filter-search-term';
 import { useFilterContext } from './filter-context';
 
-import { palette, theme } from 'themes';
+import { ChplSkeletonCard } from 'components/util';
+import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
   searchContainer: {
@@ -54,6 +55,8 @@ const styles = {
   },
 };
 
+const skeletonButton = { borderRadius: '4px' };
+
 const getStuckStyles = (fadeBackground) => ({
   '&::before': {
     content: '""',
@@ -77,7 +80,7 @@ function ChplFilterSearchBar({
   sticky = false,
   toggleMultipleFilters = undefined,
 }) {
-  const { filters } = useFilterContext();
+  const { filters, isLoading } = useFilterContext();
   const sentinelRef = useRef(null);
   const [isStuck, setIsStuck] = useState(false);
 
@@ -93,7 +96,29 @@ function ChplFilterSearchBar({
     return () => observer.disconnect();
   }, [sticky]);
 
-  const searchBar = (
+  // The same layout as the search bar, in a skeleton frame instead of its grey box
+  const searchBarLoading = (
+    <ChplSkeletonCard sx={[styles.searchContainer]}>
+      <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading search</Box>
+      { !hideSearchTerm
+        && (
+          <Skeleton variant="rectangular" height={48} sx={skeletonButton} aria-hidden="true" />
+        )}
+      <Box sx={styles.searchButtonContainer} aria-hidden="true">
+        <Skeleton variant="rectangular" width={96} height={40} sx={skeletonButton} />
+        { !hideAdvancedSearch
+          && (
+            <Skeleton variant="rectangular" width={96} height={40} sx={skeletonButton} />
+          )}
+        { filters.some((f) => f.key === 'quickFilters')
+          && (
+            <Skeleton variant="circular" width={40} height={40} />
+          )}
+      </Box>
+    </ChplSkeletonCard>
+  );
+
+  const searchBar = isLoading ? searchBarLoading : (
     <Box
       sx={[styles.searchContainer, sticky && styles.sticky, isStuck && getStuckStyles(fadeBackground)]}
       data-filter-search-bar="true"

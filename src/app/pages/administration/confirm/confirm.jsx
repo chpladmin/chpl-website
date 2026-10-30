@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, CircularProgress, Container, Typography,
+  Box,
+  Button,
+  Container,
+  Typography,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import Skeleton from '@mui/material/Skeleton';
 import { number, oneOfType, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
@@ -13,8 +17,10 @@ import {
   ChplConfirmListing,
   ChplConfirmProduct,
   ChplConfirmProgress,
+  ChplConfirmStepLoading,
   ChplConfirmVersion,
 } from 'components/listing/confirm';
+import { ChplSkeletonCard } from 'components/util';
 import { goToState } from 'services/navigation.service';
 import { PendingListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -53,6 +59,52 @@ const styles = {
     marginLeft: '4px',
   },
 };
+
+// Same layout as the loaded wizard: the listing's heading, the stepper with its
+// Back and Next tab, then the Developer step it opens on
+const loadingStyles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    paddingTop: '16px',
+    gap: '16px',
+  },
+  stepper: {
+    borderRadius: '64px',
+    height: '56px',
+  },
+  stepperButtons: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '-16px',
+  },
+  buttons: {
+    borderRadius: '0 0 32px 32px',
+  },
+};
+
+function ChplConfirmLoading() {
+  return (
+    <Container maxWidth="lg" role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading pending listing</Box>
+      <Box sx={loadingStyles.container} aria-hidden="true">
+        <Container maxWidth="md">
+          <Skeleton variant="text" width="50%" height={32} />
+        </Container>
+        <Container maxWidth="md" disableGutters>
+          <ChplSkeletonCard sx={loadingStyles.stepper}>
+            <Box />
+          </ChplSkeletonCard>
+        </Container>
+        <Box sx={loadingStyles.stepperButtons}>
+          <Skeleton variant="rectangular" width={190} height={40} sx={loadingStyles.buttons} />
+        </Box>
+        <ChplConfirmStepLoading announce={false} />
+      </Box>
+    </Container>
+  );
+}
 
 function ChplConfirm({ id }) {
   const { data: pendingListing, isLoading, isSuccess } = useFetchPendingListing({ id });
@@ -324,7 +376,7 @@ function ChplConfirm({ id }) {
     warnings,
   }, !!uploaded && !isLoading && isSuccess);
 
-  if (!uploaded || isLoading || !isSuccess) { return <CircularProgress />; }
+  if (!uploaded || isLoading || !isSuccess) { return <ChplConfirmLoading />; }
 
   const pendingListingState = {
     listing: pending,

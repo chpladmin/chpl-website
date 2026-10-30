@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogContent,
   Paper,
@@ -33,7 +32,7 @@ import {
   useFetchProductsActivitiesMetadata,
   useFetchVersionActivitiesMetadata,
 } from 'api/activity';
-import { ChplDialogTitle } from 'components/util';
+import { ChplDialogTitle, ChplLoadingSection } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat, timestampToString, toTimestamp } from 'services/date-util';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
@@ -291,7 +290,7 @@ function ChplListingHistory(props) {
              || fetchVersionActivitiesMetadata.isLoading
              || fetchProductsActivitiesMetadata.isLoading
              || fetchDeveloperActivitiesMetadata.isLoading)
-            && <CircularProgress /> }
+            && <ChplLoadingSection title={false} variant="table" columns={3} rows={5} /> }
           { activity.length > 0
             ? (
               <TableContainer component={Paper}>

@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
 } from '@mui/material';
 import MoreOutlinedIcon from '@mui/icons-material/MoreOutlined';
 
@@ -13,6 +12,7 @@ import ChplOptionalStandardsView from './optional-standards-view';
 import { useFetchCriteria, useFetchOptionalStandards } from 'api/standards';
 import { FilterProvider } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplOptionalStandards() {
   const { data, isLoading, isSuccess } = useFetchOptionalStandards();
@@ -42,15 +42,24 @@ function ChplOptionalStandards() {
       }));
   }, [criteriaQuery.data, criteriaQuery.isLoading, criteriaQuery.isSuccess]);
 
-  if (isLoading) {
+  // The filter search bar's criteria options come from criteriaQuery, so the
+  // skeleton waits for them as well as for the list
+  const filtersLoading = criteriaQuery.isLoading;
+
+  if (isLoading || filtersLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        fieldGroups={[3]}
+        filter
+        label="Loading optional standards"
+      />
     );
   }
 
   return (
     <FilterProvider
       filters={filters}
+      isLoading={filtersLoading}
       storageKey="storageKey-optionalStandardsManagement"
     >
       <Card>

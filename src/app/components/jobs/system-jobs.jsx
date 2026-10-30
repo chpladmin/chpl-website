@@ -1,10 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box, Button, Card, CardContent, CardHeader, CircularProgress,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
 } from '@mui/material';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+import Skeleton from '@mui/material/Skeleton';
 import { useSnackbar } from 'notistack';
 import * as jsJoda from '@js-joda/core';
+import { bool } from 'prop-types';
 import '@js-joda/timezone';
 
 import ChplJobEdit from './job-edit';
@@ -17,6 +23,8 @@ import {
   useFetchSystemTriggers,
   usePostOneTimeTrigger,
 } from 'api/jobs';
+import ChplSystemMaintenanceLoading, { ChplSystemMaintenanceResults } from 'components/system-maintenance/system-maintenance-loading';
+import { skeletonLineColor } from 'components/util';
 import { UserContext } from 'shared/contexts';
 
 const styles = {
@@ -26,6 +34,39 @@ const styles = {
     gap: '16px',
   },
 };
+
+const loadingStyles = {
+  // The Currently Scheduled System Jobs and Types of Jobs cards inside the
+  // System Jobs card, outlined since they sit inside its skeleton card
+  innerCard: {
+    border: `1px solid ${skeletonLineColor}`,
+    borderRadius: '8px',
+  },
+  innerCardHeader: {
+    padding: '16px',
+  },
+};
+
+function ChplSystemJobsLoading({ showTriggers }) {
+  const renderCard = (titleWidth, results) => (
+    <Box sx={loadingStyles.innerCard}>
+      <Box sx={loadingStyles.innerCardHeader}>
+        <Skeleton variant="text" width={titleWidth} height={32} />
+      </Box>
+      { results }
+    </Box>
+  );
+
+  return (
+    <ChplSystemMaintenanceLoading label="Loading system jobs">
+      <Box sx={styles.container}>
+        { showTriggers
+          && renderCard('45%', <ChplSystemMaintenanceResults actions={1} cards={3} fieldGroups={[2, 2]} />)}
+        { renderCard('25%', <ChplSystemMaintenanceResults actions={1} cards={4} fieldGroups={[2]} />)}
+      </Box>
+    </ChplSystemMaintenanceLoading>
+  );
+}
 
 function ChplJobs() {
   const { hasAnyRole } = useContext(UserContext);
@@ -126,9 +167,10 @@ function ChplJobs() {
     );
   }
 
-  if (systemQuery.isLoading || jobTypeQuery.isLoading) {
+  // isInitialLoading, since the system triggers query is disabled for anyone but an admin
+  if (systemQuery.isInitialLoading || jobTypeQuery.isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemJobsLoading showTriggers={hasAnyRole(['chpl-admin'])} />
     );
   }
 
@@ -168,4 +210,8 @@ function ChplJobs() {
 export default ChplJobs;
 
 ChplJobs.propTypes = {
+};
+
+ChplSystemJobsLoading.propTypes = {
+  showTriggers: bool.isRequired,
 };

@@ -16,6 +16,8 @@ import { func, object } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplConfirmStepLoading from './confirm-step-loading';
+
 import { useFetchVersionsByProduct } from 'api/version';
 import { ChplTextField } from 'components/util';
 import { compareStrings } from 'services/sort.service';
@@ -105,7 +107,12 @@ const validationSchema = yup.object({
 });
 
 function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
-  const { data, isLoading, isSuccess } = useFetchVersionsByProduct({ id: product.id });
+  const {
+    data,
+    isInitialLoading,
+    isLoading,
+    isSuccess,
+  } = useFetchVersionsByProduct({ id: product.id });
   const [selectedVersion, setSelectedVersion] = useState('');
   const [versions, setVersions] = useState([]);
   const [isCreating, setIsCreating] = useState(true);
@@ -161,6 +168,13 @@ function ChplConfirmVersion({ product, version: initialVersion, dispatch }) {
     },
     validationSchema,
   });
+
+  // The query is disabled when the product is new, so wait on isInitialLoading.
+  // Until the effect above has copied the versions into state, the step would
+  // open on the create form and then jump to the select
+  if (isInitialLoading || (data?.length > 0 && versions.length === 0)) {
+    return <ChplConfirmStepLoading label="Loading versions" />;
+  }
 
   return (
     <Container maxWidth="md">

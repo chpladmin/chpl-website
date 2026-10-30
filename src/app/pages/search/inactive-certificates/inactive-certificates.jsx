@@ -87,6 +87,7 @@ function ChplInactiveCertificatesSearchPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={acbQuery.isLoading || ccQuery.isLoading}
         storageKey="storageKey-inactiveCertificatesPage"
       >
         <ChplInactiveCertificatesSearchView />

@@ -7,6 +7,7 @@ import {
   CardContent,
   Container,
   MenuItem,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -16,7 +17,7 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
 import { useFetchRoles, usePutSubscriber } from 'api/subscriptions';
-import { ChplLink, ChplTextField } from 'components/util';
+import { ChplLink, ChplSkeletonCard, ChplTextField } from 'components/util';
 import { palette, theme, utilStyles } from 'themes';
 
 const itemEnter = keyframes({
@@ -66,6 +67,66 @@ const styles = {
   },
 };
 
+// Same layout as ChplConfirmSubscription, which has its own header rather than
+// a ChplPageHeader: the card with the role field and the confirm button
+const loadingStyles = {
+  page: {
+    backgroundColor: palette.background,
+    width: '100%',
+  },
+  header: {
+    padding: '16px 0',
+    marginTop: '-8px',
+  },
+  body: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    paddingTop: '32px',
+    paddingBottom: '32px',
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    padding: '16px',
+  },
+  lines: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+};
+
+function ChplConfirmSubscriptionLoading() {
+  return (
+    <Box sx={loadingStyles.page} role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading subscription options</Box>
+      <Box aria-hidden="true">
+        <Box sx={loadingStyles.header}>
+          <Container maxWidth="sm">
+            <Skeleton variant="text" width="80%" height={56} />
+          </Container>
+        </Box>
+        <Container maxWidth="sm">
+          <Box sx={loadingStyles.body}>
+            <ChplSkeletonCard>
+              <Box sx={loadingStyles.content}>
+                <Box sx={loadingStyles.lines}>
+                  <Skeleton variant="text" width="100%" height={22} />
+                  <Skeleton variant="text" width="100%" height={22} />
+                  <Skeleton variant="text" width="55%" height={22} />
+                </Box>
+                <Skeleton variant="rectangular" height={40} sx={{ borderRadius: '4px' }} />
+                <Skeleton variant="rectangular" width={180} height={30} sx={{ borderRadius: '4px' }} />
+              </Box>
+            </ChplSkeletonCard>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
+  );
+}
+
 function ChplConfirmSubscription(props) {
   const { hash } = props;
   const { enqueueSnackbar } = useSnackbar();
@@ -110,6 +171,9 @@ function ChplConfirmSubscription(props) {
   });
 
   if (!roles || !hash) { return null; }
+
+  // Without this, the role field shows with nothing to choose until the roles arrive
+  if (isLoading) { return <ChplConfirmSubscriptionLoading />; }
 
   return (
     <Box sx={styles.page}>

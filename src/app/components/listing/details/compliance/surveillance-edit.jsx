@@ -5,9 +5,9 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Container,
   MenuItem,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -20,7 +20,7 @@ import ChplRequirementEdit from './requirement-edit';
 import { useFetchSurveillanceTypes } from 'api/data';
 import { useDeleteSurveillance, usePostSurveillance, usePutSurveillance } from 'api/listing';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
-import { ChplTextField } from 'components/util';
+import { ChplLoadingSection, ChplTextField } from 'components/util';
 import { compareStrings } from 'services/sort.service';
 import { getSurveillanceTitle } from 'services/surveillance.service';
 import { ListingContext } from 'shared/contexts';
@@ -52,6 +52,25 @@ const validationSchema = yup.object({
     .min(1, 'At least one site must be used'),
   reason: yup.string(),
 });
+
+// The surveillance's title in the page header, over the activity's form card
+function ChplSurveillanceEditLoading() {
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading surveillance activity</Box>
+      <Box aria-hidden="true">
+        <Container sx={styles.pageHeader} maxWidth="md">
+          <Skeleton variant="text" width="60%" height={56} />
+        </Container>
+        <Box pt={4} sx={styles.background}>
+          <Container maxWidth="lg">
+            <ChplLoadingSection announce={false} rows={6} variant="form" />
+          </Container>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
 
 function ChplSurveillanceEdit({ surveillance, dispatch }) {
   const { listing } = useContext(ListingContext);
@@ -176,9 +195,11 @@ function ChplSurveillanceEdit({ surveillance, dispatch }) {
   updateActionBar = useActionBar({
     canDelete: !!surveillance.id,
     isDeleteDisabled: formik.values.reason === '',
-  }, surveillanceTypes.length > 0);
+  }, !isLoading);
 
-  if (surveillanceTypes.length === 0) { return <CircularProgress />; }
+  // Wait on the query rather than its data, so an empty list or a failed
+  // request still opens the form
+  if (isLoading) { return <ChplSurveillanceEditLoading />; }
 
   return (
     <>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Card, CardContent, Container, IconButton, Typography, Fade,
+  Box, Card, CardContent, Container, IconButton, Skeleton, Typography, Fade,
 } from '@mui/material';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import BlockIcon from '@mui/icons-material/Block';
@@ -17,9 +17,9 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import LandingBackgroundLogo from '../../../../assets/images/Certified-HealthIT-Product-List-LogoWhite.svg';
 
 import { useFetchAnnouncements } from 'api/announcements';
-import { ChplFilterSearchBar } from 'components/filter';
+import { ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { ChplLink } from 'components/util';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
   announcement: {
@@ -172,8 +172,102 @@ const styles = {
   },
 };
 
+// On the page's dark background the skeletons are light
+const onDark = { bgcolor: 'rgba(255, 255, 255, 0.15)' };
+
+// The whole landing page while its announcements load. Unlike the other
+// skeletons, each container (the search bar, the announcement and every card) is
+// one solid block the size of the real one, rather than a frame of shapes. The
+// blocks sit in the page's own containers, so they wrap at the same widths
+const loadingStyles = {
+  heroText: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  block: {
+    ...onDark,
+    borderRadius: '8px',
+    width: '100%',
+  },
+  announcement: {
+    marginTop: '16px',
+  },
+};
+
+// Heights of the real containers: the search bar's 16px padding around its
+// 48px field, and each kind of card with its padding and usual lines of text
+const blockHeights = {
+  announcement: 88,
+  compliance: 112,
+  help: 132,
+  searchBar: 80,
+  shortcut: 112,
+};
+
+function ChplLandingPageLoading() {
+  const renderBlocks = (count, wrapper, height) => [...Array(count)].map((_block, idx) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <Box key={idx} sx={wrapper}>
+      <Skeleton variant="rounded" height={height} sx={loadingStyles.block} />
+    </Box>
+  ));
+
+  const renderHeading = (width) => (
+    <Skeleton variant="text" width={width} height={40} sx={[onDark, styles.subHeaders]} />
+  );
+
+  return (
+    <Box role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading the CHPL</Box>
+      <Box aria-hidden="true">
+        <Box width="100%" sx={styles.heroSection}>
+          <Container maxWidth="md" sx={loadingStyles.heroText}>
+            <Skeleton variant="text" width="85%" height={56} />
+            <Skeleton variant="text" width="100%" height={24} />
+            <Skeleton variant="text" width="65%" height={24} />
+          </Container>
+        </Box>
+        <Box sx={styles.landingPageBackground} pb={16}>
+          <Container maxWidth="md">
+            <Box position="relative" top="-32px">
+              <Skeleton variant="rounded" height={blockHeights.searchBar} sx={loadingStyles.block} />
+            </Box>
+            <Skeleton variant="text" width="30%" height={40} sx={onDark} />
+            <Skeleton variant="rounded" height={blockHeights.announcement} sx={[loadingStyles.block, loadingStyles.announcement]} />
+            <Box pt={6} pb={4}>
+              { renderHeading('65%') }
+            </Box>
+            <Box display="flex" flexDirection="column" gap="16px">
+              <Box sx={styles.shortcutCardContainer}>
+                { renderBlocks(4, styles.shortcutCard, blockHeights.shortcut) }
+              </Box>
+              <Box pt={4} pb={4}>
+                { renderHeading('70%') }
+              </Box>
+              <Box sx={styles.helpCardsContainer}>
+                { renderBlocks(3, styles.helpCard, blockHeights.help) }
+              </Box>
+              <Box pt={4} pb={4}>
+                { renderHeading('40%') }
+              </Box>
+              <Box sx={styles.complianceCardsContainer}>
+                { renderBlocks(2, styles.complianceCard, blockHeights.compliance) }
+              </Box>
+            </Box>
+          </Container>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
 function ChplLandingPage() {
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
+  // The search bar's filter options load too, and take longer than the
+  // announcements; without waiting on them the cards arrive alone, beside a
+  // search bar that is still a skeleton
+  const { isLoading: filtersAreLoading } = useFilterContext();
   const [announcements, setAnnouncements] = useState([]);
   const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
 
@@ -191,6 +285,10 @@ function ChplLandingPage() {
   const handleNext = () => {
     setCurrentAnnouncementIndex((prev) => (prev === announcements.length - 1 ? 0 : prev + 1));
   };
+
+  if (isLoading || filtersAreLoading) {
+    return <ChplLandingPageLoading />;
+  }
 
   return (
     <>

@@ -5,8 +5,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Container,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -23,7 +23,7 @@ import { useSnackbar } from 'notistack';
 
 import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
-import { ChplTextField } from 'components/util';
+import { ChplLoadingTable, ChplSkeletonCard, ChplTextField } from 'components/util';
 import { compareStrings } from 'services/sort.service';
 import { DeveloperContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
@@ -60,6 +60,56 @@ const styles = {
     },
   },
 };
+
+const loadingStyles = {
+  // The width of each real card, without the scrolling the selector card has
+  cards: {
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '50vw',
+    },
+  },
+  section: {
+    padding: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  text: {
+    padding: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+};
+
+// The developer selector and its table of developers, beside the instructions
+function ChplJoinDevelopersLoading() {
+  return (
+    <Container disableGutters maxWidth="xl" role="status" aria-live="polite">
+      <Box component="span" sx={utilStyles.visuallyHidden}>Loading developers</Box>
+      <Box sx={styles.pageContainer} aria-hidden="true">
+        <ChplSkeletonCard sx={loadingStyles.cards}>
+          <Box sx={loadingStyles.section}>
+            <Skeleton variant="text" width="50%" height={32} />
+            <Skeleton variant="rectangular" height={40} sx={{ borderRadius: '4px' }} />
+            <ChplLoadingTable columns={4} rows={8} showControls={false} framed={false} />
+          </Box>
+        </ChplSkeletonCard>
+        <ChplSkeletonCard sx={loadingStyles.cards}>
+          <Box sx={loadingStyles.text}>
+            <Skeleton variant="text" width="50%" height={32} />
+            <Skeleton variant="text" width="25%" height={32} />
+            {['95%', '90%', '85%', '95%', '70%', '90%', '60%'].map((width, idx) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Skeleton key={idx} variant="text" width={width} height={24} />
+            ))}
+          </Box>
+        </ChplSkeletonCard>
+      </Box>
+    </Container>
+  );
+}
 
 function ChplJoinDevelopers({ dispatch }) {
   const { developer: activeDeveloper } = useContext(DeveloperContext);
@@ -136,7 +186,7 @@ function ChplJoinDevelopers({ dispatch }) {
     isDisabled: developersToJoin.length === 0,
   }, !isLoading && !!activeDeveloper);
 
-  if (isLoading || !activeDeveloper) { return <CircularProgress />; }
+  if (isLoading || !activeDeveloper) { return <ChplJoinDevelopersLoading />; }
 
   return (
     <>

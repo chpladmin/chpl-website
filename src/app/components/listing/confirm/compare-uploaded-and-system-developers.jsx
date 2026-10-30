@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   IconButton,
   Table,
   TableBody,
@@ -15,9 +14,8 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-import {
-  useFetchUploadedDeveloper,
-} from 'api/pending-listings';
+import { useFetchUploadedDeveloper } from 'api/pending-listings';
+import { ChplLoadingSection } from 'components/util';
 
 const styles = {
   closeIcon: {
@@ -63,7 +61,11 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
     return undefined;
   };
 
-  if (isLoading || !isSuccess || !system?.name || !uploaded) { return <CircularProgress />; }
+  if (isLoading || !isSuccess || !system?.name || !uploaded) {
+    // The comparison card: a column of field names beside the existing and
+    // uploaded values, one row for each field
+    return <ChplLoadingSection variant="table" columns={3} rows={13} label="Loading uploaded developer" />;
+  }
 
   return (
     <Card>
