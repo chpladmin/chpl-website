@@ -1,10 +1,12 @@
 # Stage 1: Build the web application
-FROM node:lts-alpine AS build-stage
+FROM node:24-alpine AS build-stage
 
 WORKDIR /app
 
-RUN corepack enable
-COPY package.json yarn.lock ./
+# Node 25+ no longer bundles corepack so install it explicitly
+RUN npm install -g corepack && corepack enable
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn/releases ./.yarn/releases
 RUN yarn install
 
 COPY . .
