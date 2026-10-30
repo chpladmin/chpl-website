@@ -204,18 +204,33 @@ function ChplReports() {
         { !job
           && (
             <Box sx={styles.containerTrigger}>
-              <ChplUserTriggersView
-                acbs={acbs}
-                triggers={userTriggers}
-                dispatch={handleDispatch}
-              />
-              { jobTypes.length > 0
-                && (
-                  <ChplReportJobTypesView
-                    jobTypes={jobTypes}
-                    dispatch={handleDispatch}
-                  />
-                )}
+              <div>
+                { (userQuery.isLoading || !userQuery.isSuccess)
+                  && (
+                    <CircularProgress />
+                  )}
+                { !userQuery.isLoading && userQuery.isSuccess
+                  && (
+                    <ChplUserTriggersView
+                      acbs={acbs}
+                      triggers={userTriggers}
+                      dispatch={handleDispatch}
+                    />
+                  )}
+              </div>
+              <div>
+                { (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess)
+                  && (
+                    <CircularProgress />
+                  )}
+                { !jobTypeQuery.isLoading && jobTypeQuery.isSuccess && jobTypes.length > 0
+                  && (
+                    <ChplReportJobTypesView
+                      jobTypes={jobTypes}
+                      dispatch={handleDispatch}
+                    />
+                  )}
+              </div>
             </Box>
           )}
         { job
