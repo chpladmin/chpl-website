@@ -33,7 +33,7 @@ function ChplCodeSetIndicator({ criterion }) {
     setEndDay(missingDays[0]);
   }, [criterion, relevantCodeSets]);
 
-  if (isLoading || isError) { return <Skeleton variant="text" width={120} height={24} />; }
+  if (isLoading || isError) { return <Skeleton variant="text" width="120px" height="24px" />; }
 
   if (hasAnyRole(['chpl-admin', 'chpl-onc', 'chpl-onc-acb'])) {
     return (

@@ -103,17 +103,17 @@ function ChplFilterSearchBar({
       <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading search</Box>
       { !hideSearchTerm
         && (
-          <Skeleton variant="rectangular" height={48} sx={styles.skeletonButton} aria-hidden="true" />
+          <Skeleton variant="rectangular" height="48px" sx={styles.skeletonButton} aria-hidden="true" />
         )}
       <Box sx={styles.searchButtonContainer} aria-hidden="true">
-        <Skeleton variant="rectangular" width={96} height={40} sx={styles.skeletonButton} />
+        <Skeleton variant="rectangular" width="96px" height="40px" sx={styles.skeletonButton} />
         { !hideAdvancedSearch
           && (
-            <Skeleton variant="rectangular" width={96} height={40} sx={styles.skeletonButton} />
+            <Skeleton variant="rectangular" width="96px" height="40px" sx={styles.skeletonButton} />
           )}
         { filters.some((f) => f.key === 'quickFilters')
           && (
-            <Skeleton variant="circular" width={40} height={40} />
+            <Skeleton variant="circular" width="40px" height="40px" />
           )}
       </Box>
     </ChplSkeletonCard>

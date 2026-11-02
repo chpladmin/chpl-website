@@ -95,7 +95,7 @@ function ChplCmsLookupLoading({ columns, rows }) {
       <ChplSkeletonCard>
         <Box sx={loadingStyles.content} aria-hidden="true">
           <Box sx={loadingStyles.header}>
-            <Skeleton variant="rectangular" width={180} height={32} sx={{ borderRadius: '4px' }} />
+            <Skeleton variant="rectangular" width="180px" height="32px" sx={{ borderRadius: '4px' }} />
           </Box>
           <ChplLoadingTable columns={columns} rows={rows} showControls={false} />
         </Box>

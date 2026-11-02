@@ -146,7 +146,7 @@ const loadingStyles = {
 // Announcements, What is the CHPL, Recommended Web Browsers, Using the CHPL
 // Website, ONC Certification Program, For EHR Developers, ONC-ACB and ONC-ATL
 // Information
-const navigationWidths = [140, 150, 190, 170, 200, 140, 210];
+const navigationWidths = ['140px', '150px', '190px', '170px', '200px', '140px', '210px'];
 const sections = [
   { title: '30%', lines: ['100%', '95%', '70%'] },
   { title: '40%', lines: ['90%', '60%'] },
@@ -162,7 +162,7 @@ function ChplOverviewLoading() {
         <ChplSkeletonCard sx={loadingStyles.navigation}>
           { navigationWidths.map((width) => (
             <Box key={width} sx={loadingStyles.navigationItem}>
-              <Skeleton variant="text" width={width} height={28} />
+              <Skeleton variant="text" width={width} height="28px" />
             </Box>
           ))}
         </ChplSkeletonCard>
@@ -171,22 +171,22 @@ function ChplOverviewLoading() {
             // eslint-disable-next-line react/no-array-index-key
             <ChplSkeletonCard key={sectionIdx}>
               <Box sx={loadingStyles.section}>
-                <Skeleton variant="text" width={section.title} height={32} />
+                <Skeleton variant="text" width={section.title} height="32px" />
                 { section.lines.map((width, lineIdx) => (
                   // eslint-disable-next-line react/no-array-index-key
-                  <Skeleton key={lineIdx} variant="text" width={width} height={22} />
+                  <Skeleton key={lineIdx} variant="text" width={width} height="22px" />
                 ))}
               </Box>
             </ChplSkeletonCard>
           ))}
           <ChplSkeletonCard>
             <Box sx={loadingStyles.section}>
-              <Skeleton variant="text" width="45%" height={32} />
+              <Skeleton variant="text" width="45%" height="32px" />
               {[...Array(6)].map((_row, rowIdx) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <Box key={rowIdx} sx={loadingStyles.tableRow}>
-                  <Skeleton variant="text" width="80%" height={22} />
-                  <Skeleton variant="text" width="60%" height={22} />
+                  <Skeleton variant="text" width="80%" height="22px" />
+                  <Skeleton variant="text" width="60%" height="22px" />
                 </Box>
               ))}
             </Box>

@@ -50,18 +50,18 @@ function ChplReportLoading() {
       <Box display="flex" flexDirection="column" gap="16px" aria-hidden="true">
         <ChplSkeletonCard>
           <Box sx={loadingStyles.section}>
-            <Skeleton variant="text" width="30%" height={32} />
+            <Skeleton variant="text" width="30%" height="32px" />
           </Box>
           <Box sx={loadingStyles.section}>
-            <Skeleton variant="rectangular" height={40} sx={{ borderRadius: '4px' }} />
+            <Skeleton variant="rectangular" height="40px" sx={{ borderRadius: '4px' }} />
           </Box>
         </ChplSkeletonCard>
         <Box sx={loadingStyles.reports}>
           {['Q1', 'Q2', 'Q3', 'Q4', 'Annual'].map((report) => (
             <ChplSkeletonCard key={report} sx={loadingStyles.report}>
-              <Skeleton variant="text" width="60%" height={42} />
-              <Skeleton variant="text" width="85%" height={20} />
-              <Skeleton variant="rectangular" width={100} height={30} sx={{ borderRadius: '4px', marginTop: '8px' }} />
+              <Skeleton variant="text" width="60%" height="42px" />
+              <Skeleton variant="text" width="85%" height="20px" />
+              <Skeleton variant="rectangular" width="100px" height="30px" sx={{ borderRadius: '4px', marginTop: '8px' }} />
             </ChplSkeletonCard>
           ))}
         </Box>

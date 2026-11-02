@@ -108,18 +108,18 @@ function ChplUsersViewLoading() {
         <ChplSkeletonCard>
           <Box aria-hidden="true">
             <Box sx={loadingStyles.cardHeader}>
-              <Skeleton variant="text" width="25%" height={32} />
-              <Skeleton variant="text" width={80} height={24} />
+              <Skeleton variant="text" width="25%" height="32px" />
+              <Skeleton variant="text" width="80px" height="24px" />
             </Box>
             <Box sx={loadingStyles.cardContent}>
               <Box sx={loadingStyles.header}>
-                <Skeleton variant="rectangular" height={56} sx={loadingStyles.search} />
-                <Skeleton variant="rectangular" width={160} height={40} sx={loadingStyles.button} />
+                <Skeleton variant="rectangular" height="56px" sx={loadingStyles.search} />
+                <Skeleton variant="rectangular" width="160px" height="40px" sx={loadingStyles.button} />
               </Box>
               <Box sx={styles.users}>
                 {[...Array(6)].map((_user, idx) => (
                   // eslint-disable-next-line react/no-array-index-key
-                  <Skeleton key={idx} variant="rectangular" height={280} sx={loadingStyles.user} />
+                  <Skeleton key={idx} variant="rectangular" height="280px" sx={loadingStyles.user} />
                 ))}
               </Box>
             </Box>

@@ -79,7 +79,7 @@ const styles = {
 const renderCard = (titleWidth, body) => (
   <ChplSkeletonCard>
     <Box sx={styles.cardHeader}>
-      <Skeleton variant="text" width={titleWidth} height={32} />
+      <Skeleton variant="text" width={titleWidth} height="32px" />
     </Box>
     <Box sx={styles.cardContent}>
       { body }
@@ -91,7 +91,7 @@ const renderLines = (widths) => (
   <Box sx={styles.lines}>
     { widths.map((width, idx) => (
       // eslint-disable-next-line react/no-array-index-key
-      <Skeleton key={idx} variant="text" width={width} height={24} />
+      <Skeleton key={idx} variant="text" width={width} height="24px" />
     ))}
   </Box>
 );
@@ -106,13 +106,13 @@ function ChplDeveloperLoading() {
               {[...Array(6)].map((_field, idx) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <Box key={idx} sx={styles.field}>
-                  <Skeleton variant="text" width="55%" height={20} />
-                  <Skeleton variant="text" width="85%" height={24} />
+                  <Skeleton variant="text" width="55%" height="20px" />
+                  <Skeleton variant="text" width="85%" height="24px" />
                 </Box>
               ))}
               <Box sx={styles.buttons}>
-                <Skeleton variant="rectangular" width={80} height={32} style={{ borderRadius: 4 }} />
-                <Skeleton variant="rectangular" width={80} height={32} style={{ borderRadius: 4 }} />
+                <Skeleton variant="rectangular" width="80px" height="32px" style={{ borderRadius: 4 }} />
+                <Skeleton variant="rectangular" width="80px" height="32px" style={{ borderRadius: 4 }} />
               </Box>
             </Box>
           ))}
@@ -125,16 +125,16 @@ function ChplDeveloperLoading() {
           { renderCard('20%', (
             <>
               <Box sx={styles.resultsHeader}>
-                <Skeleton variant="text" width="25%" height={24} />
-                <Skeleton variant="text" width="15%" height={24} />
+                <Skeleton variant="text" width="25%" height="24px" />
+                <Skeleton variant="text" width="15%" height="24px" />
               </Box>
               {[...Array(4)].map((_product, idx) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <Box key={idx} sx={styles.productRow}>
-                  <Skeleton variant="text" width="35%" height={28} />
-                  <Skeleton variant="text" width="20%" height={24} />
-                  <Skeleton variant="text" width="15%" height={24} />
-                  <Skeleton variant="circular" width={24} height={24} />
+                  <Skeleton variant="text" width="35%" height="28px" />
+                  <Skeleton variant="text" width="20%" height="24px" />
+                  <Skeleton variant="text" width="15%" height="24px" />
+                  <Skeleton variant="circular" width="24px" height="24px" />
                 </Box>
               ))}
             </>

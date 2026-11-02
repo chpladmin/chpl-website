@@ -65,8 +65,8 @@ function ChplLoadingSection({
             {[...Array(rows)].map((_row, idx) => (
               // eslint-disable-next-line react/no-array-index-key
               <Box key={idx} sx={styles.field}>
-                <Skeleton variant="text" width="35%" height={16} />
-                <Skeleton variant="rectangular" height={40} style={{ borderRadius: 4 }} />
+                <Skeleton variant="text" width="35%" height="16px" />
+                <Skeleton variant="rectangular" height="40px" style={{ borderRadius: 4 }} />
               </Box>
             ))}
           </Box>
@@ -80,7 +80,7 @@ function ChplLoadingSection({
           <Box sx={styles.text}>
             {[...Array(rows)].map((_row, idx) => (
               // eslint-disable-next-line react/no-array-index-key
-              <Skeleton key={idx} variant="text" width={lineWidths[idx % lineWidths.length]} height={24} />
+              <Skeleton key={idx} variant="text" width={lineWidths[idx % lineWidths.length]} height="24px" />
             ))}
           </Box>
         );
@@ -98,7 +98,7 @@ function ChplLoadingSection({
           <ChplSkeletonCard>
             <Box aria-hidden="true">
               <Box sx={styles.header}>
-                <Skeleton variant="text" width="30%" height={32} />
+                <Skeleton variant="text" width="30%" height="32px" />
               </Box>
               <Box sx={styles.body}>
                 { renderBody() }

@@ -149,22 +149,22 @@ function ChplChartsLoading() {
         <ChplSkeletonCard sx={loadingStyles.menu}>
           <Box sx={loadingStyles.menuContent}>
             { menuWidths.map((width) => (
-              <Skeleton key={width} variant="text" width={width} height={36} />
+              <Skeleton key={width} variant="text" width={width} height="36px" />
             ))}
           </Box>
         </ChplSkeletonCard>
         <ChplSkeletonCard sx={loadingStyles.introduction}>
           <Box sx={loadingStyles.introductionContent}>
-            <Skeleton variant="text" width="25%" height={32} />
-            <Skeleton variant="text" width="100%" height={22} />
-            <Skeleton variant="text" width="95%" height={22} />
-            <Skeleton variant="text" width="60%" height={22} />
+            <Skeleton variant="text" width="25%" height="32px" />
+            <Skeleton variant="text" width="100%" height="22px" />
+            <Skeleton variant="text" width="95%" height="22px" />
+            <Skeleton variant="text" width="60%" height="22px" />
             <Box sx={loadingStyles.tiles}>
               { tileWidths.map((width) => (
                 <ChplSkeletonCard key={width} sx={loadingStyles.tile}>
                   <Box sx={loadingStyles.tileContent}>
-                    <Skeleton variant="circular" width={40} height={40} />
-                    <Skeleton variant="text" width={width} height={24} />
+                    <Skeleton variant="circular" width="40px" height="40px" />
+                    <Skeleton variant="text" width={width} height="24px" />
                   </Box>
                 </ChplSkeletonCard>
               ))}

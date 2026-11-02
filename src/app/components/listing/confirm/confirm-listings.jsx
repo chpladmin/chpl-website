@@ -70,7 +70,7 @@ function ChplConfirmListingsLoading() {
       <Box component="span" sx={utilStyles.visuallyHidden}>Loading products in the process of upload</Box>
       <Box aria-hidden="true">
         <Box sx={loadingStyles.rejectFooter}>
-          <Skeleton variant="rectangular" width={170} height={36} sx={{ borderRadius: '4px' }} />
+          <Skeleton variant="rectangular" width="170px" height="36px" sx={{ borderRadius: '4px' }} />
         </Box>
         <Box sx={loadingStyles.table}>
           <ChplLoadingTable columns={8} rows={5} showControls={false} />

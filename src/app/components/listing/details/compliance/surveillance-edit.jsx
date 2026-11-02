@@ -60,7 +60,7 @@ function ChplSurveillanceEditLoading() {
       <Box component="span" sx={utilStyles.visuallyHidden}>Loading surveillance activity</Box>
       <Box aria-hidden="true">
         <Container sx={styles.pageHeader} maxWidth="md">
-          <Skeleton variant="text" width="60%" height={56} />
+          <Skeleton variant="text" width="60%" height="56px" />
         </Container>
         <Box pt={4} sx={styles.background}>
           <Container maxWidth="lg">

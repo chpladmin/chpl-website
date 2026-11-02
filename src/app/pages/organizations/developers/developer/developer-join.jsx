@@ -91,18 +91,18 @@ function ChplJoinDevelopersLoading() {
       <Box sx={styles.pageContainer} aria-hidden="true">
         <ChplSkeletonCard sx={loadingStyles.cards}>
           <Box sx={loadingStyles.section}>
-            <Skeleton variant="text" width="50%" height={32} />
-            <Skeleton variant="rectangular" height={40} sx={{ borderRadius: '4px' }} />
+            <Skeleton variant="text" width="50%" height="32px" />
+            <Skeleton variant="rectangular" height="40px" sx={{ borderRadius: '4px' }} />
             <ChplLoadingTable columns={4} rows={8} showControls={false} framed={false} />
           </Box>
         </ChplSkeletonCard>
         <ChplSkeletonCard sx={loadingStyles.cards}>
           <Box sx={loadingStyles.text}>
-            <Skeleton variant="text" width="50%" height={32} />
-            <Skeleton variant="text" width="25%" height={32} />
+            <Skeleton variant="text" width="50%" height="32px" />
+            <Skeleton variant="text" width="25%" height="32px" />
             {['95%', '90%', '85%', '95%', '70%', '90%', '60%'].map((width, idx) => (
               // eslint-disable-next-line react/no-array-index-key
-              <Skeleton key={idx} variant="text" width={width} height={24} />
+              <Skeleton key={idx} variant="text" width={width} height="24px" />
             ))}
           </Box>
         </ChplSkeletonCard>

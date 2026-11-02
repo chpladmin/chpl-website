@@ -69,14 +69,14 @@ function ChplSurveillanceReportingLoading() {
           {[...Array(6)].map((_acb, idx) => (
             // eslint-disable-next-line react/no-array-index-key
             <Box key={idx} sx={loadingStyles.menuItem}>
-              <Skeleton variant="text" width="70%" height={24} />
+              <Skeleton variant="text" width="70%" height="24px" />
             </Box>
           ))}
         </ChplSkeletonCard>
         <ChplSkeletonCard sx={loadingStyles.intro}>
-          <Skeleton variant="text" width="55%" height={40} />
-          <Skeleton variant="text" width="95%" height={24} />
-          <Skeleton variant="text" width="85%" height={24} />
+          <Skeleton variant="text" width="55%" height="40px" />
+          <Skeleton variant="text" width="95%" height="24px" />
+          <Skeleton variant="text" width="85%" height="24px" />
         </ChplSkeletonCard>
       </Box>
     </Box>

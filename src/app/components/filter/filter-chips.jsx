@@ -152,15 +152,15 @@ function ChplFilterChips({ horizontal = false }) {
         <Box component="span" sx={utilStyles.visuallyHidden}>Loading filters</Box>
         <ChplSkeletonCard sx={[styles.card, styles.loadingContent]}>
           <Box aria-hidden="true">
-            <Skeleton variant="text" width="50%" height={22} />
+            <Skeleton variant="text" width="50%" height="22px" />
             <Box sx={styles.filterChipsContainer}>
               { [3, 2].map((chips, groupIdx) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <Box key={groupIdx} sx={[styles.filterSelectedContainer, horizontal && styles.filterSelectedContainerHorizontal]}>
-                  <Skeleton variant="text" width="65%" height={24} sx={horizontal ? styles.filterGroupTitleHorizontal : undefined} />
+                  <Skeleton variant="text" width="65%" height="24px" sx={horizontal ? styles.filterGroupTitleHorizontal : undefined} />
                   { [...Array(chips)].map((_chip, chipIdx) => (
                     // eslint-disable-next-line react/no-array-index-key
-                    <Skeleton key={chipIdx} variant="rounded" width={`${80 - (chipIdx * 15)}%`} height={24} sx={{ borderRadius: '16px', maxWidth: horizontal ? '160px' : undefined }} />
+                    <Skeleton key={chipIdx} variant="rounded" width={`${80 - (chipIdx * 15)}%`} height="24px" sx={{ borderRadius: '16px', maxWidth: horizontal ? '160px' : undefined }} />
                   ))}
                 </Box>
               ))}

@@ -90,7 +90,7 @@ function ChplConfirmLoading() {
       <Box component="span" sx={utilStyles.visuallyHidden}>Loading pending listing</Box>
       <Box sx={loadingStyles.container} aria-hidden="true">
         <Container maxWidth="md">
-          <Skeleton variant="text" width="50%" height={32} />
+          <Skeleton variant="text" width="50%" height="32px" />
         </Container>
         <Container maxWidth="md" disableGutters>
           <ChplSkeletonCard sx={loadingStyles.stepper}>
@@ -98,7 +98,7 @@ function ChplConfirmLoading() {
           </ChplSkeletonCard>
         </Container>
         <Box sx={loadingStyles.stepperButtons}>
-          <Skeleton variant="rectangular" width={190} height={40} sx={loadingStyles.buttons} />
+          <Skeleton variant="rectangular" width="190px" height="40px" sx={loadingStyles.buttons} />
         </Box>
         <ChplConfirmStepLoading announce={false} />
       </Box>

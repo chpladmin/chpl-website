@@ -83,7 +83,7 @@ function ChplComplianceDashboardLoading() {
     <Grid item xs={12} key={report.title}>
       <ChplSkeletonCard>
         <Box sx={loadingStyles.header}>
-          <Skeleton variant="text" width="60%" height={32} />
+          <Skeleton variant="text" width="60%" height="32px" />
         </Box>
         <Box height={defaultHeight(report)} />
       </ChplSkeletonCard>

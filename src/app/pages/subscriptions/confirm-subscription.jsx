@@ -104,7 +104,7 @@ function ChplConfirmSubscriptionLoading() {
       <Box aria-hidden="true">
         <Box sx={loadingStyles.header}>
           <Container maxWidth="sm">
-            <Skeleton variant="text" width="80%" height={56} />
+            <Skeleton variant="text" width="80%" height="56px" />
           </Container>
         </Box>
         <Container maxWidth="sm">
@@ -112,12 +112,12 @@ function ChplConfirmSubscriptionLoading() {
             <ChplSkeletonCard>
               <Box sx={loadingStyles.content}>
                 <Box sx={loadingStyles.lines}>
-                  <Skeleton variant="text" width="100%" height={22} />
-                  <Skeleton variant="text" width="100%" height={22} />
-                  <Skeleton variant="text" width="55%" height={22} />
+                  <Skeleton variant="text" width="100%" height="22px" />
+                  <Skeleton variant="text" width="100%" height="22px" />
+                  <Skeleton variant="text" width="55%" height="22px" />
                 </Box>
-                <Skeleton variant="rectangular" height={40} sx={{ borderRadius: '4px' }} />
-                <Skeleton variant="rectangular" width={180} height={30} sx={{ borderRadius: '4px' }} />
+                <Skeleton variant="rectangular" height="40px" sx={{ borderRadius: '4px' }} />
+                <Skeleton variant="rectangular" width="180px" height="30px" sx={{ borderRadius: '4px' }} />
               </Box>
             </ChplSkeletonCard>
           </Box>

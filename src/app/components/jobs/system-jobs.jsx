@@ -51,7 +51,7 @@ function ChplSystemJobsLoading({ showTriggers }) {
   const renderCard = (titleWidth, results) => (
     <Box sx={loadingStyles.innerCard}>
       <Box sx={loadingStyles.innerCardHeader}>
-        <Skeleton variant="text" width={titleWidth} height={32} />
+        <Skeleton variant="text" width={titleWidth} height="32px" />
       </Box>
       { results }
     </Box>

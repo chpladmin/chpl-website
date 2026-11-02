@@ -214,33 +214,33 @@ function ChplManageSubscriptionLoading() {
       <Box aria-hidden="true">
         <Box sx={loadingStyles.header}>
           <Container sx={loadingStyles.headerContent}>
-            <Skeleton variant="text" width="35%" height={56} />
-            <Skeleton variant="text" width="25%" height={24} />
+            <Skeleton variant="text" width="35%" height="56px" />
+            <Skeleton variant="text" width="25%" height="24px" />
           </Container>
         </Box>
         <Container>
           <Box sx={loadingStyles.layout}>
             <ChplSkeletonCard>
-              <Skeleton variant="rectangular" height={164} />
+              <Skeleton variant="rectangular" height="164px" />
               <Box sx={loadingStyles.welcome}>
-                <Skeleton variant="text" width="85%" height={36} />
-                <Skeleton variant="text" width="95%" height={22} />
-                <Skeleton variant="text" width="60%" height={22} />
+                <Skeleton variant="text" width="85%" height="36px" />
+                <Skeleton variant="text" width="95%" height="22px" />
+                <Skeleton variant="text" width="60%" height="22px" />
               </Box>
             </ChplSkeletonCard>
             <Box>
               <Box sx={loadingStyles.total}>
-                <Skeleton variant="text" width="30%" height={32} />
+                <Skeleton variant="text" width="30%" height="32px" />
               </Box>
               <Box sx={loadingStyles.rows}>
                 { rowWidths.map((width) => (
                   <ChplSkeletonCard key={width}>
                     <Box sx={loadingStyles.row}>
                       <Box sx={loadingStyles.rowData}>
-                        <Skeleton variant="text" width={width} height={24} />
-                        <Skeleton variant="text" width="15%" height={22} />
+                        <Skeleton variant="text" width={width} height="24px" />
+                        <Skeleton variant="text" width="15%" height="22px" />
                       </Box>
-                      <Skeleton variant="circular" width={24} height={24} />
+                      <Skeleton variant="circular" width="24px" height="24px" />
                     </Box>
                   </ChplSkeletonCard>
                 ))}

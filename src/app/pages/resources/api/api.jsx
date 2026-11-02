@@ -198,13 +198,13 @@ function ChplApiSwaggerLoading() {
     <ChplSkeletonCard>
       <Box sx={loadingStyles.content} aria-hidden="true">
         <Box sx={loadingStyles.info}>
-          <Skeleton variant="text" width="30%" height={40} />
-          <Skeleton variant="text" width="45%" height={22} />
+          <Skeleton variant="text" width="30%" height="40px" />
+          <Skeleton variant="text" width="45%" height="22px" />
         </Box>
         { groupWidths.map((width) => (
           <Box key={width} sx={loadingStyles.group}>
-            <Skeleton variant="text" width={width} height={32} />
-            <Skeleton variant="circular" width={20} height={20} />
+            <Skeleton variant="text" width={width} height="32px" />
+            <Skeleton variant="circular" width="20px" height="20px" />
           </Box>
         ))}
       </Box>

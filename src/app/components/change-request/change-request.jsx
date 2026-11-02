@@ -151,26 +151,26 @@ function ChplChangeRequestLoading() {
       <ChplSkeletonCard sx={styles.productCard}>
         <Box aria-hidden="true">
           <Box sx={loadingStyles.cardHeaderContainer}>
-            <Skeleton variant="circular" width={40} height={40} />
-            <Skeleton variant="text" width="40%" height={40} />
+            <Skeleton variant="circular" width="40px" height="40px" />
+            <Skeleton variant="text" width="40%" height="40px" />
           </Box>
           <Box sx={styles.cardContentContainer}>
             <Box sx={styles.cardSubHeaderContainer}>
               { subHeaderFieldWidths.map((width) => (
                 <Box key={width} sx={loadingStyles.field}>
-                  <Skeleton variant="text" width="30%" height={20} />
-                  <Skeleton variant="text" width={width} height={24} />
+                  <Skeleton variant="text" width="30%" height="20px" />
+                  <Skeleton variant="text" width={width} height="24px" />
                 </Box>
               ))}
             </Box>
             <Box sx={loadingStyles.lines}>
-              <Skeleton variant="text" width="25%" height={28} />
-              <Skeleton variant="text" width="85%" height={24} />
-              <Skeleton variant="text" width="70%" height={24} />
+              <Skeleton variant="text" width="25%" height="28px" />
+              <Skeleton variant="text" width="85%" height="24px" />
+              <Skeleton variant="text" width="70%" height="24px" />
             </Box>
             <Box sx={loadingStyles.lines}>
-              <Skeleton variant="text" width="20%" height={28} />
-              <Skeleton variant="rectangular" height={120} sx={{ borderRadius: '4px' }} />
+              <Skeleton variant="text" width="20%" height="28px" />
+              <Skeleton variant="rectangular" height="120px" sx={{ borderRadius: '4px' }} />
             </Box>
           </Box>
         </Box>

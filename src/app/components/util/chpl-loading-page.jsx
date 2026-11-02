@@ -81,10 +81,10 @@ function ChplLoadingPage({
         <Container maxWidth="lg">
           <Box sx={styles.headerRow}>
             <Box sx={styles.title}>
-              <Skeleton variant="text" width="100%" height={56} />
+              <Skeleton variant="text" width="100%" height="56px" />
               { favorite
                 && (
-                  <Skeleton variant="circular" width={40} height={40} sx={{ flexShrink: 0 }} />
+                  <Skeleton variant="circular" width="40px" height="40px" sx={{ flexShrink: 0 }} />
                 )}
             </Box>
             { (actions > 0 || subtitle > 0)
@@ -92,12 +92,12 @@ function ChplLoadingPage({
                 <Box sx={styles.actions}>
                   {[...Array(actions)].map((_action, idx) => (
                     // eslint-disable-next-line react/no-array-index-key
-                    <Skeleton key={idx} variant="rectangular" width={110} height={32} style={{ borderRadius: 4 }} />
+                    <Skeleton key={idx} variant="rectangular" width="110px" height="32px" style={{ borderRadius: 4 }} />
                   ))}
                   {/* A header with a subtitle has its Hide Details button */}
                   { subtitle > 0
                     && (
-                      <Skeleton variant="rectangular" width={130} height={36} style={{ borderRadius: 4 }} />
+                      <Skeleton variant="rectangular" width="130px" height="36px" style={{ borderRadius: 4 }} />
                     )}
                 </Box>
               )}
@@ -107,7 +107,7 @@ function ChplLoadingPage({
               <Box sx={styles.subtitle}>
                 {[...Array(subtitle)].map((_line, idx) => (
                   // eslint-disable-next-line react/no-array-index-key
-                  <Skeleton key={idx} variant="text" width={idx === subtitle - 1 ? '60%' : '100%'} height={22} />
+                  <Skeleton key={idx} variant="text" width={idx === subtitle - 1 ? '60%' : '100%'} height="22px" />
                 ))}
               </Box>
             )}
