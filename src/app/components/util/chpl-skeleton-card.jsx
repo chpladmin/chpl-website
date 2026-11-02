@@ -1,7 +1,6 @@
 import React from 'react';
 import { keyframes } from '@emotion/react';
 import { Box } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import {
   arrayOf,
   node,
@@ -10,10 +9,6 @@ import {
 } from 'prop-types';
 
 import { theme } from 'themes';
-
-// The colour MUI fills Skeletons with, for the divider lines drawn inside a
-// skeleton, such as between the rows of a results card
-const skeletonLineColor = alpha(theme.palette.text.primary, 0.11);
 
 // MUI Skeleton's own pulse animation, so the container pulses like the
 // skeletons inside it
@@ -49,7 +44,6 @@ function ChplSkeletonCard({ children, sx = undefined }) {
 }
 
 export default ChplSkeletonCard;
-export { skeletonLineColor };
 
 ChplSkeletonCard.propTypes = {
   children: node.isRequired,

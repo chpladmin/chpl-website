@@ -24,8 +24,8 @@ import {
   usePostOneTimeTrigger,
 } from 'api/jobs';
 import ChplSystemMaintenanceLoading, { ChplSystemMaintenanceResults } from 'components/system-maintenance/system-maintenance-loading';
-import { skeletonLineColor } from 'components/util';
 import { UserContext } from 'shared/contexts';
+import { palette } from 'themes';
 
 const styles = {
   container: {
@@ -39,7 +39,7 @@ const loadingStyles = {
   // The Currently Scheduled System Jobs and Types of Jobs cards inside the
   // System Jobs card, outlined since they sit inside its skeleton card
   innerCard: {
-    border: `1px solid ${skeletonLineColor}`,
+    border: `1px solid ${palette.skeleton}`,
     borderRadius: '8px',
   },
   innerCardHeader: {

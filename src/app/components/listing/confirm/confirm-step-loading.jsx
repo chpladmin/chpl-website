@@ -3,8 +3,8 @@ import { Box, Container } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import { bool, number, string } from 'prop-types';
 
-import { ChplSkeletonCard, skeletonLineColor } from 'components/util';
-import { utilStyles } from 'themes';
+import { ChplSkeletonCard } from 'components/util';
+import { palette, utilStyles } from 'themes';
 
 // Same layout as the Developer, Product and Version steps: the use-existing and
 // create choices side by side, a divider, then the card for the chosen one
@@ -33,7 +33,7 @@ const loadingStyles = {
     paddingTop: '32px',
   },
   divider: {
-    borderTop: `1px solid ${skeletonLineColor}`,
+    borderTop: `1px solid ${palette.skeleton}`,
   },
   header: {
     padding: '16px',

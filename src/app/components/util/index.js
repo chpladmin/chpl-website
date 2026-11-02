@@ -15,7 +15,7 @@ import ChplLoadingSection from './chpl-loading-section';
 import ChplLoadingSpinner from './chpl-loading-spinner';
 import ChplResultsUpdating from './chpl-results-updating';
 import ChplRouteLoading from './chpl-route-loading';
-import ChplSkeletonCard, { skeletonLineColor } from './chpl-skeleton-card';
+import ChplSkeletonCard from './chpl-skeleton-card';
 import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
 import ChplSearchResultCard from './chpl-search-result-card';
@@ -55,6 +55,5 @@ export {
   ChplUpdateIndicator,
   InternalScrollButton,
   SnackbarWrapper,
-  skeletonLineColor,
   useResultsUpdating,
 };

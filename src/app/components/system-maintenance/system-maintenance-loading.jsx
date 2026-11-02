@@ -11,9 +11,9 @@ import {
   string,
 } from 'prop-types';
 
-import { ChplSkeletonCard, skeletonLineColor } from 'components/util';
+import { ChplSkeletonCard } from 'components/util';
 import { UserContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 // Mirrors the System Maintenance Card: its CardHeader and CardContent padding,
 // the results header (utilStyles.headerContainer), the filter search bar and
@@ -70,7 +70,7 @@ const loadingStyles = {
   // A ChplSearchResultCard, outlined rather than filled, since it sits inside
   // the skeleton card that stands in for the System Maintenance Card
   resultCard: {
-    border: `1px solid ${skeletonLineColor}`,
+    border: `1px solid ${palette.skeleton}`,
     borderRadius: '8px',
     marginBottom: theme.spacing(1.5),
     padding: theme.spacing(4, 8),
@@ -97,7 +97,7 @@ const loadingStyles = {
     minWidth: 0,
   },
   detailsRow: {
-    borderTop: `1px solid ${skeletonLineColor}`,
+    borderTop: `1px solid ${palette.skeleton}`,
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'flex-start',

@@ -21,7 +21,6 @@ import {
   ChplPageHeader,
   ChplSkeletonCard,
   ChplTextField,
-  skeletonLineColor,
 } from 'components/util';
 import { ChplApiKeyRegistration } from 'components/api-key';
 import { eventTrack } from 'services/analytics.service';
@@ -187,7 +186,7 @@ const loadingStyles = {
     justifyContent: 'space-between',
     gap: '16px',
     padding: '12px 0',
-    borderBottom: `1px solid ${skeletonLineColor}`,
+    borderBottom: `1px solid ${palette.skeleton}`,
   },
 };
 

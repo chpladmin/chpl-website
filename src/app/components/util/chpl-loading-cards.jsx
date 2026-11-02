@@ -10,9 +10,9 @@ import {
   string,
 } from 'prop-types';
 
-import ChplSkeletonCard, { skeletonLineColor } from './chpl-skeleton-card';
+import ChplSkeletonCard from './chpl-skeleton-card';
 
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 // Mirrors ChplSearchResultCard and ChplSearchResultControls: the same padding,
 // row and column switch at lg, field widths and dividers, so a page's skeleton
@@ -59,7 +59,7 @@ const styles = {
     minWidth: 0,
   },
   detailsRow: {
-    borderTop: `1px solid ${skeletonLineColor}`,
+    borderTop: `1px solid ${palette.skeleton}`,
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
@@ -83,7 +83,7 @@ const styles = {
     },
     '@media (min-width: 800px) and (max-width: 1199.95px)': {
       flexDirection: 'row',
-      borderTop: `1px solid ${skeletonLineColor}`,
+      borderTop: `1px solid ${palette.skeleton}`,
       paddingTop: theme.spacing(1.5),
       '& > *': {
         flex: 1,

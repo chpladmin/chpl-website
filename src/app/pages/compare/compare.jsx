@@ -29,7 +29,6 @@ import {
   ChplPageHeader,
   ChplSkeletonCard,
   ChplTooltip,
-  skeletonLineColor,
 } from 'components/util';
 import CmsButton from 'components/cms-widget/cms-button';
 import { eventTrack } from 'services/analytics.service';
@@ -82,7 +81,7 @@ const styles = {
 const loadingStyles = {
   table: {
     '& .MuiTableCell-root': {
-      borderBottom: `1px solid ${skeletonLineColor}`,
+      borderBottom: `1px solid ${palette.skeleton}`,
     },
     // nothing to point at yet, so no theme hover highlight
     '& .MuiTableRow-root:hover': {

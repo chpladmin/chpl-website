@@ -25,6 +25,8 @@ const palette = {
   secondaryLight: '#fff',
   secondary: '#f5f9fd',
   secondaryDark: '#c2c6ca',
+  // MUI's own Skeleton fill, for skeleton shapes and the divider lines between them
+  skeleton: 'rgba(0, 0, 0, 0.11)',
   success: '#24632f',
   warningDark: '#9c9f0c',
   warning: '#e3bf00',
