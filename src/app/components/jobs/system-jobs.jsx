@@ -68,6 +68,10 @@ function ChplSystemJobsLoading({ showTriggers }) {
   );
 }
 
+ChplSystemJobsLoading.propTypes = {
+  showTriggers: bool.isRequired,
+};
+
 function ChplJobs() {
   const { hasAnyRole } = useContext(UserContext);
   const jobTypeQuery = useFetchJobTypes();
@@ -210,8 +214,4 @@ function ChplJobs() {
 export default ChplJobs;
 
 ChplJobs.propTypes = {
-};
-
-ChplSystemJobsLoading.propTypes = {
-  showTriggers: bool.isRequired,
 };
