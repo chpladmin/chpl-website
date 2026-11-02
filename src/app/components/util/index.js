@@ -7,6 +7,7 @@ import ChplLink from './chpl-link';
 import ChplPageBody from './chpl-page-body';
 import ChplPageHeader from './chpl-page-header';
 import ChplPagination from './pagination';
+import ChplPowerBiReport from './chpl-power-bi-report';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
 import ChplLoadingCards from './chpl-loading-cards';
@@ -42,6 +43,7 @@ export {
   ChplPageBody,
   ChplPageHeader,
   ChplPagination,
+  ChplPowerBiReport,
   ChplProgress,
   ChplResultsUpdating,
   ChplRouteLoading,
