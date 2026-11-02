@@ -25,7 +25,7 @@ import { useFetchAnnouncements } from 'api/announcements';
 import { useFetchAtls } from 'api/atls';
 import {
   ChplLink,
-  ChplLoadingPage,
+  ChplLoadingTable,
   ChplPageBody,
   ChplPageHeader,
   ChplSkeletonCard,
@@ -98,102 +98,30 @@ const getOrgs = (query, key) => {
     .sort((a, b) => compareStrings(a.name, b.name));
 };
 
-// Same layout as ChplResourcesOverview: the section navigation card beside the
-// column of section cards, the last of them holding the ONC-ACB and ONC-ATL table
+// Only the announcements and the ONC-ACB and ONC-ATL table wait on data; the
+// rest of the page is static and is real from the start
 const loadingStyles = {
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'minmax(220px, auto) 1fr',
-    },
-  },
-  navigation: {
-    height: 'min-content',
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '4px',
-    padding: '8px',
-    overflowX: 'hidden',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'column',
-      gap: 0,
-    },
-  },
-  navigationItem: {
-    padding: '6px 8px',
-    flex: '0 0 auto',
-  },
-  content: {
-    display: 'grid',
-    gap: '16px',
-  },
-  section: {
+  announcements: {
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(1),
     padding: '16px',
   },
-  tableRow: {
-    display: 'grid',
-    gridTemplateColumns: '2fr 3fr',
-    gap: '16px',
-    padding: '8px 0',
+  table: {
+    marginTop: '16px',
   },
 };
 
-// Announcements, What is the CHPL, Recommended Web Browsers, Using the CHPL
-// Website, ONC Certification Program, For EHR Developers, ONC-ACB and ONC-ATL
-// Information
-const navigationWidths = ['140px', '150px', '190px', '170px', '200px', '140px', '210px'];
-const sections = [
-  { title: '30%', lines: ['100%', '95%', '70%'] },
-  { title: '40%', lines: ['90%', '60%'] },
-  { title: '35%', lines: ['100%', '95%', '100%', '80%', '65%'] },
-  { title: '45%', lines: ['100%', '90%', '75%'] },
-  { title: '30%', lines: ['95%', '85%'] },
-];
-
-function ChplOverviewLoading() {
+// The announcements box: its heading over a line for each announcement
+function ChplOverviewAnnouncementsLoading() {
   return (
-    <ChplLoadingPage label="Loading CHPL overview">
-      <Box sx={loadingStyles.pageBody}>
-        <ChplSkeletonCard sx={loadingStyles.navigation}>
-          { navigationWidths.map((width) => (
-            <Box key={width} sx={loadingStyles.navigationItem}>
-              <Skeleton variant="text" width={width} height="28px" />
-            </Box>
-          ))}
-        </ChplSkeletonCard>
-        <Box sx={loadingStyles.content}>
-          { sections.map((section, sectionIdx) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <ChplSkeletonCard key={sectionIdx}>
-              <Box sx={loadingStyles.section}>
-                <Skeleton variant="text" width={section.title} height="32px" />
-                { section.lines.map((width, lineIdx) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <Skeleton key={lineIdx} variant="text" width={width} height="22px" />
-                ))}
-              </Box>
-            </ChplSkeletonCard>
-          ))}
-          <ChplSkeletonCard>
-            <Box sx={loadingStyles.section}>
-              <Skeleton variant="text" width="45%" height="32px" />
-              {[...Array(6)].map((_row, rowIdx) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Box key={rowIdx} sx={loadingStyles.tableRow}>
-                  <Skeleton variant="text" width="80%" height="22px" />
-                  <Skeleton variant="text" width="60%" height="22px" />
-                </Box>
-              ))}
-            </Box>
-          </ChplSkeletonCard>
-        </Box>
+    <ChplSkeletonCard>
+      <Box sx={loadingStyles.announcements} aria-hidden="true">
+        <Skeleton variant="text" width="30%" height="32px" />
+        <Skeleton variant="text" width="90%" height="22px" />
+        <Skeleton variant="text" width="70%" height="22px" />
       </Box>
-    </ChplLoadingPage>
+    </ChplSkeletonCard>
   );
 }
 
@@ -214,31 +142,28 @@ function ChplResourcesOverview() {
     setAnnouncements([...data].sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess]);
 
-  // Announcements and the ONC-ACB and ONC-ATL table would otherwise appear late
-  // and push the sections below them, and the navigation anchors, down the page
-  if (isLoading || acbQuery.isLoading || atlQuery.isLoading) {
-    return <ChplOverviewLoading />;
-  }
+  const orgsAreLoading = acbQuery.isLoading || atlQuery.isLoading;
 
   return (
     <>
       <ChplPageHeader text="CHPL Overview" />
       <ChplPageBody>
+        { (isLoading || orgsAreLoading)
+          && (
+            <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading announcements, ONC-ACBs and ONC-ATLs</Box>
+          )}
         <Box sx={styles.pageBody}>
           <Card sx={styles.pageNavigation}>
-            {announcements.length > 0
-              && (
-                <InternalScrollButton
-                  id="announcements"
-                  analytics={{
-                    ...analytics,
-                    event: 'Navigate to Announcements',
-                  }}
-                >
-                  Announcements
-                  <AnnouncementOutlinedIcon sx={styles.iconSpacing} />
-                </InternalScrollButton>
-              )}
+            <InternalScrollButton
+              id="announcements"
+              analytics={{
+                ...analytics,
+                event: 'Navigate to Announcements',
+              }}
+            >
+              Announcements
+              <AnnouncementOutlinedIcon sx={styles.iconSpacing} />
+            </InternalScrollButton>
             <InternalScrollButton
               id="whatIsTheChpl"
               analytics={{
@@ -301,33 +226,46 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
           </Card>
           <Box sx={styles.content}>
-            {announcements.length > 0
-              && (
-                <Box sx={styles.infoBox}>
-                  <Box component="span" sx={utilStyles.anchorElement}>
-                    <Box component="span" id="announcements" sx={utilStyles.pageAnchor} />
+            {/* Always there, so the sections below don't move when the announcements arrive */}
+            <Box>
+              <Box component="span" sx={utilStyles.anchorElement}>
+                <Box component="span" id="announcements" sx={utilStyles.pageAnchor} />
+              </Box>
+              { isLoading && <ChplOverviewAnnouncementsLoading /> }
+              { !isLoading && announcements.length === 0
+                && (
+                  <Box sx={styles.infoBox}>
+                    <Typography sx={styles.announcement} variant="h2">
+                      Announcements
+                    </Typography>
+                    <Typography>There are no current announcements.</Typography>
                   </Box>
-                  <Typography sx={styles.announcement} variant="h2">
-                    Announcement
-                    {announcements.length > 1 ? 's' : ''}
-                  </Typography>
-                  <ul>
-                    {announcements.map((announcement) => (
-                      <li key={announcement.id}>
-                        <strong>{announcement.title}</strong>
-                        {announcement.text
-                          && (
-                            <>
-                              :
-                              {' '}
-                              {announcement.text}
-                            </>
-                          )}
-                      </li>
-                    ))}
-                  </ul>
-                </Box>
-              )}
+                )}
+              { !isLoading && announcements.length > 0
+                && (
+                  <Box sx={styles.infoBox}>
+                    <Typography sx={styles.announcement} variant="h2">
+                      Announcement
+                      {announcements.length > 1 ? 's' : ''}
+                    </Typography>
+                    <ul>
+                      {announcements.map((announcement) => (
+                        <li key={announcement.id}>
+                          <strong>{announcement.title}</strong>
+                          {announcement.text
+                            && (
+                              <>
+                                :
+                                {' '}
+                                {announcement.text}
+                              </>
+                            )}
+                        </li>
+                      ))}
+                    </ul>
+                  </Box>
+                )}
+            </Box>
             <Card>
               <CardContent>
                 <Box component="span" sx={utilStyles.anchorElement}>
@@ -689,58 +627,65 @@ function ChplResourcesOverview() {
                 <Typography gutterBottom>
                   The following table identifies the ONC-ACBs and ONC-ATLs used to certify and test health information technology presented on the CHPL. For more information, please visit their respective websites.
                 </Typography>
-                <Card sx={styles.tableSpacing}>
-                  <Table id="acbAtlTable">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell scope="col">Body</TableCell>
-                        <TableCell scope="col">Name</TableCell>
-                        <TableCell scope="col">Code</TableCell>
-                        <TableCell scope="col">Website</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {getOrgs(acbQuery, 'acbs').map((acb) => (
-                        <TableRow key={acb.id}>
-                          <TableCell>ONC-ACB</TableCell>
-                          <TableCell>{acb.name}</TableCell>
-                          <TableCell>{acb.acbCode}</TableCell>
-                          <TableCell>
-                            {acb.website
-                              && (
-                                <ChplLink
-                                  href={acb.website}
-                                  analytics={{
-                                    ...analytics,
-                                    event: `Go to ${acb.website}`,
-                                  }}
-                                />
-                              )}
-                          </TableCell>
+                { orgsAreLoading && (
+                  <Box sx={loadingStyles.table} aria-hidden="true">
+                    <ChplLoadingTable columns={4} rows={6} showControls={false} />
+                  </Box>
+                )}
+                { !orgsAreLoading && (
+                  <Card sx={styles.tableSpacing}>
+                    <Table id="acbAtlTable">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell scope="col">Body</TableCell>
+                          <TableCell scope="col">Name</TableCell>
+                          <TableCell scope="col">Code</TableCell>
+                          <TableCell scope="col">Website</TableCell>
                         </TableRow>
-                      ))}
-                      {getOrgs(atlQuery, 'atls').map((atl) => (
-                        <TableRow key={atl.id}>
-                          <TableCell>ONC-ATL</TableCell>
-                          <TableCell>{atl.name}</TableCell>
-                          <TableCell>{atl.atlCode}</TableCell>
-                          <TableCell>
-                            {atl.website
-                              && (
-                                <ChplLink
-                                  href={atl.website}
-                                  analytics={{
-                                    ...analytics,
-                                    event: `Go to ${atl.website}`,
-                                  }}
-                                />
-                              )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </Card>
+                      </TableHead>
+                      <TableBody>
+                        {getOrgs(acbQuery, 'acbs').map((acb) => (
+                          <TableRow key={acb.id}>
+                            <TableCell>ONC-ACB</TableCell>
+                            <TableCell>{acb.name}</TableCell>
+                            <TableCell>{acb.acbCode}</TableCell>
+                            <TableCell>
+                              {acb.website
+                                && (
+                                  <ChplLink
+                                    href={acb.website}
+                                    analytics={{
+                                      ...analytics,
+                                      event: `Go to ${acb.website}`,
+                                    }}
+                                  />
+                                )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                        {getOrgs(atlQuery, 'atls').map((atl) => (
+                          <TableRow key={atl.id}>
+                            <TableCell>ONC-ATL</TableCell>
+                            <TableCell>{atl.name}</TableCell>
+                            <TableCell>{atl.atlCode}</TableCell>
+                            <TableCell>
+                              {atl.website
+                                && (
+                                  <ChplLink
+                                    href={atl.website}
+                                    analytics={{
+                                      ...analytics,
+                                      event: `Go to ${atl.website}`,
+                                    }}
+                                  />
+                                )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Card>
+                )}
               </CardContent>
             </Card>
           </Box>
