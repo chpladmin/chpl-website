@@ -48,9 +48,6 @@ const styles = {
       },
     },
   },
-  skeletonButton: {
-    borderRadius: '4px',
-  },
   sticky: {
     position: 'sticky',
     top: '8px',
@@ -103,13 +100,13 @@ function ChplFilterSearchBar({
       <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading search</Box>
       { !hideSearchTerm
         && (
-          <Skeleton variant="rectangular" height="48px" sx={styles.skeletonButton} aria-hidden="true" />
+          <Skeleton variant="rounded" height="48px" aria-hidden="true" />
         )}
       <Box sx={styles.searchButtonContainer} aria-hidden="true">
-        <Skeleton variant="rectangular" width="96px" height="40px" sx={styles.skeletonButton} />
+        <Skeleton variant="rounded" width="96px" height="40px" />
         { !hideAdvancedSearch
           && (
-            <Skeleton variant="rectangular" width="96px" height="40px" sx={styles.skeletonButton} />
+            <Skeleton variant="rounded" width="96px" height="40px" />
           )}
         { filters.some((f) => f.key === 'quickFilters')
           && (
