@@ -165,6 +165,7 @@ Add a body only when the reason for the change is not evident from the subject. 
 - `feat`, `fix`, `refactor`, `ui` — the bulk of the work. `ui` is for presentation-only changes.
 - `<type>-flag` (`feat-flag`, `ui-flag`, `fix-flag`) — work behind a feature flag. Note the order: a lone `flag-feat` exists in the history and is not the pattern to copy.
 - `build`, `ci`, `style`, `perf`, `chore` — tooling, formatting and housekeeping.
+- `docs` — documentation only, with no change to the code or the build. This covers edits to `CLAUDE.md` and other guidance files, which are usually `docs` commits.
 - `release` — version deploys. Exempt from the tag requirement, as above.
 - `wip` — appears in the history but says nothing useful; avoid it.
 
@@ -247,14 +248,14 @@ Fill in these rows when drafting, and leave the rest blank for people to complet
 
 ### Test step tables
 
-Every table of test steps, in every section, has these ten columns in this order:
+Every table of test steps, in every section, has these eight columns in this order:
 
 ```markdown
-| ID | Role(s) | Test Case Description | Test Steps | Test Data / Notes | Expected Result | Actual Result | Test Result | Automation? | Comments |
-|---|---|---|---|---|---|---|---|---|---|
+| ID | Role(s) | Test Case Description | Test Steps | Test Data / Notes | Expected Result | Test Result | Comments |
+|---|---|---|---|---|---|---|---|
 ```
 
-Fill in the first six with your best guess, and leave the last four (Actual Result, Test Result, Automation?, Comments) empty for the testers.
+Fill in the first six with your best guess, and leave the last two (Test Result, Comments) empty for the testers.
 
 - **ID**: `<section>.<row>`, e.g. `3.2`. Other rows and sections may refer to a row by its ID.
 - **Role(s)**: who runs the row, using the CHPL role names `ROLE_ADMIN`, `ROLE_ONC`, `ROLE_ACB` and `ROLE_DEVELOPER`, plus `Anonymous` for logged out, `Any logged-in` and `Any`. Comma-separate several. The role goes here, not in a section's introduction or in the steps.
