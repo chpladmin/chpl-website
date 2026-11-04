@@ -186,7 +186,7 @@ const loadingStyles = {
     justifyContent: 'space-between',
     gap: '16px',
     padding: '12px 0',
-    borderBottom: `1px solid ${palette.skeleton}`,
+    borderBottom: `1px solid ${palette.skeletonBorder}`,
   },
 };
 

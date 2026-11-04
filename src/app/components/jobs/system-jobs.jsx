@@ -39,7 +39,7 @@ const loadingStyles = {
   // The Currently Scheduled System Jobs and Types of Jobs cards inside the
   // System Jobs card, outlined since they sit inside its skeleton card
   innerCard: {
-    border: `1px solid ${palette.skeleton}`,
+    border: `1px solid ${palette.skeletonBorder}`,
     borderRadius: '8px',
   },
   innerCardHeader: {

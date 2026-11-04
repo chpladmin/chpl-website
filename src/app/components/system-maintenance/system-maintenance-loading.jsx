@@ -70,7 +70,7 @@ const loadingStyles = {
   // A ChplSearchResultCard, outlined rather than filled, since it sits inside
   // the skeleton card that stands in for the System Maintenance Card
   resultCard: {
-    border: `1px solid ${palette.skeleton}`,
+    border: `1px solid ${palette.skeletonBorder}`,
     borderRadius: '8px',
     marginBottom: theme.spacing(1.5),
     padding: theme.spacing(4, 8),
@@ -97,7 +97,7 @@ const loadingStyles = {
     minWidth: 0,
   },
   detailsRow: {
-    borderTop: `1px solid ${palette.skeleton}`,
+    borderTop: `1px solid ${palette.skeletonBorder}`,
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'flex-start',

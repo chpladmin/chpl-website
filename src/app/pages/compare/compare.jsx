@@ -81,7 +81,7 @@ const styles = {
 const loadingStyles = {
   table: {
     '& .MuiTableCell-root': {
-      borderBottom: `1px solid ${palette.skeleton}`,
+      borderBottom: `1px solid ${palette.skeletonBorder}`,
     },
     // nothing to point at yet, so no theme hover highlight
     '& .MuiTableRow-root:hover': {

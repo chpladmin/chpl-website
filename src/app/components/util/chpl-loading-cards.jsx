@@ -59,7 +59,7 @@ const styles = {
     minWidth: 0,
   },
   detailsRow: {
-    borderTop: `1px solid ${palette.skeleton}`,
+    borderTop: `1px solid ${palette.skeletonBorder}`,
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
@@ -83,7 +83,7 @@ const styles = {
     },
     '@media (min-width: 800px) and (max-width: 1199.95px)': {
       flexDirection: 'row',
-      borderTop: `1px solid ${palette.skeleton}`,
+      borderTop: `1px solid ${palette.skeletonBorder}`,
       paddingTop: theme.spacing(1.5),
       '& > *': {
         flex: 1,

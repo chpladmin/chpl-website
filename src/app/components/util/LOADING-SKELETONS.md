@@ -17,7 +17,7 @@ All of these are exported from `components/util`.
 
 | Component | Use it for |
 |---|---|
-| `ChplSkeletonCard` | The container for a card's skeleton: the card's shape, filled like a standard `Skeleton`. Wraps any shapes and takes `sx` for the real card's width or margins. For dividers inside a skeleton, use `palette.skeleton`, the theme's Skeleton fill. |
+| `ChplSkeletonCard` | The container for a card's skeleton: the card's shape, filled like a standard `Skeleton`. Wraps any shapes and takes `sx` for the real card's width or margins. For borders and dividers inside a skeleton, use `palette.skeletonBorder`; `palette.skeleton` is the theme's Skeleton fill. |
 | `ChplLoadingPage` | A whole page: a `ChplPageHeader`-shaped title over a `ChplPageBody`. Pass `children` for the page's own layout. `favorite` and `actions` add the header's star and buttons, and `subtitle` the lines of its description. |
 | `ChplLoadingSection` | One card of text, a form or a table, framed by a `ChplSkeletonCard`. Set `title={false}` when it fills an area that's already open, such as a dialog. |
 | `ChplLoadingCards` | Results pages built from `ChplSearchResultCard`. Describe the page's own card with `title`, `fieldGroups`, `actions` and `controls` (see below). |

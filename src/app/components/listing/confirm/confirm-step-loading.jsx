@@ -33,7 +33,7 @@ const loadingStyles = {
     paddingTop: '32px',
   },
   divider: {
-    borderTop: `1px solid ${palette.skeleton}`,
+    borderTop: `1px solid ${palette.skeletonBorder}`,
   },
   header: {
     padding: '16px',
