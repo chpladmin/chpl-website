@@ -9,6 +9,7 @@ import {
   usePostAnnouncement,
   usePutAnnouncement,
 } from 'api/announcements';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 import { UserContext } from 'shared/contexts';
 
 function ChplAnnouncements() {
@@ -65,6 +66,16 @@ function ChplAnnouncements() {
         // no default
     }
   };
+
+  if (isLoading) {
+    return (
+      <ChplSystemMaintenanceLoading
+        editable
+        fieldGroups={[[{ flex: '1 1 100%', lines: 2 }], 3]}
+        label="Loading announcements"
+      />
+    );
+  }
 
   return (
     <ChplAnnouncementsView

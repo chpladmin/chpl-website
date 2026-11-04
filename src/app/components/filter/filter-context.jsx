@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { arrayOf, string } from 'prop-types';
+import { arrayOf, bool, string } from 'prop-types';
 
 import { getDefaultValueEntry, getDateEntry, getDateTimeEntry } from './filters/value-entries';
 
@@ -177,6 +177,7 @@ const updateFilter = (category, value, setFilters, setSearchTerm) => {
 function FilterProvider(props) {
   const {
     filters: initialFilters,
+    isLoading = false,
     storageKey = '',
   } = props;
   const [filters, setFilters] = useState([]);
@@ -338,7 +339,7 @@ function FilterProvider(props) {
     .join('&');
 
   const filterData = {
-    analytics, dispatch, filters, hasSearched, queryParams, queryString, searchTerm, searchTermFilter, setSearchTerm,
+    analytics, dispatch, filters, hasSearched, isLoading, queryParams, queryString, searchTerm, searchTermFilter, setSearchTerm,
   };
 
   /* eslint-disable react/jsx-props-no-spreading */
@@ -348,6 +349,8 @@ function FilterProvider(props) {
 
 FilterProvider.propTypes = {
   filters: arrayOf(filterPropType).isRequired,
+  // true while the data behind the filter values is still being fetched
+  isLoading: bool,
   storageKey: string,
 };
 

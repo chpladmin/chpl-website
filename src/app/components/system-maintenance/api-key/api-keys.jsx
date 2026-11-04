@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-} from '@mui/material';
+import { Card, CardContent, CardHeader } from '@mui/material';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import { useSnackbar } from 'notistack';
 
 import ChplApiKeysView from './api-keys-view';
 
-import { useFetchApiKeys, useDeleteKey } from 'api/api-keys';
+import { useDeleteKey, useFetchApiKeys } from 'api/api-keys';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 import { eventTrack } from 'services/analytics.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
@@ -47,8 +43,15 @@ function ChplApiKeys() {
     });
   };
 
-  if (isLoading || !isSuccess || apiKeys.length === 0) {
-    return <CircularProgress />;
+  if (isLoading) {
+    return (
+      <ChplSystemMaintenanceLoading
+        actions={1}
+        controls={2}
+        fieldGroups={[4]}
+        label="Loading API keys"
+      />
+    );
   }
 
   return (

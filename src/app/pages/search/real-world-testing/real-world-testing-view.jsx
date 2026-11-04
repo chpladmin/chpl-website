@@ -315,7 +315,7 @@ function ChplRealWorldTestingSearchView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3, hti5ErdIsOn ? [{ flex: '1 1 100%' }] : [{ flex: '1 1 100%' }, { flex: '1 1 100%' }]]} />)}
           { !isLoading
           && (
             <>

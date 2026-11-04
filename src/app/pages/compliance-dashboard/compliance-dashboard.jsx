@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Box, Card, CardContent, CardHeader, Grid,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  Typography,
 } from '@mui/material';
-import Skeleton from '@mui/material/Skeleton';
 
 import { useFetchReportMetadata } from 'api/reports';
+import { ChplPowerBiReport, ChplSkeletonCard } from 'components/util';
+import { utilStyles } from 'themes';
 
 const styles = {
   reportCard: {
@@ -19,11 +25,17 @@ const styles = {
       paddingBottom: '0 !important',
     },
   },
+  unavailable: {
+    padding: '16px',
+  },
   iframe: {
     border: 'none',
     width: '100%',
     display: 'block',
     marginBottom: '-69px',
+  },
+  skeleton: {
+    height: '100%',
   },
   lessTopMargin: {
     marginTop: '-48px',
@@ -57,37 +69,38 @@ const reports = [{
   isWide: true,
 }];
 
+// The height of a report's skeleton before the metadata gives the real one
+const defaultHeight = (report) => (report.isWide ? 600 : 400);
+
 function ChplComplianceDashboard() {
-  const [reportMetadata, setReportMetadata] = useState([]);
   const { data, isLoading, isSuccess } = useFetchReportMetadata('onc-dashboard');
 
-  useEffect(() => {
-    if (isLoading || !isSuccess) { return; }
-    setReportMetadata(data);
-  }, [data, isLoading, isSuccess]);
+  const reportMetadata = isSuccess ? data : [];
 
   const buildCard = (report) => {
-    const displayData = reportMetadata.find((r) => r.title === report.title) ?? {
-      isLoading: true,
-      title: `Not yet implemented - ${report.title}`,
-      height: report.isWide ? 600 : 400,
-    };
+    const displayData = reportMetadata.find((r) => r.title === report.title);
 
     return (
       <Grid item xs={12} key={report.title}>
         <Card sx={styles.reportCard}>
-          <CardHeader title={displayData.title} />
+          <CardHeader title={report.title} />
           <CardContent sx={styles.reportCardContent}>
-            { displayData.isLoading ? (
-              <Skeleton variant="rectangular" height={displayData.height} />
-            ) : (
-              <Box
-                component="iframe"
+            { isLoading && (
+              <Box height={defaultHeight(report)} aria-hidden="true">
+                <ChplSkeletonCard sx={styles.skeleton} />
+              </Box>
+            )}
+            { !isLoading && displayData && (
+              <ChplPowerBiReport
                 title={displayData.title}
                 sx={[styles.iframe, report.uniqueClass && styles[report.uniqueClass]]}
                 height={displayData.height}
-                src={displayData.url}
+                url={displayData.url}
+                announce={false}
               />
+            )}
+            { !isLoading && !displayData && (
+              <Typography sx={styles.unavailable}>This report is not available</Typography>
             )}
           </CardContent>
         </Card>
@@ -96,7 +109,11 @@ function ChplComplianceDashboard() {
   };
 
   return (
-    <Grid container sx={{ width: `calc(100% + 64px)` }} spacing={2} alignItems="flex-start">
+    <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start">
+      { isLoading
+        && (
+          <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading compliance reports</Box>
+        )}
       <Grid item xs={12} md={4}>
         <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
           { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box, Button, CircularProgress, Fade, IconButton, Typography,
+  Box, Button, Fade, IconButton, Typography,
 } from '@mui/material';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import {
@@ -13,6 +13,7 @@ import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingEdit from './listing-edit';
 import ChplListingHistory from './history/listing-history';
+import ChplListingLoading from './listing-loading';
 
 import { useFreshAccessToken } from 'api/axios';
 import { useFetchListing } from 'api/listing';
@@ -48,9 +49,6 @@ const styles = {
   favoriteContainer: {
     display: 'flex',
     alignItems: 'baseline',
-  },
-  loadingScreen: {
-    height: '100vh',
   },
 };
 
@@ -148,9 +146,7 @@ function ChplListingPage({ id }) {
 
   if (isLoading || !isSuccess || !listing) {
     return (
-      <Box sx={styles.loadingScreen}>
-        <CircularProgress />
-      </Box>
+      <ChplListingLoading />
     );
   }
 

@@ -87,6 +87,7 @@ function ChplDecertifiedProductsSearchPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={acbQuery.isLoading || ccQuery.isLoading}
         storageKey="storageKey-decertifiedProductsPage"
       >
         <ChplDecertifiedProductsSearchView />

@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Card, CardContent, CardHeader, CircularProgress, IconButton, MenuItem,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  IconButton,
+  MenuItem,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
-  func, number, object, oneOfType, string,
+  func,
+  number,
+  object,
+  oneOfType,
+  string,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useFetchNonConformityTypes } from 'api/data';
-import { ChplTextField, ChplTooltip } from 'components/util';
+import { ChplLoadingSection, ChplTextField, ChplTooltip } from 'components/util';
 import { isDateBetweenInclusive } from 'services/date-util';
 import { sortNonconformityTypes } from 'services/surveillance.service';
 import { utilStyles } from 'themes';
@@ -132,7 +141,11 @@ function ChplNonConformityEdit({
     validationSchema,
   });
 
-  if (nonConformityTypes.length === 0) { return <CircularProgress />; }
+  // Wait on the query rather than its data, so an empty list or a failed
+  // request still opens the form
+  if (isLoading) {
+    return <ChplLoadingSection label="Loading non-conformity" rows={8} variant="form" />;
+  }
 
   return (
     <>

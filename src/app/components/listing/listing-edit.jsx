@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Divider,
   IconButton,
   List,
@@ -29,7 +28,7 @@ import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
 import { useFetchCertificationStatuses } from 'api/data';
 import { ChplActionBar, useActionBar } from 'components/action-bar';
-import { ChplTextField } from 'components/util';
+import { ChplLoadingSection, ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { compareCertificationStatuses } from 'services/listing.service';
 import { compareStrings } from 'services/sort.service';
@@ -237,7 +236,7 @@ function ChplListingEdit({
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplLoadingSection label="Loading listing edit form" rows={10} variant="form" />
     );
   }
 

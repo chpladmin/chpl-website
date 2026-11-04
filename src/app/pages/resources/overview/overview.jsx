@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Divider,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -24,8 +25,10 @@ import { useFetchAnnouncements } from 'api/announcements';
 import { useFetchAtls } from 'api/atls';
 import {
   ChplLink,
+  ChplLoadingTable,
   ChplPageBody,
   ChplPageHeader,
+  ChplSkeletonCard,
   InternalScrollButton,
 } from 'components/util';
 import { compareStrings } from 'services/sort.service';
@@ -95,6 +98,33 @@ const getOrgs = (query, key) => {
     .sort((a, b) => compareStrings(a.name, b.name));
 };
 
+// Only the announcements and the ONC-ACB and ONC-ATL table wait on data; the
+// rest of the page is static and is real from the start
+const loadingStyles = {
+  announcements: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    padding: '16px',
+  },
+  table: {
+    marginTop: '16px',
+  },
+};
+
+// The announcements box: its heading over a line for each announcement
+function ChplOverviewAnnouncementsLoading() {
+  return (
+    <ChplSkeletonCard>
+      <Box sx={loadingStyles.announcements} aria-hidden="true">
+        <Skeleton variant="text" width="30%" height="32px" />
+        <Skeleton variant="text" width="90%" height="22px" />
+        <Skeleton variant="text" width="70%" height="22px" />
+      </Box>
+    </ChplSkeletonCard>
+  );
+}
+
 function ChplResourcesOverview() {
   const analytics = {
     ...useAnalyticsContext().analytics,
@@ -112,25 +142,28 @@ function ChplResourcesOverview() {
     setAnnouncements([...data].sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess]);
 
+  const orgsAreLoading = acbQuery.isLoading || atlQuery.isLoading;
+
   return (
     <>
       <ChplPageHeader text="CHPL Overview" />
       <ChplPageBody>
+        { (isLoading || orgsAreLoading)
+          && (
+            <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading announcements, ONC-ACBs and ONC-ATLs</Box>
+          )}
         <Box sx={styles.pageBody}>
           <Card sx={styles.pageNavigation}>
-            {announcements.length > 0
-              && (
-                <InternalScrollButton
-                  id="announcements"
-                  analytics={{
-                    ...analytics,
-                    event: 'Navigate to Announcements',
-                  }}
-                >
-                  Announcements
-                  <AnnouncementOutlinedIcon sx={styles.iconSpacing} />
-                </InternalScrollButton>
-              )}
+            <InternalScrollButton
+              id="announcements"
+              analytics={{
+                ...analytics,
+                event: 'Navigate to Announcements',
+              }}
+            >
+              Announcements
+              <AnnouncementOutlinedIcon sx={styles.iconSpacing} />
+            </InternalScrollButton>
             <InternalScrollButton
               id="whatIsTheChpl"
               analytics={{
@@ -193,33 +226,46 @@ function ChplResourcesOverview() {
             </InternalScrollButton>
           </Card>
           <Box sx={styles.content}>
-            {announcements.length > 0
-              && (
-                <Box sx={styles.infoBox}>
-                  <Box component="span" sx={utilStyles.anchorElement}>
-                    <Box component="span" id="announcements" sx={utilStyles.pageAnchor} />
+            {/* Always there, so the sections below don't move when the announcements arrive */}
+            <Box>
+              <Box component="span" sx={utilStyles.anchorElement}>
+                <Box component="span" id="announcements" sx={utilStyles.pageAnchor} />
+              </Box>
+              { isLoading && <ChplOverviewAnnouncementsLoading /> }
+              { !isLoading && announcements.length === 0
+                && (
+                  <Box sx={styles.infoBox}>
+                    <Typography sx={styles.announcement} variant="h2">
+                      Announcements
+                    </Typography>
+                    <Typography>There are no current announcements.</Typography>
                   </Box>
-                  <Typography sx={styles.announcement} variant="h2">
-                    Announcement
-                    {announcements.length > 1 ? 's' : ''}
-                  </Typography>
-                  <ul>
-                    {announcements.map((announcement) => (
-                      <li key={announcement.id}>
-                        <strong>{announcement.title}</strong>
-                        {announcement.text
-                          && (
-                            <>
-                              :
-                              {' '}
-                              {announcement.text}
-                            </>
-                          )}
-                      </li>
-                    ))}
-                  </ul>
-                </Box>
-              )}
+                )}
+              { !isLoading && announcements.length > 0
+                && (
+                  <Box sx={styles.infoBox}>
+                    <Typography sx={styles.announcement} variant="h2">
+                      Announcement
+                      {announcements.length > 1 ? 's' : ''}
+                    </Typography>
+                    <ul>
+                      {announcements.map((announcement) => (
+                        <li key={announcement.id}>
+                          <strong>{announcement.title}</strong>
+                          {announcement.text
+                            && (
+                              <>
+                                :
+                                {' '}
+                                {announcement.text}
+                              </>
+                            )}
+                        </li>
+                      ))}
+                    </ul>
+                  </Box>
+                )}
+            </Box>
             <Card>
               <CardContent>
                 <Box component="span" sx={utilStyles.anchorElement}>
@@ -581,58 +627,65 @@ function ChplResourcesOverview() {
                 <Typography gutterBottom>
                   The following table identifies the ONC-ACBs and ONC-ATLs used to certify and test health information technology presented on the CHPL. For more information, please visit their respective websites.
                 </Typography>
-                <Card sx={styles.tableSpacing}>
-                  <Table id="acbAtlTable">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell scope="col">Body</TableCell>
-                        <TableCell scope="col">Name</TableCell>
-                        <TableCell scope="col">Code</TableCell>
-                        <TableCell scope="col">Website</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {getOrgs(acbQuery, 'acbs').map((acb) => (
-                        <TableRow key={acb.id}>
-                          <TableCell>ONC-ACB</TableCell>
-                          <TableCell>{acb.name}</TableCell>
-                          <TableCell>{acb.acbCode}</TableCell>
-                          <TableCell>
-                            {acb.website
-                              && (
-                                <ChplLink
-                                  href={acb.website}
-                                  analytics={{
-                                    ...analytics,
-                                    event: `Go to ${acb.website}`,
-                                  }}
-                                />
-                              )}
-                          </TableCell>
+                { orgsAreLoading && (
+                  <Box sx={loadingStyles.table} aria-hidden="true">
+                    <ChplLoadingTable columns={4} rows={6} showControls={false} />
+                  </Box>
+                )}
+                { !orgsAreLoading && (
+                  <Card sx={styles.tableSpacing}>
+                    <Table id="acbAtlTable">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell scope="col">Body</TableCell>
+                          <TableCell scope="col">Name</TableCell>
+                          <TableCell scope="col">Code</TableCell>
+                          <TableCell scope="col">Website</TableCell>
                         </TableRow>
-                      ))}
-                      {getOrgs(atlQuery, 'atls').map((atl) => (
-                        <TableRow key={atl.id}>
-                          <TableCell>ONC-ATL</TableCell>
-                          <TableCell>{atl.name}</TableCell>
-                          <TableCell>{atl.atlCode}</TableCell>
-                          <TableCell>
-                            {atl.website
-                              && (
-                                <ChplLink
-                                  href={atl.website}
-                                  analytics={{
-                                    ...analytics,
-                                    event: `Go to ${atl.website}`,
-                                  }}
-                                />
-                              )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </Card>
+                      </TableHead>
+                      <TableBody>
+                        {getOrgs(acbQuery, 'acbs').map((acb) => (
+                          <TableRow key={acb.id}>
+                            <TableCell>ONC-ACB</TableCell>
+                            <TableCell>{acb.name}</TableCell>
+                            <TableCell>{acb.acbCode}</TableCell>
+                            <TableCell>
+                              {acb.website
+                                && (
+                                  <ChplLink
+                                    href={acb.website}
+                                    analytics={{
+                                      ...analytics,
+                                      event: `Go to ${acb.website}`,
+                                    }}
+                                  />
+                                )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                        {getOrgs(atlQuery, 'atls').map((atl) => (
+                          <TableRow key={atl.id}>
+                            <TableCell>ONC-ATL</TableCell>
+                            <TableCell>{atl.name}</TableCell>
+                            <TableCell>{atl.atlCode}</TableCell>
+                            <TableCell>
+                              {atl.website
+                                && (
+                                  <ChplLink
+                                    href={atl.website}
+                                    analytics={{
+                                      ...analytics,
+                                      event: `Go to ${atl.website}`,
+                                    }}
+                                  />
+                                )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Card>
+                )}
               </CardContent>
             </Card>
           </Box>

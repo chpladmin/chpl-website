@@ -18,6 +18,7 @@ import {
   usePostQmsStandard,
   usePutQmsStandard,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplQmsStandards() {
   const { data, isLoading, isSuccess } = useFetchQmsStandards();
@@ -124,7 +125,10 @@ function ChplQmsStandards() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        label="Loading QMS standards"
+      />
     );
   }
 

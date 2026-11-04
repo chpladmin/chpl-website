@@ -52,6 +52,7 @@ function ChplSedSearchPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={acbQuery.isLoading}
         storageKey="storageKey-sedPage"
       >
         <ChplSedSearchView />

@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Card, CardContent, Typography, Button,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Skeleton,
+  Typography,
 } from '@mui/material';
 
 import { useFetchReportMetadata } from 'api/reports';
-import { ChplPageBody, ChplPageHeader } from 'components/util';
+import {
+  ChplPageBody,
+  ChplPageHeader,
+  ChplPowerBiReport,
+  ChplSkeletonCard,
+} from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareStrings } from 'services/sort.service';
 import { useAnalyticsContext } from 'shared/contexts';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const styles = {
   stickyCard: {
@@ -79,6 +89,61 @@ const styles = {
   },
 };
 
+// While the report list loads, the menu and the tiles are the only parts that
+// wait on it. The header and the introduction's text are real from the start
+const loadingStyles = {
+  menu: {
+    width: '350px',
+    maxWidth: '100%',
+  },
+  menuContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    padding: '16px',
+  },
+  tile: {
+    width: '48%',
+    [theme.breakpoints.down('lg')]: {
+      width: '100%',
+    },
+  },
+  tileContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    padding: '32px',
+  },
+};
+
+const menuWidths = ['40%', '75%', '65%', '80%', '70%', '60%', '75%'];
+const tileWidths = ['70%', '55%', '65%', '60%', '75%', '50%'];
+
+// The report menu card, with a line for each report's button
+function ChplChartsMenuLoading() {
+  return (
+    <ChplSkeletonCard sx={loadingStyles.menu}>
+      <Box sx={loadingStyles.menuContent} aria-hidden="true">
+        { menuWidths.map((width) => (
+          <Skeleton key={width} variant="text" width={width} height="36px" />
+        ))}
+      </Box>
+    </ChplSkeletonCard>
+  );
+}
+
+// The introduction's report tiles, each a card with its icon and title
+function ChplChartsTilesLoading() {
+  return tileWidths.map((width) => (
+    <ChplSkeletonCard key={width} sx={loadingStyles.tile}>
+      <Box sx={loadingStyles.tileContent} aria-hidden="true">
+        <Skeleton variant="circular" width="40px" height="40px" />
+        <Skeleton variant="text" width={width} height="24px" />
+      </Box>
+    </ChplSkeletonCard>
+  ));
+}
+
 function ChplCharts() {
   const { analytics } = useAnalyticsContext();
   const [activeReport, setActiveReport] = useState(undefined);
@@ -103,38 +168,45 @@ function ChplCharts() {
     <>
       <ChplPageHeader text="Charts" />
       <ChplPageBody>
+        { isLoading
+          && (
+            <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading charts</Box>
+          )}
         <Box display="flex" alignItems="flex-start" flexDirection="row" gap="32px" width="100%">
           <Box maxWidth="350px">
-            <Card sx={styles.stickyCard}>
-              <CardContent>
-                <Box sx={styles.cardButtons}>
-                  <Button
-                    color="primary"
-                    sx={[styles.menuButton, activeReport === undefined && styles.activeMenuButton]}
-                    onClick={() => handleReportChange(undefined)}
-                    fullWidth
-                    variant="text"
-                  >
-                    Charts
-                  </Button>
-                  { [...reportMetadata]
-                    .sort((a, b) => compareStrings(a.title, b.title))
-                    .map((report) => (
-                      <Button
-                        key={`${report.title}-button`}
-                        color="primary"
-                        sx={[styles.menuButton, activeReport?.title === report.title && styles.activeMenuButton]}
-                        onClick={() => handleReportChange(report.title)}
-                        id={`report-${report.title}`}
-                        fullWidth
-                        variant="text"
-                      >
-                        { report.title }
-                      </Button>
-                    ))}
-                </Box>
-              </CardContent>
-            </Card>
+            { isLoading && <ChplChartsMenuLoading /> }
+            { !isLoading && (
+              <Card sx={styles.stickyCard}>
+                <CardContent>
+                  <Box sx={styles.cardButtons}>
+                    <Button
+                      color="primary"
+                      sx={[styles.menuButton, activeReport === undefined && styles.activeMenuButton]}
+                      onClick={() => handleReportChange(undefined)}
+                      fullWidth
+                      variant="text"
+                    >
+                      Charts
+                    </Button>
+                    { [...reportMetadata]
+                      .sort((a, b) => compareStrings(a.title, b.title))
+                      .map((report) => (
+                        <Button
+                          key={`${report.title}-button`}
+                          color="primary"
+                          sx={[styles.menuButton, activeReport?.title === report.title && styles.activeMenuButton]}
+                          onClick={() => handleReportChange(report.title)}
+                          id={`report-${report.title}`}
+                          fullWidth
+                          variant="text"
+                        >
+                          { report.title }
+                        </Button>
+                      ))}
+                  </Box>
+                </CardContent>
+              </Card>
+            )}
           </Box>
           <Box width="100%">
             { !activeReport && (
@@ -147,6 +219,7 @@ function ChplCharts() {
                     A dynamic reporting suite powered by PowerBI, providing detailed insights and analytics derived from CHPL data. This tool offers interactive reports with robust click-through capabilities, allowing users to explore and analyze data seamlessly. Each report is designed to be user-friendly, enabling in-depth exploration of key metrics and trends, with the flexibility to dive deeper into the numbers that matter most.
                   </Typography>
                   <Box mt={8} mb={4} display="flex" flexDirection="row" flexWrap="wrap" gap="32px">
+                    { isLoading && <ChplChartsTilesLoading /> }
                     {reportMetadata && reportMetadata.map((report) => (
                       <Card
                         key={report.title}
@@ -169,12 +242,11 @@ function ChplCharts() {
                 key={activeReport.title}
               >
                 <CardContent sx={styles.reportCardContent}>
-                  <Box
-                    component="iframe"
+                  <ChplPowerBiReport
                     title={activeReport.title}
                     sx={styles.iframe}
                     height={activeReport.height}
-                    src={activeReport.url}
+                    url={activeReport.url}
                     allowFullScreen
                   />
                 </CardContent>
