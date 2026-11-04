@@ -1,6 +1,7 @@
 import { setActionBar } from 'components/action-bar/actionBar.slice';
 import { openWidget } from 'components/action-widget/widget.slice';
 import { addCmsLookupId, addCompareListing, toggleFavorite } from 'components/browser/browserInfo.slice';
+import { setUser } from 'components/login/userInfo.slice';
 import { setPageState } from 'components/page-state/pageState.slice';
 
 // `store.js` builds the store as it is imported, so each test loads a fresh copy
@@ -151,5 +152,57 @@ describe('the store', () => {
     expect(store.getState().pageState).toEqual({ 'storageKey-listingsPage-pageNumber': 3 });
     expect(persisted()).not.toHaveProperty('pageState');
     expect(loadStore().getState().pageState).toEqual({});
+  });
+
+  describe('writing chplState', () => {
+    let setItem;
+
+    beforeEach(() => {
+      setItem = jest.spyOn(Storage.prototype, 'setItem');
+    });
+
+    afterEach(() => {
+      setItem.mockRestore();
+    });
+
+    const chplStateWrites = () => setItem.mock.calls.filter(([key]) => key === 'chplState').length;
+
+    it('writes it when the user changes', () => {
+      const store = loadStore();
+      setItem.mockClear();
+      store.dispatch(setUser({ fullName: 'A User' }));
+
+      expect(chplStateWrites()).toBe(1);
+      expect(persisted().userInfo.user).toEqual({ fullName: 'A User' });
+    });
+
+    it('writes it when the widget lists or the open widget change', () => {
+      const store = loadStore();
+      setItem.mockClear();
+      store.dispatch(addCompareListing(fullListing(1)));
+      store.dispatch(openWidget('compare'));
+
+      expect(chplStateWrites()).toBe(2);
+    });
+
+    it('does not write it for page state or action bar updates', () => {
+      const store = loadStore();
+      setItem.mockClear();
+      store.dispatch(setPageState({ key: 'storageKey-listingsPage-pageNumber', value: 3 }));
+      store.dispatch(setPageState({ key: 'storageKey-listingsPage-pageSize', value: 50 }));
+      store.dispatch(setActionBar({ canSave: false }));
+
+      expect(chplStateWrites()).toBe(0);
+    });
+
+    it('does not write it for an action that changes nothing', () => {
+      const store = loadStore();
+      store.dispatch(openWidget('cms'));
+      setItem.mockClear();
+      store.dispatch(openWidget('cms'));
+      store.dispatch({ type: 'unknown/action' });
+
+      expect(chplStateWrites()).toBe(0);
+    });
   });
 });

@@ -348,7 +348,7 @@ function FilterProvider(props) {
 
 FilterProvider.propTypes = {
   filters: arrayOf(filterPropType).isRequired,
-  storageKey: string,
+  storageKey: string.isRequired,
 };
 
 function useFilterContext() {

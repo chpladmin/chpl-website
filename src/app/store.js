@@ -132,22 +132,35 @@ const loadState = () => {
   }
 };
 
-// The action bar and the page state are per-page UI state, so they are never
-// written: a reload starts them afresh rather than restoring what was showing.
-// The open widget is written, so its panel stays open across a reload.
-const saveState = ({ browserInfo, userInfo, widget }) => {
+// The slices written to `chplState`. The action bar and the page state are
+// per-page UI state, so they are never written: a reload starts them afresh
+// rather than restoring what was showing. The open widget is written, so its
+// panel stays open across a reload.
+const PERSISTED_SLICES = ['browserInfo', 'userInfo', 'widget'];
+
+const saveState = (state) => {
   try {
-    const serializedState = JSON.stringify({ browserInfo, userInfo, widget });
-    localStorage.setItem('chplState', serializedState);
+    const persisted = Object.fromEntries(PERSISTED_SLICES.map((slice) => [slice, state[slice]]));
+    localStorage.setItem('chplState', JSON.stringify(persisted));
   } catch (err) {
     // Ignore write errors or log them
   }
 };
 
-const localStorageMiddleware = (store) => (next) => (action) => {
-  const result = next(action);
-  saveState(store.getState());
-  return result;
+// Reducers keep a slice's reference when they leave it unchanged, so a write is
+// needed only when a persisted slice is a new object. That skips the page state
+// and action bar updates, which fire on every filter, sort and page change.
+const localStorageMiddleware = (store) => {
+  let saved = store.getState();
+  return (next) => (action) => {
+    const result = next(action);
+    const state = store.getState();
+    if (PERSISTED_SLICES.some((slice) => state[slice] !== saved[slice])) {
+      saveState(state);
+      saved = state;
+    }
+    return result;
+  };
 };
 
 const createStore = () => {
