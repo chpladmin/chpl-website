@@ -126,7 +126,7 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
         <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
           {isDesktop
             ? <ChplFilterChips />
-            : <Skeleton variant="rectangular" height={36} sx={{ borderRadius: '4px' }} />}
+            : <Skeleton variant="rectangular" height="36px" sx={{ borderRadius: '4px' }} />}
         </Box>
         <Box sx={styles.content}>
           {children}

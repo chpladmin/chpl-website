@@ -209,7 +209,7 @@ function ChplIcsFamily(props) {
 
   if (!isShowingDiagram) {
     return (
-      <Skeleton variant="rectangular" height={475} style={{ borderRadius: 4 }} />
+      <Skeleton variant="rectangular" height="475px" style={{ borderRadius: 4 }} />
     );
   }
 

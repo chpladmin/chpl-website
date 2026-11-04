@@ -32,8 +32,8 @@ function ChplUnsubscribeAllLoading() {
   return (
     <Container sx={loadingStyles.content} role="status" aria-live="polite">
       <Box component="span" sx={utilStyles.visuallyHidden}>Unsubscribing</Box>
-      <Skeleton variant="text" width="30%" height={56} aria-hidden="true" />
-      <Skeleton variant="text" width="60%" height={24} aria-hidden="true" />
+      <Skeleton variant="text" width="30%" height="56px" aria-hidden="true" />
+      <Skeleton variant="text" width="60%" height="24px" aria-hidden="true" />
     </Container>
   );
 }

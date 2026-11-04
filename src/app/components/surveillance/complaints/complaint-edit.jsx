@@ -84,9 +84,9 @@ const loadingStyles = {
 // One entry per column of the form: the fields under its heading, and how tall
 // each one is. Parties Contacted is a column of switches.
 const loadingColumns = [
-  { key: 'general', fields: [56, 56, 56, 56, 56, 56, 56, 56] },
-  { key: 'summary', fields: [128, 128] },
-  { key: 'review', fields: [56, 56, 56, 56] },
+  { key: 'general', fields: ['56px', '56px', '56px', '56px', '56px', '56px', '56px', '56px'] },
+  { key: 'summary', fields: ['128px', '128px'] },
+  { key: 'review', fields: ['56px', '56px', '56px', '56px'] },
   { key: 'parties', toggles: 4 },
 ];
 
@@ -98,14 +98,14 @@ function ChplComplaintEditLoading() {
       <ChplSkeletonCard>
         <Box aria-hidden="true">
           <Box sx={loadingStyles.header}>
-            <Skeleton variant="text" width="25%" height={32} />
+            <Skeleton variant="text" width="25%" height="32px" />
           </Box>
           <Box sx={loadingStyles.body}>
-            <Skeleton variant="rectangular" height={56} sx={loadingStyles.field} />
+            <Skeleton variant="rectangular" height="56px" sx={loadingStyles.field} />
             <Box sx={styles.content}>
               { loadingColumns.map((column) => (
                 <Box key={column.key} sx={styles.dataEntry}>
-                  <Skeleton variant="text" width="50%" height={28} />
+                  <Skeleton variant="text" width="50%" height="28px" />
                   { column.fields?.map((height, idx) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <Skeleton key={idx} variant="rectangular" height={height} sx={loadingStyles.field} />
@@ -113,8 +113,8 @@ function ChplComplaintEditLoading() {
                   { [...Array(column.toggles ?? 0)].map((_toggle, idx) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <Box key={idx} sx={loadingStyles.toggle}>
-                      <Skeleton variant="rounded" width={34} height={14} />
-                      <Skeleton variant="text" width="60%" height={24} />
+                      <Skeleton variant="rounded" width="34px" height="14px" />
+                      <Skeleton variant="text" width="60%" height="24px" />
                     </Box>
                   ))}
                 </Box>

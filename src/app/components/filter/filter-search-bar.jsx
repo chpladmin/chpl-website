@@ -55,8 +55,6 @@ const styles = {
   },
 };
 
-const skeletonButton = { borderRadius: '4px' };
-
 const getStuckStyles = (fadeBackground) => ({
   '&::before': {
     content: '""',
@@ -102,17 +100,17 @@ function ChplFilterSearchBar({
       <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading search</Box>
       { !hideSearchTerm
         && (
-          <Skeleton variant="rectangular" height={48} sx={skeletonButton} aria-hidden="true" />
+          <Skeleton variant="rounded" height="48px" aria-hidden="true" />
         )}
       <Box sx={styles.searchButtonContainer} aria-hidden="true">
-        <Skeleton variant="rectangular" width={96} height={40} sx={skeletonButton} />
+        <Skeleton variant="rounded" width="96px" height="40px" />
         { !hideAdvancedSearch
           && (
-            <Skeleton variant="rectangular" width={96} height={40} sx={skeletonButton} />
+            <Skeleton variant="rounded" width="96px" height="40px" />
           )}
         { filters.some((f) => f.key === 'quickFilters')
           && (
-            <Skeleton variant="circular" width={40} height={40} />
+            <Skeleton variant="circular" width="40px" height="40px" />
           )}
       </Box>
     </ChplSkeletonCard>

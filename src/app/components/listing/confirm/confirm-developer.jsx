@@ -234,11 +234,15 @@ function ChplConfirmDeveloper({ listing, developer, dispatch }) {
     validationSchema,
   });
 
-  // Until the effect above has copied the developers into state, the select
-  // would be empty, so the skeleton covers that render too
-  if (isLoading || (isSuccess && developers.length === 0 && data.some((d) => !d.deleted))) {
-    // A listing with an existing developer opens on the select; otherwise on
-    // the create form, with its name, website, address and contact fields
+  // The developers have loaded, but the effect above hasn't copied them into
+  // state yet, so the select would render empty for one frame. If none of them
+  // are undeleted there is nothing to copy, and the step renders straight away
+  const isCopyingDevelopers = isSuccess && developers.length === 0 && data.some((d) => !d.deleted);
+
+  if (isLoading || isCopyingDevelopers) {
+    // Skeleton the view the step will open on: one field for the select of
+    // existing developers, or ten for the create form's name, website,
+    // address and contact fields when the listing has no developer yet
     return <ChplConfirmStepLoading fields={isCreating ? 10 : 1} label="Loading developers" />;
   }
 

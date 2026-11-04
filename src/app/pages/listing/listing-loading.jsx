@@ -87,7 +87,7 @@ const navigationWidths = ['75%', '85%', '90%', '80%', '60%', '80%', '85%'];
 const renderSection = (headerWidth, body) => (
   <ChplSkeletonCard>
     <Box sx={styles.sectionHeader}>
-      <Skeleton variant="text" width={headerWidth} height={36} />
+      <Skeleton variant="text" width={headerWidth} height="36px" />
     </Box>
     <Box sx={styles.sectionContent}>
       { body }
@@ -98,9 +98,9 @@ const renderSection = (headerWidth, body) => (
 const renderRows = (count) => [...Array(count)].map((_row, idx) => (
   // eslint-disable-next-line react/no-array-index-key
   <Box key={idx} sx={styles.criterionRow}>
-    <Skeleton variant="circular" width={24} height={24} />
-    <Skeleton variant="text" width="15%" height={24} />
-    <Skeleton variant="text" width="55%" height={24} />
+    <Skeleton variant="circular" width="24px" height="24px" />
+    <Skeleton variant="text" width="15%" height="24px" />
+    <Skeleton variant="text" width="55%" height="24px" />
   </Box>
 ));
 
@@ -113,13 +113,13 @@ function ChplListingLoading() {
             { navigationWidths.map((width, idx) => (
               // eslint-disable-next-line react/no-array-index-key
               <Box key={idx} sx={styles.navigationItem}>
-                <Skeleton variant="circular" width={24} height={24} />
-                <Skeleton variant="text" width={width} height={32} sx={{ flex: 1, minWidth: 80 }} />
+                <Skeleton variant="circular" width="24px" height="24px" />
+                <Skeleton variant="text" width={width} height="32px" sx={{ flex: 1, minWidth: '80px' }} />
               </Box>
             ))}
           </ChplSkeletonCard>
           <Box sx={styles.subscribe}>
-            <Skeleton variant="rectangular" height={96} style={{ borderRadius: 8 }} />
+            <Skeleton variant="rectangular" height="96px" style={{ borderRadius: 8 }} />
           </Box>
         </Box>
         <Box sx={styles.content}>
@@ -128,8 +128,8 @@ function ChplListingLoading() {
               {[...Array(8)].map((_field, idx) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <Box key={idx} sx={styles.field}>
-                  <Skeleton variant="text" width="40%" height={20} />
-                  <Skeleton variant="text" width="70%" height={24} />
+                  <Skeleton variant="text" width="40%" height="20px" />
+                  <Skeleton variant="text" width="70%" height="24px" />
                 </Box>
               ))}
             </Box>

@@ -24,8 +24,8 @@ import {
   usePostOneTimeTrigger,
 } from 'api/jobs';
 import ChplSystemMaintenanceLoading, { ChplSystemMaintenanceResults } from 'components/system-maintenance/system-maintenance-loading';
-import { skeletonLineColor } from 'components/util';
 import { UserContext } from 'shared/contexts';
+import { palette } from 'themes';
 
 const styles = {
   container: {
@@ -39,7 +39,7 @@ const loadingStyles = {
   // The Currently Scheduled System Jobs and Types of Jobs cards inside the
   // System Jobs card, outlined since they sit inside its skeleton card
   innerCard: {
-    border: `1px solid ${skeletonLineColor}`,
+    border: `1px solid ${palette.skeleton}`,
     borderRadius: '8px',
   },
   innerCardHeader: {
@@ -51,7 +51,7 @@ function ChplSystemJobsLoading({ showTriggers }) {
   const renderCard = (titleWidth, results) => (
     <Box sx={loadingStyles.innerCard}>
       <Box sx={loadingStyles.innerCardHeader}>
-        <Skeleton variant="text" width={titleWidth} height={32} />
+        <Skeleton variant="text" width={titleWidth} height="32px" />
       </Box>
       { results }
     </Box>
@@ -67,6 +67,10 @@ function ChplSystemJobsLoading({ showTriggers }) {
     </ChplSystemMaintenanceLoading>
   );
 }
+
+ChplSystemJobsLoading.propTypes = {
+  showTriggers: bool.isRequired,
+};
 
 function ChplJobs() {
   const { hasAnyRole } = useContext(UserContext);
@@ -210,8 +214,4 @@ function ChplJobs() {
 export default ChplJobs;
 
 ChplJobs.propTypes = {
-};
-
-ChplSystemJobsLoading.propTypes = {
-  showTriggers: bool.isRequired,
 };

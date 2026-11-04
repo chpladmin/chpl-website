@@ -69,17 +69,17 @@ function ChplReportsLoading() {
       <ChplSkeletonCard>
         <Box aria-hidden="true">
           <Box sx={loadingStyles.header}>
-            <Skeleton variant="text" width="30%" height={32} />
+            <Skeleton variant="text" width="30%" height="32px" />
           </Box>
           <Box sx={loadingStyles.content}>
             <Box sx={loadingStyles.resultsHeader}>
-              <Skeleton variant="text" width="25%" height={24} />
-              <Skeleton variant="rectangular" width={120} height={36} sx={{ borderRadius: '4px' }} />
+              <Skeleton variant="text" width="25%" height="24px" />
+              <Skeleton variant="rectangular" width="120px" height="36px" sx={{ borderRadius: '4px' }} />
             </Box>
             <Box sx={loadingStyles.results}>
               {[...Array(3)].map((_result, idx) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <Skeleton key={idx} variant="rectangular" height={140} sx={loadingStyles.result} />
+                <Skeleton key={idx} variant="rectangular" height="140px" sx={loadingStyles.result} />
               ))}
             </Box>
           </Box>
@@ -88,7 +88,7 @@ function ChplReportsLoading() {
       <ChplSkeletonCard>
         <Box aria-hidden="true">
           <Box sx={loadingStyles.header}>
-            <Skeleton variant="text" width="25%" height={32} />
+            <Skeleton variant="text" width="25%" height="32px" />
           </Box>
           <Box sx={loadingStyles.content}>
             <ChplLoadingTable columns={4} rows={8} showControls={false} framed={false} />

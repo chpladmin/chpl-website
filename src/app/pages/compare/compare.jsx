@@ -29,7 +29,6 @@ import {
   ChplPageHeader,
   ChplSkeletonCard,
   ChplTooltip,
-  skeletonLineColor,
 } from 'components/util';
 import CmsButton from 'components/cms-widget/cms-button';
 import { eventTrack } from 'services/analytics.service';
@@ -82,7 +81,7 @@ const styles = {
 const loadingStyles = {
   table: {
     '& .MuiTableCell-root': {
-      borderBottom: `1px solid ${skeletonLineColor}`,
+      borderBottom: `1px solid ${palette.skeleton}`,
     },
     // nothing to point at yet, so no theme hover highlight
     '& .MuiTableRow-root:hover': {
@@ -129,21 +128,21 @@ const valueWidths = ['70%', '50%', '80%', '60%'];
 const renderSkeletonValue = (value, key) => {
   switch (value) {
     case 'icon':
-      return <Skeleton variant="circular" width={24} height={24} />;
+      return <Skeleton variant="circular" width="24px" height="24px" />;
     case 'productNumber':
       return (
         <Box sx={loadingStyles.stack}>
-          <Skeleton variant="text" width="80%" height={20} />
-          <Skeleton variant="rectangular" width={120} height={30} sx={{ borderRadius: '4px' }} />
+          <Skeleton variant="text" width="80%" height="20px" />
+          <Skeleton variant="rectangular" width="120px" height="30px" sx={{ borderRadius: '4px' }} />
         </Box>
       );
     default:
-      return <Skeleton variant="text" width={valueWidths[key % valueWidths.length]} height={20} />;
+      return <Skeleton variant="text" width={valueWidths[key % valueWidths.length]} height="20px" />;
   }
 };
 
 // A product's header while it loads
-const renderSkeletonHeader = () => <Skeleton variant="text" width="60%" height={24} />;
+const renderSkeletonHeader = () => <Skeleton variant="text" width="60%" height="24px" />;
 
 function ChplCompareLoading({ products }) {
   const columns = Math.max(products, 1);
@@ -171,7 +170,7 @@ function ChplCompareLoading({ products }) {
                   <TableCell sx={loadingStyles.itemColumn}>
                     {row.item.map((width, lineIdx) => (
                       // eslint-disable-next-line react/no-array-index-key
-                      <Skeleton key={lineIdx} variant="text" width={width} height={20} />
+                      <Skeleton key={lineIdx} variant="text" width={width} height="20px" />
                     ))}
                   </TableCell>
                   {[...Array(columns)].map((_product, colIdx) => (

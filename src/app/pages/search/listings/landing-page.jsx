@@ -198,11 +198,11 @@ const loadingStyles = {
 // Heights of the real containers: the search bar's 16px padding around its
 // 48px field, and each kind of card with its padding and usual lines of text
 const blockHeights = {
-  announcement: 88,
-  compliance: 112,
-  help: 132,
-  searchBar: 80,
-  shortcut: 112,
+  announcement: '88px',
+  compliance: '112px',
+  help: '132px',
+  searchBar: '80px',
+  shortcut: '112px',
 };
 
 function ChplLandingPageLoading() {
@@ -214,7 +214,7 @@ function ChplLandingPageLoading() {
   ));
 
   const renderHeading = (width) => (
-    <Skeleton variant="text" width={width} height={40} sx={[onDark, styles.subHeaders]} />
+    <Skeleton variant="text" width={width} height="40px" sx={[onDark, styles.subHeaders]} />
   );
 
   return (
@@ -223,9 +223,9 @@ function ChplLandingPageLoading() {
       <Box aria-hidden="true">
         <Box width="100%" sx={styles.heroSection}>
           <Container maxWidth="md" sx={loadingStyles.heroText}>
-            <Skeleton variant="text" width="85%" height={56} />
-            <Skeleton variant="text" width="100%" height={24} />
-            <Skeleton variant="text" width="65%" height={24} />
+            <Skeleton variant="text" width="85%" height="56px" />
+            <Skeleton variant="text" width="100%" height="24px" />
+            <Skeleton variant="text" width="65%" height="24px" />
           </Container>
         </Box>
         <Box sx={styles.landingPageBackground} pb={16}>
@@ -233,7 +233,7 @@ function ChplLandingPageLoading() {
             <Box position="relative" top="-32px">
               <Skeleton variant="rounded" height={blockHeights.searchBar} sx={loadingStyles.block} />
             </Box>
-            <Skeleton variant="text" width="30%" height={40} sx={onDark} />
+            <Skeleton variant="text" width="30%" height="40px" sx={onDark} />
             <Skeleton variant="rounded" height={blockHeights.announcement} sx={[loadingStyles.block, loadingStyles.announcement]} />
             <Box pt={6} pb={4}>
               { renderHeading('65%') }

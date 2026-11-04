@@ -46,33 +46,33 @@ function ChplLoadingTable({
     <>
       {/* CHPL ID */}
       <TableCell style={{ width: listingColumnWidths[0] }}>
-        <Skeleton variant="text" width="90%" height={24} />
+        <Skeleton variant="text" width="90%" height="24px" />
       </TableCell>
       {/* Developer */}
       <TableCell style={{ width: listingColumnWidths[1] }}>
-        <Skeleton variant="text" width="80%" height={24} />
+        <Skeleton variant="text" width="80%" height="24px" />
       </TableCell>
       {/* Product */}
       <TableCell style={{ width: listingColumnWidths[2] }}>
-        <Skeleton variant="text" width="80%" height={24} />
+        <Skeleton variant="text" width="80%" height="24px" />
       </TableCell>
       {/* Version */}
       <TableCell style={{ width: listingColumnWidths[3] }}>
-        <Skeleton variant="text" width="40%" height={24} />
+        <Skeleton variant="text" width="40%" height="24px" />
       </TableCell>
       {/* Certification Date */}
       <TableCell style={{ width: listingColumnWidths[4] }}>
-        <Skeleton variant="text" width="60%" height={24} />
+        <Skeleton variant="text" width="60%" height="24px" />
       </TableCell>
       {/* Status */}
       <TableCell style={{ width: listingColumnWidths[5] }}>
-        <Skeleton variant="circular" width={24} height={24} />
+        <Skeleton variant="circular" width="24px" height="24px" />
       </TableCell>
       {/* Actions */}
       <TableCell style={{ width: listingColumnWidths[6] }}>
         <Box display="flex" flexDirection="column" alignItems="flex-end" gap={1}>
-          <Skeleton variant="rectangular" width={90} height={32} style={{ borderRadius: 4, marginBottom: 8 }} />
-          <Skeleton variant="rectangular" width={90} height={32} style={{ borderRadius: 4 }} />
+          <Skeleton variant="rectangular" width="90px" height="32px" style={{ borderRadius: 4, marginBottom: 8 }} />
+          <Skeleton variant="rectangular" width="90px" height="32px" style={{ borderRadius: 4 }} />
         </Box>
       </TableCell>
     </>
@@ -81,7 +81,7 @@ function ChplLoadingTable({
   const renderGenericRow = (rowIdx) => [...Array(columns)].map((_col, colIdx) => (
     // eslint-disable-next-line react/no-array-index-key
     <TableCell key={colIdx}>
-      <Skeleton variant="text" width={cellWidths[(rowIdx + colIdx) % cellWidths.length]} height={24} />
+      <Skeleton variant="text" width={cellWidths[(rowIdx + colIdx) % cellWidths.length]} height="24px" />
     </TableCell>
   ));
 
@@ -92,8 +92,8 @@ function ChplLoadingTable({
       { showControls
         && (
           <Box my={2} mx={8} display="flex" justifyContent="space-between" alignItems="center">
-            <Skeleton variant="text" width="30%" height={32} />
-            <Skeleton variant="text" width="20%" height={24} />
+            <Skeleton variant="text" width="30%" height="32px" />
+            <Skeleton variant="text" width="20%" height="24px" />
           </Box>
         )}
       <TableContainer className={className} component={framed ? ChplSkeletonCard : undefined}>

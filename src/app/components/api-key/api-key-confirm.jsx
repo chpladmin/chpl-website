@@ -54,12 +54,12 @@ function ChplApiKeyConfirmLoading() {
       <Box sx={loadingStyles.centeredGridItem} aria-hidden="true">
         <ChplSkeletonCard>
           <Box sx={loadingStyles.header}>
-            <Skeleton variant="text" width="45%" height={32} />
+            <Skeleton variant="text" width="45%" height="32px" />
           </Box>
           <Box sx={loadingStyles.content}>
             { lineWidths.map((width, idx) => (
               // eslint-disable-next-line react/no-array-index-key
-              <Skeleton key={idx} variant="text" width={width} height={24} />
+              <Skeleton key={idx} variant="text" width={width} height="24px" />
             ))}
           </Box>
         </ChplSkeletonCard>

@@ -323,37 +323,37 @@ function ChplCmsDisplayLoading({ products = 1 }) {
       <Box component="span" sx={utilStyles.visuallyHidden}>Loading CMS ID analysis</Box>
       <Box aria-hidden="true">
         <Box sx={loadingStyles.header}>
-          <Skeleton variant="text" width="70%" height={36} />
-          <Skeleton variant="circular" width={28} height={28} />
+          <Skeleton variant="text" width="70%" height="36px" />
+          <Skeleton variant="circular" width="28px" height="28px" />
         </Box>
         <Box sx={loadingStyles.yearSelector}>
-          <Skeleton variant="text" width="100%" height={32} />
+          <Skeleton variant="text" width="100%" height="32px" />
         </Box>
         <Box sx={loadingStyles.validation}>
-          <Skeleton variant="text" width="30%" height={24} />
+          <Skeleton variant="text" width="30%" height="24px" />
         </Box>
         <Box sx={loadingStyles.progress}>
-          <Skeleton variant="rectangular" width={150} height={16} sx={{ borderRadius: '8px', flexShrink: 0 }} />
-          <Skeleton variant="text" width="35%" height={28} />
+          <Skeleton variant="rectangular" width="150px" height="16px" sx={{ borderRadius: '8px', flexShrink: 0 }} />
+          <Skeleton variant="text" width="35%" height="28px" />
         </Box>
         <Box sx={loadingStyles.criteria}>
-          <Skeleton variant="text" width="60%" height={20} />
+          <Skeleton variant="text" width="60%" height="20px" />
           {criteriaWidths.map((width) => (
-            <Skeleton key={width} variant="text" width={width} height={20} />
+            <Skeleton key={width} variant="text" width={width} height="20px" />
           ))}
         </Box>
-        <Skeleton variant="text" width="40%" height={24} />
+        <Skeleton variant="text" width="40%" height="24px" />
         <Box sx={loadingStyles.chips}>
           {[...Array(products)].map((_product, idx) => (
             // eslint-disable-next-line react/no-array-index-key
-            <Skeleton key={idx} variant="rounded" height={32} sx={{ borderRadius: '16px' }} />
+            <Skeleton key={idx} variant="rounded" height="32px" sx={{ borderRadius: '16px' }} />
           ))}
         </Box>
         <Box sx={loadingStyles.buttons}>
-          <Skeleton variant="rectangular" height={36} sx={{ borderRadius: '4px' }} />
+          <Skeleton variant="rectangular" height="36px" sx={{ borderRadius: '4px' }} />
           <Box sx={loadingStyles.secondaryButtons}>
-            <Skeleton variant="rectangular" height={36} sx={{ borderRadius: '4px', flex: 1 }} />
-            <Skeleton variant="rectangular" height={36} sx={{ borderRadius: '4px', flex: 1 }} />
+            <Skeleton variant="rectangular" height="36px" sx={{ borderRadius: '4px', flex: 1 }} />
+            <Skeleton variant="rectangular" height="36px" sx={{ borderRadius: '4px', flex: 1 }} />
           </Box>
         </Box>
       </Box>

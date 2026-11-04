@@ -97,6 +97,20 @@ describe('the developer step', () => {
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
     expect(screen.getByText('Existing Developers')).toBeInTheDocument();
   });
+
+  it('does not stay on the skeleton when there are no developers', () => {
+    useFetchDevelopers.mockReturnValue(query({ data: [], isSuccess: true }));
+    render(<ChplConfirmDeveloper developer={{}} listing={{}} dispatch={jest.fn()} />);
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByText('Create A New Developer')).toBeInTheDocument();
+  });
+
+  it('does not stay on the skeleton when every developer is deleted', () => {
+    useFetchDevelopers.mockReturnValue(query({ data: [{ ...developer, deleted: true }], isSuccess: true }));
+    render(<ChplConfirmDeveloper developer={{}} listing={{}} dispatch={jest.fn()} />);
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByText('Create A New Developer')).toBeInTheDocument();
+  });
 });
 
 describe('the product step', () => {

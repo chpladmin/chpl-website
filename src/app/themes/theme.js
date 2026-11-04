@@ -548,6 +548,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: paletteColors.skeleton,
+        },
+      },
+    },
     MuiRadio: {
       styleOverrides: {
         root: {

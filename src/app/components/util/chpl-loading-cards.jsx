@@ -10,9 +10,9 @@ import {
   string,
 } from 'prop-types';
 
-import ChplSkeletonCard, { skeletonLineColor } from './chpl-skeleton-card';
+import ChplSkeletonCard from './chpl-skeleton-card';
 
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 // Mirrors ChplSearchResultCard and ChplSearchResultControls: the same padding,
 // row and column switch at lg, field widths and dividers, so a page's skeleton
@@ -59,7 +59,7 @@ const styles = {
     minWidth: 0,
   },
   detailsRow: {
-    borderTop: `1px solid ${skeletonLineColor}`,
+    borderTop: `1px solid ${palette.skeleton}`,
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
@@ -83,7 +83,7 @@ const styles = {
     },
     '@media (min-width: 800px) and (max-width: 1199.95px)': {
       flexDirection: 'row',
-      borderTop: `1px solid ${skeletonLineColor}`,
+      borderTop: `1px solid ${palette.skeleton}`,
       paddingTop: theme.spacing(1.5),
       '& > *': {
         flex: 1,
@@ -123,10 +123,10 @@ function ChplLoadingCards({
 }) {
   const renderField = (field, key) => (
     <Box key={key} sx={[styles.field, { flex: field.flex }]}>
-      <Skeleton variant="text" width="45%" height={16} />
+      <Skeleton variant="text" width="45%" height="16px" />
       {[...Array(field.lines)].map((_line, lineIdx) => (
         // eslint-disable-next-line react/no-array-index-key
-        <Skeleton key={lineIdx} variant="text" width={valueWidths[(key + lineIdx) % valueWidths.length]} height={22} />
+        <Skeleton key={lineIdx} variant="text" width={valueWidths[(key + lineIdx) % valueWidths.length]} height="22px" />
       ))}
     </Box>
   );
@@ -136,13 +136,13 @@ function ChplLoadingCards({
       <Box component="span" sx={utilStyles.visuallyHidden}>Loading results</Box>
       <Box aria-hidden="true">
         <Box sx={styles.controlsHeader}>
-          <Skeleton variant="text" width="30%" height={28} />
+          <Skeleton variant="text" width="30%" height="28px" />
           { controls > 0
             && (
               <Box sx={styles.controls}>
                 {[...Array(controls)].map((_control, idx) => (
                   // eslint-disable-next-line react/no-array-index-key
-                  <Skeleton key={idx} variant="rectangular" width={idx === 0 ? 120 : 200} height={36} sx={{ borderRadius: '4px' }} />
+                  <Skeleton key={idx} variant="rectangular" width={idx === 0 ? '120px' : '200px'} height="36px" sx={{ borderRadius: '4px' }} />
                 ))}
               </Box>
             )}
@@ -156,8 +156,8 @@ function ChplLoadingCards({
                   && (
                     <Box sx={styles.primaryRow}>
                       <Box sx={[styles.field, { flex: '1.75 1 320px' }]}>
-                        <Skeleton variant="text" width="25%" height={16} />
-                        <Skeleton variant="text" width="60%" height={30} />
+                        <Skeleton variant="text" width="25%" height="16px" />
+                        <Skeleton variant="text" width="60%" height="30px" />
                       </Box>
                     </Box>
                   )}
@@ -173,7 +173,7 @@ function ChplLoadingCards({
                   <Box sx={styles.actions}>
                     {[...Array(actions)].map((_action, idx) => (
                       // eslint-disable-next-line react/no-array-index-key
-                      <Skeleton key={idx} variant="rectangular" width={160} height={36} sx={{ borderRadius: '4px', maxWidth: '100%' }} />
+                      <Skeleton key={idx} variant="rectangular" width="160px" height="36px" sx={{ borderRadius: '4px', maxWidth: '100%' }} />
                     ))}
                   </Box>
                 )}

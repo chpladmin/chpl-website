@@ -7,6 +7,7 @@ import ChplLink from './chpl-link';
 import ChplPageBody from './chpl-page-body';
 import ChplPageHeader from './chpl-page-header';
 import ChplPagination from './pagination';
+import ChplPowerBiReport from './chpl-power-bi-report';
 import ChplProgress from './progress';
 import ChplLoadingTable from './loading-table';
 import ChplLoadingCards from './chpl-loading-cards';
@@ -15,7 +16,7 @@ import ChplLoadingSection from './chpl-loading-section';
 import ChplLoadingSpinner from './chpl-loading-spinner';
 import ChplResultsUpdating from './chpl-results-updating';
 import ChplRouteLoading from './chpl-route-loading';
-import ChplSkeletonCard, { skeletonLineColor } from './chpl-skeleton-card';
+import ChplSkeletonCard from './chpl-skeleton-card';
 import ChplSortControls from './chpl-sort-controls';
 import { ChplSortableHeaders } from './sortable-headers';
 import ChplSearchResultCard from './chpl-search-result-card';
@@ -42,6 +43,7 @@ export {
   ChplPageBody,
   ChplPageHeader,
   ChplPagination,
+  ChplPowerBiReport,
   ChplProgress,
   ChplResultsUpdating,
   ChplRouteLoading,
@@ -55,6 +57,5 @@ export {
   ChplUpdateIndicator,
   InternalScrollButton,
   SnackbarWrapper,
-  skeletonLineColor,
   useResultsUpdating,
 };

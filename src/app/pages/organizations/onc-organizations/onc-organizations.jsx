@@ -107,14 +107,14 @@ function ChplOncOrganizationsLoading({ orgType, showMenu }) {
             {[...Array(6)].map((_org, idx) => (
               // eslint-disable-next-line react/no-array-index-key
               <Box key={idx} sx={loadingStyles.menuItem}>
-                <Skeleton variant="text" width="70%" height={24} />
+                <Skeleton variant="text" width="70%" height="24px" />
               </Box>
             ))}
           </ChplSkeletonCard>
         </Box>
         <ChplSkeletonCard sx={loadingStyles.maintenance}>
-          <Skeleton variant="text" width="40%" height={24} />
-          <Skeleton variant="rectangular" width={100} height={36} sx={{ borderRadius: '4px' }} />
+          <Skeleton variant="text" width="40%" height="24px" />
+          <Skeleton variant="rectangular" width="100px" height="36px" sx={{ borderRadius: '4px' }} />
         </ChplSkeletonCard>
       </Box>
     </Box>

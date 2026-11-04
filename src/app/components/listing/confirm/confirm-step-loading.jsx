@@ -3,8 +3,8 @@ import { Box, Container } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import { bool, number, string } from 'prop-types';
 
-import { ChplSkeletonCard, skeletonLineColor } from 'components/util';
-import { utilStyles } from 'themes';
+import { ChplSkeletonCard } from 'components/util';
+import { palette, utilStyles } from 'themes';
 
 // Same layout as the Developer, Product and Version steps: the use-existing and
 // create choices side by side, a divider, then the card for the chosen one
@@ -33,7 +33,7 @@ const loadingStyles = {
     paddingTop: '32px',
   },
   divider: {
-    borderTop: `1px solid ${skeletonLineColor}`,
+    borderTop: `1px solid ${palette.skeleton}`,
   },
   header: {
     padding: '16px',
@@ -67,21 +67,21 @@ function ChplConfirmStepLoading({
       <Container maxWidth="md" aria-hidden="true">
         <Box sx={loadingStyles.stepConfirm}>
           <Box sx={loadingStyles.stepSubContainer}>
-            <Skeleton variant="rectangular" height={124} sx={loadingStyles.choice} />
+            <Skeleton variant="rectangular" height="124px" sx={loadingStyles.choice} />
             <Box sx={loadingStyles.orContainer}>
-              <Skeleton variant="text" width={24} height={24} />
+              <Skeleton variant="text" width="24px" height="24px" />
             </Box>
-            <Skeleton variant="rectangular" height={124} sx={loadingStyles.choice} />
+            <Skeleton variant="rectangular" height="124px" sx={loadingStyles.choice} />
           </Box>
           <Box sx={loadingStyles.divider} />
           <ChplSkeletonCard>
             <Box sx={loadingStyles.header}>
-              <Skeleton variant="text" width="35%" height={32} />
+              <Skeleton variant="text" width="35%" height="32px" />
             </Box>
             <Box sx={loadingStyles.body}>
               {[...Array(fields)].map((_field, idx) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <Skeleton key={idx} variant="rectangular" height={56} sx={loadingStyles.field} />
+                <Skeleton key={idx} variant="rectangular" height="56px" sx={loadingStyles.field} />
               ))}
             </Box>
           </ChplSkeletonCard>

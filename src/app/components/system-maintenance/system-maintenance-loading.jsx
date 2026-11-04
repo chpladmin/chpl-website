@@ -11,9 +11,9 @@ import {
   string,
 } from 'prop-types';
 
-import { ChplSkeletonCard, skeletonLineColor } from 'components/util';
+import { ChplSkeletonCard } from 'components/util';
 import { UserContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 // Mirrors the System Maintenance Card: its CardHeader and CardContent padding,
 // the results header (utilStyles.headerContainer), the filter search bar and
@@ -70,7 +70,7 @@ const loadingStyles = {
   // A ChplSearchResultCard, outlined rather than filled, since it sits inside
   // the skeleton card that stands in for the System Maintenance Card
   resultCard: {
-    border: `1px solid ${skeletonLineColor}`,
+    border: `1px solid ${palette.skeleton}`,
     borderRadius: '8px',
     marginBottom: theme.spacing(1.5),
     padding: theme.spacing(4, 8),
@@ -97,7 +97,7 @@ const loadingStyles = {
     minWidth: 0,
   },
   detailsRow: {
-    borderTop: `1px solid ${skeletonLineColor}`,
+    borderTop: `1px solid ${palette.skeleton}`,
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
@@ -132,10 +132,10 @@ const toFields = (group) => (Array.isArray(group)
 
 const renderField = (field, key) => (
   <Box key={key} sx={[loadingStyles.field, { flex: field.flex }]}>
-    <Skeleton variant="text" width="45%" height={16} />
+    <Skeleton variant="text" width="45%" height="16px" />
     {[...Array(field.lines)].map((_line, lineIdx) => (
       // eslint-disable-next-line react/no-array-index-key
-      <Skeleton key={lineIdx} variant="text" width={valueWidths[(key + lineIdx) % valueWidths.length]} height={22} />
+      <Skeleton key={lineIdx} variant="text" width={valueWidths[(key + lineIdx) % valueWidths.length]} height="22px" />
     ))}
   </Box>
 );
@@ -152,13 +152,13 @@ function ChplSystemMaintenanceResults({
   return (
     <>
       <Box sx={loadingStyles.resultsHeader}>
-        <Skeleton variant="text" width="30%" height={28} />
+        <Skeleton variant="text" width="30%" height="28px" />
         { controls > 0
           && (
             <Box sx={loadingStyles.controls}>
               {[...Array(controls)].map((_control, idx) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <Skeleton key={idx} variant="rectangular" width={idx === 0 ? 120 : 80} height={36} sx={{ borderRadius: '4px' }} />
+                <Skeleton key={idx} variant="rectangular" width={idx === 0 ? '120px' : '80px'} height="36px" sx={{ borderRadius: '4px' }} />
               ))}
             </Box>
           )}
@@ -170,8 +170,8 @@ function ChplSystemMaintenanceResults({
             <Box sx={loadingStyles.resultBody}>
               <Box sx={loadingStyles.primaryRow}>
                 <Box sx={[loadingStyles.field, { flex: '1.75 1 320px' }]}>
-                  <Skeleton variant="text" width="25%" height={16} />
-                  <Skeleton variant="text" width="60%" height={30} />
+                  <Skeleton variant="text" width="25%" height="16px" />
+                  <Skeleton variant="text" width="60%" height="30px" />
                 </Box>
               </Box>
               { fieldGroups.map((group, groupIdx) => (
@@ -186,7 +186,7 @@ function ChplSystemMaintenanceResults({
                 <Box sx={loadingStyles.actions}>
                   {[...Array(actions)].map((_action, idx) => (
                     // eslint-disable-next-line react/no-array-index-key
-                    <Skeleton key={idx} variant="rectangular" width={90} height={30} sx={{ borderRadius: '4px', maxWidth: '100%' }} />
+                    <Skeleton key={idx} variant="rectangular" width="90px" height="30px" sx={{ borderRadius: '4px', maxWidth: '100%' }} />
                   ))}
                 </Box>
               )}
@@ -233,7 +233,7 @@ function ChplSystemMaintenanceLoading({
       <ChplSkeletonCard>
         <Box aria-hidden="true">
           <Box sx={loadingStyles.cardHeader}>
-            <Skeleton variant="text" width="25%" height={32} />
+            <Skeleton variant="text" width="25%" height="32px" />
           </Box>
           <Box sx={loadingStyles.cardContent}>
             { filter
