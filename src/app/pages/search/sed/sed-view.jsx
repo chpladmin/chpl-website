@@ -10,6 +10,7 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import ChplSedPopup from 'components/listing/details/sed/sed-popup';
+import { usePageState } from 'components/page-state';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -28,7 +29,6 @@ import {
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { useAnalyticsContext } from 'shared/contexts';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -46,10 +46,10 @@ function ChplSedSearchView() {
   const { analytics } = useAnalyticsContext();
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'developer');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = usePageState(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
 
   const filterContext = useFilterContext();

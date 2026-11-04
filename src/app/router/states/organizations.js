@@ -17,7 +17,7 @@ const states = [
   }, {
     name: 'organizations.developers.developer',
     url: '/{id}',
-    component: lazy(() => import('pages/organizations/developers/developer/developer-wrapper')),
+    component: lazy(() => import('pages/organizations/developers/developer/developer')),
     // replaces the chplDeveloperPage Angular component, which read
     // $stateParams.id and passed it to the bridge as a binding
     resolve: [
@@ -27,7 +27,7 @@ const states = [
   }, {
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
-    component: lazy(() => import('pages/organizations/onc-organizations/onc-organizations-wrapper')),
+    component: lazy(() => import('pages/organizations/onc-organizations/onc-organizations')),
     resolve: [
       { token: 'orgType', deps: [], resolveFn: () => 'acb' },
     ],
@@ -38,7 +38,7 @@ const states = [
   }, {
     name: 'organizations.onc-atls',
     url: '/onc-atls',
-    component: lazy(() => import('pages/organizations/onc-organizations/onc-organizations-wrapper')),
+    component: lazy(() => import('pages/organizations/onc-organizations/onc-organizations')),
     resolve: [
       { token: 'orgType', deps: [], resolveFn: () => 'atl' },
     ],

@@ -14,7 +14,7 @@ const states = [{
 }, {
   name: 'subscriptions.confirm',
   url: '/confirm/{hash}',
-  component: lazy(() => import('pages/subscriptions/confirm-subscription-wrapper')),
+  component: lazy(() => import('pages/subscriptions/confirm-subscription')),
   params: {
     hash: { squash: true, value: null },
   },
@@ -23,7 +23,7 @@ const states = [{
 }, {
   name: 'subscriptions.unsubscribe',
   url: '/unsubscribe/{hash}',
-  component: lazy(() => import('pages/subscriptions/unsubscribe-all-wrapper')),
+  component: lazy(() => import('pages/subscriptions/unsubscribe-all')),
   params: {
     hash: { squash: true, value: null },
   },
@@ -32,7 +32,7 @@ const states = [{
 }, {
   name: 'subscriptions.manage',
   url: '/manage/{hash}',
-  component: lazy(() => import('pages/subscriptions/manage-subscription-wrapper')),
+  component: lazy(() => import('pages/subscriptions/manage-subscription')),
   params: {
     hash: { squash: true, value: null },
   },

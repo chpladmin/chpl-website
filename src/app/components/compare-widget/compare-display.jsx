@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -12,12 +12,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { func } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { clearCompareListings, removeCompareListing } from 'components/browser/browserInfo.slice';
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareListingsForDisplay } from 'services/listing.service';
 import { goToUrl } from 'services/navigation.service';
-import { CompareContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 function ChplCompareEmptyStateIcon() {
@@ -127,7 +128,8 @@ const styles = {
 };
 
 function ChplCompareDisplay({ onClose }) {
-  const { listings, removeListing } = useContext(CompareContext);
+  const listings = useSelector((state) => state.browserInfo.compare);
+  const dispatch = useDispatch();
 
   const compareAll = () => {
     // Ids in numeric order, so the same set of listings always gives the same URL
@@ -139,7 +141,7 @@ function ChplCompareDisplay({ onClose }) {
       event: 'Remove all Listings',
       category: 'Compare Widget',
     });
-    listings.forEach((l) => removeListing(l));
+    dispatch(clearCompareListings());
   };
 
   if (!listings || listings.length === 0) {
@@ -189,7 +191,7 @@ function ChplCompareDisplay({ onClose }) {
               variant="outlined"
               key={listing.id}
               label={<ChplEllipsis text={listing.name} />}
-              onDelete={() => removeListing(listing)}
+              onDelete={() => dispatch(removeCompareListing(listing))}
             />
           ))}
       </Box>

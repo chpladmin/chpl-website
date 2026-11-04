@@ -41,7 +41,7 @@ const states = [{
 }, {
   name: 'administration.change-requests',
   url: '/change-requests',
-  component: lazy(() => import('components/change-request/change-requests-wrapper')),
+  component: lazy(() => import('components/change-request/change-requests-page')),
   data: {
     title: 'CHPL Administration - Change Requests',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
@@ -49,7 +49,7 @@ const states = [{
 }, {
   name: 'administration.cms',
   url: '/cms',
-  component: lazy(() => import('pages/administration/cms/cms-wrapper')),
+  component: lazy(() => import('pages/administration/cms/cms')),
   data: {
     title: 'CHPL Administration - CMS',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-cms-staff'],
@@ -70,7 +70,7 @@ const states = [{
 }, {
   name: 'administration.confirm.listings.listing',
   url: '/{id}/confirm',
-  component: lazy(() => import('pages/administration/confirm/confirm-wrapper')),
+  component: lazy(() => import('pages/administration/confirm/confirm')),
   // replaces the chplConfirm Angular component, which read $stateParams.id
   resolve: [
     { token: 'id', deps: ['$transition$'], resolveFn: (transition) => transition.params().id },
@@ -82,7 +82,7 @@ const states = [{
 }, {
   name: 'administration.reports',
   url: '/reports',
-  component: lazy(() => import('pages/administration/reports/reports-wrapper')),
+  component: lazy(() => import('pages/administration/reports/reports')),
   data: {
     title: 'CHPL Administration - Reports',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
@@ -90,7 +90,7 @@ const states = [{
 }, {
   name: 'administration.system-maintenance',
   url: '/system-maintenance',
-  component: lazy(() => import('pages/administration/system-maintenance/system-maintenance-wrapper')),
+  component: lazy(() => import('pages/administration/system-maintenance/system-maintenance')),
   data: {
     title: 'CHPL Administration - System Maintenance',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
@@ -98,7 +98,7 @@ const states = [{
 }, {
   name: 'administration.upload',
   url: '/upload',
-  component: lazy(() => import('pages/administration/upload/upload-page-wrapper')),
+  component: lazy(() => import('pages/administration/upload/upload')),
   data: {
     title: 'CHPL Administration - Upload',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
@@ -106,7 +106,7 @@ const states = [{
 }, {
   name: 'administration.url-checker',
   url: '/url-checker',
-  component: lazy(() => import('pages/administration/url-checker/url-checker-wrapper')),
+  component: lazy(() => import('pages/administration/url-checker/url-checker-page')),
   data: {
     title: 'CHPL Administration - URL Checker',
     roles: ['chpl-admin', 'chpl-onc', 'chpl-onc-acb'],
@@ -114,7 +114,7 @@ const states = [{
 }, {
   name: 'login',
   url: '/login',
-  component: lazy(() => import('pages/administration/login/login-wrapper')),
+  component: lazy(() => import('pages/administration/login/login')),
   resolve: [
     { token: 'returnTo', deps: ['$transition$'], resolveFn: returnTo },
   ],

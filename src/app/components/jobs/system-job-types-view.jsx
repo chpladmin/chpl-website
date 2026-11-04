@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box, Card, CardContent, CardHeader, IconButton, Typography,
 } from '@mui/material';
@@ -30,18 +30,14 @@ const styles = {
 
 function ChplSystemJobTypesView(props) {
   const { dispatch, jobTypes: initialJobTypes } = props;
-  const [jobTypes, setJobTypes] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
 
-  useEffect(() => {
-    setJobTypes([...initialJobTypes]
-      .sort(sortComparator('name')));
-  }, []);
+  // Built from the props on every change, so job types fetched again are shown in the chosen order
+  const jobTypes = useMemo(() => [...initialJobTypes]
+    .sort(sortComparator(orderBy, order === 'desc')), [initialJobTypes, order, orderBy]);
 
   const handleTableSort = (property, orderDirection) => {
-    const descending = orderDirection === 'desc';
-    setJobTypes((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
   };
