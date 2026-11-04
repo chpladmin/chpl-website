@@ -42,7 +42,7 @@ const useFetchDevelopers = () => {
 };
 
 const useFetchDevelopersBySearch = ({
-  orderBy = 'developer',
+  orderBy = 'developer_name',
   pageNumber = 0,
   pageSize = 25,
   sortDescending = false,
