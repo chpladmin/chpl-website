@@ -349,9 +349,8 @@ function FilterProvider(props) {
 
 FilterProvider.propTypes = {
   filters: arrayOf(filterPropType).isRequired,
-  // true while the data behind the filter values is still being fetched
   isLoading: bool,
-  storageKey: string,
+  storageKey: string.isRequired,
 };
 
 function useFilterContext() {
