@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import { func, string } from 'prop-types';
+import { func } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChplChangePassword from './components/change-password';
 import ChplForceChangePassword from './components/force-change-password';
 import ChplForgotPassword from './components/forgot-password';
 import ChplLoggedIn from './components/logged-in';
-import ChplResetForgottenPassword from './components/reset-forgotten-password';
 import ChplSignin from './components/signin';
 
 import { setLoginState } from 'components/login/userInfo.slice';
 
 function ChplLogin({
   dispatch = () => {},
-  uuid = '',
 }) {
   const loginState = useSelector((s) => s.userInfo.loginState);
   const reduxDispatch = useDispatch();
@@ -56,8 +54,8 @@ function ChplLogin({
       return <ChplForgotPassword userName={userName} />;
     case 'LOGGEDIN':
       return <ChplLoggedIn />;
+    // older builds stored the forgot password page's reset step here; it is page-local now
     case 'RESETFORGOTTENPASSWORD':
-      return <ChplResetForgottenPassword uuid={uuid} />;
     case 'SIGNIN':
       return <ChplSignin dispatch={handleDispatch} />;
       // no default
@@ -68,5 +66,4 @@ export default ChplLogin;
 
 ChplLogin.propTypes = {
   dispatch: func,
-  uuid: string,
 };

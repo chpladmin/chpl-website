@@ -1,14 +1,17 @@
 import React from 'react';
-import { Box, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import { func, shape } from 'prop-types';
 
 import ChplLogin from 'components/login/login';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { goToState } from 'services/navigation.service';
-import { palette } from 'themes';
 
 const styles = {
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 100px)',
+  // lets the page body grow to push the footer down, as it does when it sits directly in the layout
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
   },
 };
 
@@ -33,14 +36,13 @@ function ChplLoginPage({
   };
 
   return (
-    <Container disableGutters maxWidth={false} id="login-component">
-      <Box py="4vh" bgcolor={palette.background}>
-        <Container sx={styles.fixFooterSpacing} maxWidth="xs">
-          <ChplLogin
-            dispatch={handleLogin}
-          />
-        </Container>
-      </Box>
+    <Container disableGutters maxWidth={false} id="login-component" sx={styles.container}>
+      <ChplPageHeader text="Administrator Login" maxWidth="xs" />
+      <ChplPageBody maxWidth="xs">
+        <ChplLogin
+          dispatch={handleLogin}
+        />
+      </ChplPageBody>
     </Container>
   );
 }
