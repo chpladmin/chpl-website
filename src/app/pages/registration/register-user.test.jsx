@@ -60,6 +60,12 @@ describe('user registration', () => {
     usePostCreateInvitedUser.mockReturnValue({ mutate: createInvited });
   });
 
+  it('shows the standard page header', () => {
+    renderView();
+
+    expect(screen.getByRole('heading', { level: 1, name: 'User Registration' })).toBeInTheDocument();
+  });
+
   describe('creating an account', () => {
     it('sends the invitation hash with the new user', () => {
       renderView();
