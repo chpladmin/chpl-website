@@ -19,7 +19,7 @@ function ChplForgotPassword({ uuid }) {
 
   return (
     <>
-      <ChplPageHeader text="Forgot Password" maxWidth="xs" />
+      <ChplPageHeader text={isReset ? 'Administrator Login' : 'Forgot Password'} maxWidth="xs" />
       <ChplPageBody maxWidth="xs">
         { isReset
           ? (
