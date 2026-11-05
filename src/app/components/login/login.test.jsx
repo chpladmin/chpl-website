@@ -28,12 +28,4 @@ describe('login panel', () => {
 
     expect(screen.getByText(text)).toBeInTheDocument();
   });
-
-  // older builds persisted this state from the forgot password page, leaving the panel stuck on a reset form with no token
-  it('shows sign in for a reset step left over from an older build', () => {
-    mockLoginState = 'RESETFORGOTTENPASSWORD';
-    render(<ChplLogin />);
-
-    expect(screen.getByText('sign in')).toBeInTheDocument();
-  });
 });

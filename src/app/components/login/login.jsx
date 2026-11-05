@@ -54,8 +54,6 @@ function ChplLogin({
       return <ChplForgotPassword userName={userName} />;
     case 'LOGGEDIN':
       return <ChplLoggedIn />;
-    // older builds stored the forgot password page's reset step here; it is page-local now
-    case 'RESETFORGOTTENPASSWORD':
     case 'SIGNIN':
       return <ChplSignin dispatch={handleDispatch} />;
       // no default
