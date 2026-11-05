@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Box, Button, Container, Typography,
-} from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -10,21 +8,12 @@ import { usePostAuthorizeUser, usePostCreateInvitedUser } from 'api/users';
 import ChplLogin from 'components/login/login';
 import { setUser } from 'components/login/userInfo.slice';
 import ChplUserCreate from 'components/registration/user-create';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { goToState } from 'services/navigation.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
-import { palette } from 'themes';
 
 const styles = {
-  content: {
-    display: 'grid',
-    padding: '16px',
-    gap: '8px',
-    gridTemplateColumns: '1fr',
-  },
-  body: {
-    padding: '2vh',
-  },
   cardFooter: {
     border: '.5px solid #afafaf',
     backgroundColor: '#fff',
@@ -34,9 +23,6 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     padding: '8px 16px',
-  },
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 136px)',
   },
 };
 
@@ -176,18 +162,12 @@ function ChplRegisterUser({ hash }) {
   };
 
   return (
-    <Box sx={styles.fixFooterSpacing}>
-      <Container maxWidth="xs" sx={styles.content}>
-        <Typography variant="h1">
-          User Registration
-        </Typography>
-      </Container>
-      <Box sx={styles.body} bgcolor={palette.background}>
-        <Container maxWidth="xs">
-          { getState() }
-        </Container>
-      </Box>
-    </Box>
+    <>
+      <ChplPageHeader text="User Registration" maxWidth="xs" />
+      <ChplPageBody maxWidth="xs">
+        { getState() }
+      </ChplPageBody>
+    </>
   );
 }
 

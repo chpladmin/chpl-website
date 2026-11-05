@@ -67,6 +67,13 @@ describe('forgot password page', () => {
     expect(screen.queryByTestId('reset')).not.toBeInTheDocument();
   });
 
+  it('titles the sign in step as a login rather than a forgotten password', () => {
+    resetAndShowSignIn();
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Administrator Login' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { level: 1, name: 'Forgot Password' })).not.toBeInTheDocument();
+  });
+
   it('goes to the home page once the user signs in after resetting', () => {
     resetAndShowSignIn();
     fireEvent.click(screen.getByRole('button', { name: 'Log in' }));
