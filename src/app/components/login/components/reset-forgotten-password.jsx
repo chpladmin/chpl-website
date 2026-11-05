@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { useDispatch } from 'react-redux';
-import { string } from 'prop-types';
+import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
@@ -49,7 +49,7 @@ const validationSchema = yup.object({
     ),
 });
 
-function ChplResetForgottenPassword({ uuid }) {
+function ChplResetForgottenPassword({ onReset = () => {}, uuid }) {
   const dispatch = useDispatch();
   const { analytics } = useAnalyticsContext();
   const { enqueueSnackbar } = useSnackbar();
@@ -79,6 +79,7 @@ function ChplResetForgottenPassword({ uuid }) {
         });
         enqueueSnackbar(body, { variant: 'success' });
         dispatch(setLoginState('SIGNIN'));
+        onReset();
       },
       onError: () => {
         const body = 'Error. Please check your credentials or contact the administrator';
@@ -179,5 +180,6 @@ function ChplResetForgottenPassword({ uuid }) {
 export default ChplResetForgottenPassword;
 
 ChplResetForgottenPassword.propTypes = {
+  onReset: func,
   uuid: string.isRequired,
 };
