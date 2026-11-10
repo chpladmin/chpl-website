@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 14.13.1
+_9 November 2026_
+
+### Bug Fixes
+* Use valid ordering on Developer messaging workflow
+* Require users not use their email address as their passwords on "force-change-password" workflow
+* Show only applicable panels to Developer users on Developer pages
+
+---
+
 ## Version 14.13.0
 _26 October 2026_
 
