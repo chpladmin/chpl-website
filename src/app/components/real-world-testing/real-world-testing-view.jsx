@@ -31,7 +31,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [plans, setPlans] = useState([]);
   const [results, setResults] = useState([]);
-  const plansQuery = useFetchRealWorldTestingPlans({ developer });
+  const plansQuery = useFetchRealWorldTestingPlans({ developer, hti5ErdIsOn });
   const resultsQuery = useFetchRealWorldTestingResults({ developer });
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
     dispatch('createRwtResults');
   };
 
-  if (resultsQuery.isError || resultsQuery.isLoading || plansQuery.isError || plansQuery.isLoading) {
+  if (resultsQuery.isError || resultsQuery.isLoading || (!hti5ErdIsOn && (plansQuery.isError || plansQuery.isLoading))) {
     return <CircularProgress />;
   }
 
@@ -90,7 +90,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
               </List>
             </>
           )}
-        { results.length === 0 && plans.length === 0
+        { results.length === 0 && (plans.length === 0 || hti5ErdIsOn)
           && (
             <Typography>
               No Real World Testing data is available
