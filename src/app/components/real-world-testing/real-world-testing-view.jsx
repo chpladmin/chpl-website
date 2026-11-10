@@ -30,7 +30,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [plans, setPlans] = useState([]);
   const [results, setResults] = useState([]);
-  const plansQuery = useFetchRealWorldTestingPlans({ developer });
+  const plansQuery = useFetchRealWorldTestingPlans({ developer, hti5ErdIsOn });
   const resultsQuery = useFetchRealWorldTestingResults({ developer });
 
   useEffect(() => {
@@ -56,7 +56,8 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
     return <ChplLoadingSection rows={3} />;
   }
 
-  const isError = resultsQuery.isError || plansQuery.isError;
+  // The plans are not shown while hti-5-erd is on, so neither is their error
+  const isError = resultsQuery.isError || (!hti5ErdIsOn && plansQuery.isError);
 
   return (
     <Card>
@@ -98,7 +99,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
               Real World Testing information is not currently available, please check back later
             </Typography>
           )}
-        { !isError && results.length === 0 && plans.length === 0
+        { !isError && results.length === 0 && (plans.length === 0 || hti5ErdIsOn)
           && (
             <Typography>
               No Real World Testing data is available
