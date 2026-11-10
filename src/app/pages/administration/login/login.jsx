@@ -12,6 +12,9 @@ const styles = {
   },
 };
 
+// `returnTo` is a ui-router TargetState resolved by the login state. It is
+// absent when this renders as /administration's default content, in which case
+// the default here sends the user to search after logging in.
 function ChplLoginPage({
   returnTo = {
     state: () => 'search',
@@ -30,13 +33,15 @@ function ChplLoginPage({
   };
 
   return (
-    <Box py="4vh" bgcolor={palette.background}>
-      <Container sx={styles.fixFooterSpacing} maxWidth="xs">
-        <ChplLogin
-          dispatch={handleLogin}
-        />
-      </Container>
-    </Box>
+    <Container disableGutters maxWidth={false} id="login-component">
+      <Box py="4vh" bgcolor={palette.background}>
+        <Container sx={styles.fixFooterSpacing} maxWidth="xs">
+          <ChplLogin
+            dispatch={handleLogin}
+          />
+        </Container>
+      </Box>
+    </Container>
   );
 }
 

@@ -71,10 +71,26 @@ const compareListingsForDisplay = (a, b) => compareStrings(a.product?.name, b.pr
   || compareStrings(getVersion(a), getVersion(b))
   || compareStrings(getCertificationDay(a), getCertificationDay(b));
 
+// What the compare and CMS ID widgets keep of a listing. Listings reach them as search
+// results or as full listings, so only the fields the widgets read are kept, in one shape.
+const summarizeListing = (listing) => ({
+  id: listing.id,
+  chplProductNumber: listing.chplProductNumber,
+  name: listing.product?.name,
+  product: { name: listing.product?.name },
+  version: { version: getVersion(listing) },
+  certificationDay: getCertificationDay(listing),
+});
+
+// Only Cures Update and edition-less listings can contribute to a CMS ID
+const canAddToCms = (listing) => !!listing.curesUpdate || listing.edition === null;
+
 export {
+  canAddToCms,
   certificationStatusOrder,
   compareCertificationStatuses,
   compareListingsForDisplay,
   getStatusIcon,
   isListingActive,
+  summarizeListing,
 };

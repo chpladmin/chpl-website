@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
+import { node } from 'prop-types';
+import { Provider } from 'react-redux';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchCriteria, useFetchSvaps } from 'api/standards';
+import widgetReducer from 'components/action-widget/widget.slice';
+import pageStateReducer from 'components/page-state/pageState.slice';
 import ChplDevelopersPage from 'pages/organizations/developers/developers';
 import ChplApiDocumentationSearchPage from 'pages/search/api-documentation/api-documentation';
 import ChplBannedDevelopersSearchPage from 'pages/search/banned-developers/banned-developers';
@@ -59,10 +64,21 @@ const mockQueries = (stillLoading) => {
   useFetchSvaps.mockReturnValue(stillLoading === 'svaps' ? loading : loaded([]));
 };
 
+// The filters and lists keep their state in the pageState slice, so they need a store
+function StoreProvider({ children }) {
+  const [store] = useState(() => configureStore({ reducer: { pageState: pageStateReducer, widget: widgetReducer } }));
+  return <Provider store={store}>{children}</Provider>;
+}
+
+StoreProvider.propTypes = {
+  children: node.isRequired,
+};
+
 const renderPage = (Page) => render(
   <UserContext.Provider value={{ hasAnyRole: () => false }}>
     <Page />
   </UserContext.Provider>,
+  { wrapper: StoreProvider },
 );
 
 describe('the filter bar on search pages', () => {

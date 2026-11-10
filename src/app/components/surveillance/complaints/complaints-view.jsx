@@ -16,6 +16,7 @@ import {
   ChplFilterSearchBar,
   useFilterContext,
 } from 'components/filter';
+import { usePageState } from 'components/page-state';
 import {
   ChplEllipsis,
   ChplLoadingCards,
@@ -28,7 +29,6 @@ import {
 } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { useSessionStorage as useStorage } from 'services/storage.service';
 import { UserContext, useAnalyticsContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
@@ -62,10 +62,10 @@ function ChplComplaintsView(props) {
   const { hasAnyRole } = useContext(UserContext);
   const [activeComplaint, setActiveComplaint] = useState(undefined);
   const [complaints, setComplaints] = useState([]);
-  const [order, setOrder] = useStorage(`${storageKey}-order`, 'desc');
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'received_date');
-  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
-  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
+  const [order, setOrder] = usePageState(`${storageKey}-order`, 'desc');
+  const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'received_date');
+  const [pageNumber, setPageNumber] = usePageState(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = usePageState(`${storageKey}-pageSize`, 10);
   const { isLoading: filtersAreLoading, queryString } = useFilterContext();
   const {
     data, isLoading, isSuccess,
