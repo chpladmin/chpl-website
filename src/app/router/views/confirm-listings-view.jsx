@@ -1,7 +1,7 @@
 import React from 'react';
 import { UIView, useRouter } from '@uirouter/react';
 
-import { ChplConfirmListingsWrapper } from 'components/listing/confirm';
+import { ChplConfirmListings } from 'components/listing/confirm';
 
 // Replaces the chplConfirmListings Angular component, whose only jobs were to
 // host a <ui-view> and to hand the page an onProcess callback that navigated to
@@ -17,7 +17,7 @@ function ConfirmListingsView() {
 
   return (
     <UIView>
-      <ChplConfirmListingsWrapper onProcess={handleProcess} />
+      <ChplConfirmListings onProcess={handleProcess} />
     </UIView>
   );
 }

@@ -14,6 +14,7 @@ import {
 import ChplJobEdit from 'components/jobs/job-edit';
 import ChplReportJobTypesView from 'components/jobs/report-job-types-view';
 import ChplUserTriggersView from 'components/jobs/user-triggers-view';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 
 const styles = {
   containerTrigger: {
@@ -106,46 +107,49 @@ function ChplReports() {
 
   return (
     <>
-      { !job
-        && (
-          <Box sx={styles.containerTrigger}>
-            <div>
-              { (userQuery.isLoading || !userQuery.isSuccess)
-                && (
-                  <CircularProgress />
-                )}
-              { !userQuery.isLoading && userQuery.isSuccess
-                && (
-                  <ChplUserTriggersView
-                    acbs={acbs}
-                    triggers={userTriggers}
-                    dispatch={handleDispatch}
-                  />
-                )}
-            </div>
-            <div>
-              { (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess)
-                && (
-                  <CircularProgress />
-                )}
-              { !jobTypeQuery.isLoading && jobTypeQuery.isSuccess && jobTypes.length > 0
-                && (
-                  <ChplReportJobTypesView
-                    jobTypes={jobTypes}
-                    dispatch={handleDispatch}
-                  />
-                )}
-            </div>
-          </Box>
-        )}
-      { job
-        && (
-          <ChplJobEdit
-            acbs={acbs}
-            job={job}
-            dispatch={handleDispatch}
-          />
-        )}
+      <ChplPageHeader text="Scheduled Reports" />
+      <ChplPageBody>
+        { !job
+          && (
+            <Box sx={styles.containerTrigger}>
+              <div>
+                { (userQuery.isLoading || !userQuery.isSuccess)
+                  && (
+                    <CircularProgress />
+                  )}
+                { !userQuery.isLoading && userQuery.isSuccess
+                  && (
+                    <ChplUserTriggersView
+                      acbs={acbs}
+                      triggers={userTriggers}
+                      dispatch={handleDispatch}
+                    />
+                  )}
+              </div>
+              <div>
+                { (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess)
+                  && (
+                    <CircularProgress />
+                  )}
+                { !jobTypeQuery.isLoading && jobTypeQuery.isSuccess && jobTypes.length > 0
+                  && (
+                    <ChplReportJobTypesView
+                      jobTypes={jobTypes}
+                      dispatch={handleDispatch}
+                    />
+                  )}
+              </div>
+            </Box>
+          )}
+        { job
+          && (
+            <ChplJobEdit
+              acbs={acbs}
+              job={job}
+              dispatch={handleDispatch}
+            />
+          )}
+      </ChplPageBody>
     </>
   );
 }

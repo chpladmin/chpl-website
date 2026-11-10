@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 
 import { usePostReportRequest } from 'api/cms';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { FlagContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -38,26 +39,34 @@ function ChplCms() {
 
   if (cmsDisabledIsOn) {
     return (
-      <Container maxWidth="lg">
-        <Typography variant="body1">
-          Access to the CMS ID Creator has been paused. Please check back periodically for updates.
-        </Typography>
-      </Container>
+      <>
+        <ChplPageHeader text="CMS Management" />
+        <ChplPageBody>
+          <Container maxWidth="lg">
+            <Typography variant="body1">
+              Access to the CMS ID Creator has been paused. Please check back periodically for updates.
+            </Typography>
+          </Container>
+        </ChplPageBody>
+      </>
     );
   }
 
   return (
     <>
-      <Typography sx={styles.titlePadding} variant="h2">Download the latest CMS listing</Typography>
-      <Button
-        onClick={downloadFile}
-        color="primary"
-        variant="contained"
-        id="download-results"
-        endIcon={<CloudDownloadOutlinedIcon />}
-      >
-        Download the CMS listing
-      </Button>
+      <ChplPageHeader text="CMS Management" />
+      <ChplPageBody>
+        <Typography sx={styles.titlePadding} variant="h2">Download the latest CMS listing</Typography>
+        <Button
+          onClick={downloadFile}
+          color="primary"
+          variant="contained"
+          id="download-results"
+          endIcon={<CloudDownloadOutlinedIcon />}
+        >
+          Download the CMS listing
+        </Button>
+      </ChplPageBody>
     </>
   );
 }

@@ -5,6 +5,9 @@ import ChplLogin from 'components/login/login';
 import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { goToState } from 'services/navigation.service';
 
+// `returnTo` is a ui-router TargetState resolved by the login state. It is
+// absent when this renders as /administration's default content, in which case
+// the default here sends the user to search after logging in.
 function ChplLoginPage({
   returnTo = {
     state: () => 'search',

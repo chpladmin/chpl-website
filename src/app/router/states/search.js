@@ -6,7 +6,7 @@ const states = [
   {
     name: 'search',
     url: '/search',
-    component: lazy(() => import('pages/search/listings/listings-wrapper')),
+    component: lazy(() => import('pages/search/listings/listings')),
     data: {
       title: 'CHPL Search',
     },
@@ -18,47 +18,47 @@ const states = [
   }, {
     name: 'shortcut.api-documentation',
     url: '/api-documentation',
-    component: lazy(() => import('pages/search/api-documentation/api-documentation-wrapper')),
+    component: lazy(() => import('pages/search/api-documentation/api-documentation')),
     data: { title: 'API Information' },
   }, {
     name: 'shortcut.banned-developers',
     url: '/banned-developers',
-    component: lazy(() => import('pages/search/banned-developers/banned-developers-wrapper')),
+    component: lazy(() => import('pages/search/banned-developers/banned-developers')),
     data: { title: 'Banned Developers' },
   }, {
     name: 'shortcut.corrective-action',
     url: '/corrective-action',
-    component: lazy(() => import('pages/search/corrective-action/corrective-action-wrapper')),
+    component: lazy(() => import('pages/search/corrective-action/corrective-action')),
     data: { title: 'Products: Corrective Action Status' },
   }, {
     name: 'shortcut.decertified-products',
     url: '/decertified-products',
-    component: lazy(() => import('pages/search/decertified-products/decertified-products-wrapper')),
+    component: lazy(() => import('pages/search/decertified-products/decertified-products')),
     data: { title: 'Decertified Products' },
   }, {
     name: 'shortcut.decision-support-interventions',
     url: '/decision-support-interventions',
-    component: lazy(() => import('pages/search/decision-support-interventions/decision-support-interventions-wrapper')),
+    component: lazy(() => import('pages/search/decision-support-interventions/decision-support-interventions')),
     data: { title: 'Decision Support Interventions' },
   }, {
     name: 'shortcut.inactive-certificates',
     url: '/inactive-certificates',
-    component: lazy(() => import('pages/search/inactive-certificates/inactive-certificates-wrapper')),
+    component: lazy(() => import('pages/search/inactive-certificates/inactive-certificates')),
     data: { title: 'Inactive Certificates' },
   }, {
     name: 'shortcut.real-world-testing',
     url: '/real-world-testing',
-    component: lazy(() => import('pages/search/real-world-testing/real-world-testing-wrapper')),
+    component: lazy(() => import('pages/search/real-world-testing/real-world-testing')),
     data: { title: 'Real World Testing' },
   }, {
     name: 'shortcut.sed',
     url: '/sed',
-    component: lazy(() => import('pages/search/sed/sed-wrapper')),
+    component: lazy(() => import('pages/search/sed/sed')),
     data: { title: 'SED Information' },
   }, {
     name: 'shortcut.svap',
     url: '/svap',
-    component: lazy(() => import('pages/search/svap/svap-wrapper')),
+    component: lazy(() => import('pages/search/svap/svap')),
     data: { title: 'SVAP Information' },
   },
 ];
