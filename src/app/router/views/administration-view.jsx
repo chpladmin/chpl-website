@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { UIView } from '@uirouter/react';
 
-import ChplLoginPage from 'pages/administration/login/login-wrapper';
+import ChplLoginPage from 'pages/administration/login/login';
 
 const styles = {
   container: {

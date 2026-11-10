@@ -1,5 +1,7 @@
 import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchCriteria, useFetchSvaps } from 'api/standards';
@@ -12,6 +14,7 @@ import ChplDecisionSupportInterventionsSearchPage from 'pages/search/decision-su
 import ChplInactiveCertificatesSearchPage from 'pages/search/inactive-certificates/inactive-certificates';
 import ChplSedSearchPage from 'pages/search/sed/sed';
 import ChplSvapSearchPage from 'pages/search/svap/svap';
+import pageStateReducer from 'components/page-state/pageState.slice';
 import { UserContext } from 'shared/contexts';
 
 jest.mock('api/acbs', () => ({ useFetchAcbs: jest.fn() }));
@@ -60,9 +63,11 @@ const mockQueries = (stillLoading) => {
 };
 
 const renderPage = (Page) => render(
-  <UserContext.Provider value={{ hasAnyRole: () => false }}>
-    <Page />
-  </UserContext.Provider>,
+  <Provider store={configureStore({ reducer: { pageState: pageStateReducer } })}>
+    <UserContext.Provider value={{ hasAnyRole: () => false }}>
+      <Page />
+    </UserContext.Provider>
+  </Provider>,
 );
 
 describe('the filter bar on search pages', () => {

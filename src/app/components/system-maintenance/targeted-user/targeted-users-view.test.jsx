@@ -12,8 +12,10 @@ import { filters } from './targeted-users';
 import ChplTargetedUsersView from './targeted-users-view';
 
 import { useFetchTargetedUsers } from 'api/standards';
+import widgetReducer from 'components/action-widget/widget.slice';
 import browserInfoReducer from 'components/browser/browserInfo.slice';
 import { FilterProvider } from 'components/filter';
+import pageStateReducer from 'components/page-state/pageState.slice';
 
 jest.mock('api/standards', () => ({
   useFetchTargetedUsers: jest.fn(),
@@ -77,13 +79,14 @@ const cardFor = (name) => screen.getByText(name).closest('.MuiCard-root');
 // Each field renders its label and then its value
 const fieldValue = (card, label) => within(card).getByText(label).closest('div').parentElement.lastChild.textContent;
 
-const store = configureStore({
-  reducer: { browserInfo: browserInfoReducer },
-  preloadedState: { browserInfo: { api: '/rest', apiKey: 'test-key' } },
-});
-
-const renderView = () => render(
-  <Provider store={store}>
+// A new store for each render, as after a reload; `pageState` holds anything
+// the page is meant to remember from earlier in the visit
+const renderView = (pageState = {}) => render(
+  <Provider store={configureStore({
+    reducer: { browserInfo: browserInfoReducer, pageState: pageStateReducer, widget: widgetReducer },
+    preloadedState: { browserInfo: { api: '/rest', apiKey: 'test-key' }, pageState },
+  })}
+  >
     <FilterProvider filters={filters} storageKey="test-targetedUsers">
       <ChplTargetedUsersView certificationStatuses={certificationStatuses} />
     </FilterProvider>
@@ -96,7 +99,6 @@ const chooseSort = (text) => {
 };
 
 beforeEach(() => {
-  sessionStorage.clear();
   localStorage.clear();
   useFetchTargetedUsers.mockReset();
   respondWith();
@@ -201,9 +203,8 @@ describe('searching the targeted users', () => {
   });
 
   it('ends the range at the total on the last page', () => {
-    sessionStorage.setItem('storageKey-targetedUsersView-pageNumber', JSON.stringify(4));
     respondWith(targetedUsers, 120);
-    renderView();
+    renderView({ 'storageKey-targetedUsersView-pageNumber': 4 });
     expect(screen.getByText('(101-120 of 120 Results)')).toBeInTheDocument();
   });
 
@@ -261,11 +262,39 @@ describe('searching the targeted users', () => {
     expect(lastRequest()).toMatchObject({ query: 'searchTerm=clin', pageNumber: 0 });
   });
 
-  it('keeps a page remembered from earlier in the session', () => {
+  it('keeps a page remembered from earlier in the visit', () => {
+    respondWith(targetedUsers, 120);
+    renderView({ 'storageKey-targetedUsersView-pageNumber': 2 });
+    expect(lastRequest()).toMatchObject({ pageNumber: 2 });
+  });
+
+  it('starts on the first page after a reload, ignoring a page left in session storage', () => {
     sessionStorage.setItem('storageKey-targetedUsersView-pageNumber', JSON.stringify(2));
     respondWith(targetedUsers, 120);
     renderView();
-    expect(lastRequest()).toMatchObject({ pageNumber: 2 });
+    expect(lastRequest()).toMatchObject({ pageNumber: 0 });
+    sessionStorage.clear();
+  });
+
+  it('remembers the page when the view is left and opened again', () => {
+    respondWith(targetedUsers, 120);
+    const store = configureStore({
+      reducer: { browserInfo: browserInfoReducer, pageState: pageStateReducer, widget: widgetReducer },
+      preloadedState: { browserInfo: { api: '/rest', apiKey: 'test-key' } },
+    });
+    const view = () => (
+      <Provider store={store}>
+        <FilterProvider filters={filters} storageKey="test-targetedUsers">
+          <ChplTargetedUsersView certificationStatuses={certificationStatuses} />
+        </FilterProvider>
+      </Provider>
+    );
+    const { unmount } = render(view());
+    fireEvent.click(screen.getByRole('button', { name: /next page/i }));
+    unmount();
+    render(view());
+    expect(lastRequest()).toMatchObject({ pageNumber: 1 });
+    expect(screen.getByText('(26-50 of 120 Results)')).toBeInTheDocument();
   });
 });
 

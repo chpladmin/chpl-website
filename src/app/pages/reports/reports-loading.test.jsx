@@ -8,6 +8,8 @@ import ChplQuestionableActivityView from './questionable-activity/questionable-a
 
 import { useFetchActivity, useFetchQuestionableActivity } from 'api/questionable-activity';
 import { FilterProvider } from 'components/filter';
+import widgetReducer from 'components/action-widget/widget.slice';
+import pageStateReducer from 'components/page-state/pageState.slice';
 
 jest.mock('api/axios', () => ({ useFreshAccessToken: () => jest.fn() }));
 jest.mock('api/questionable-activity', () => ({
@@ -21,7 +23,7 @@ jest.mock('components/activity/questionable-activity-details', () => () => null)
 const loading = { data: undefined, isError: false, isLoading: true };
 
 const renderReport = (view, { filtersAreLoading = false } = {}) => render(
-  <Provider store={configureStore({ reducer: { browserInfo: () => ({ api: '', apiKey: '' }) } })}>
+  <Provider store={configureStore({ reducer: { browserInfo: () => ({ api: '', apiKey: '' }), pageState: pageStateReducer, widget: widgetReducer } })}>
     <FilterProvider filters={[]} isLoading={filtersAreLoading} storageKey="test-report">
       { view }
     </FilterProvider>

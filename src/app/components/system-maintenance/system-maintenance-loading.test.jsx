@@ -1,6 +1,8 @@
 import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
+import { Provider } from 'react-redux';
 
 import ChplAnnouncements from './announcement/announcements';
 import ChplApiKeys from './api-key/api-keys';
@@ -16,6 +18,8 @@ import {
   useFetchRules,
   useFetchStandards,
 } from 'api/standards';
+import widgetReducer from 'components/action-widget/widget.slice';
+import pageStateReducer from 'components/page-state/pageState.slice';
 import { UserContext } from 'shared/contexts';
 
 jest.mock('api/activity', () => ({
@@ -47,11 +51,13 @@ const loading = { data: undefined, isLoading: true, isSuccess: false };
 const loaded = (data) => ({ data, isLoading: false, isSuccess: true });
 
 const renderAs = (ui, roles = []) => render(
-  <SnackbarProvider>
-    <UserContext.Provider value={{ hasAnyRole: (r) => r.some((role) => roles.includes(role)), hasAuthorityOn: () => false }}>
-      { ui }
-    </UserContext.Provider>
-  </SnackbarProvider>,
+  <Provider store={configureStore({ reducer: { pageState: pageStateReducer, widget: widgetReducer } })}>
+    <SnackbarProvider>
+      <UserContext.Provider value={{ hasAnyRole: (r) => r.some((role) => roles.includes(role)), hasAuthorityOn: () => false }}>
+        { ui }
+      </UserContext.Provider>
+    </SnackbarProvider>
+  </Provider>,
 );
 
 // The rectangular shapes stand for the search bar, sidebar, controls and buttons

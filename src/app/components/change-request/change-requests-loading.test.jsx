@@ -16,6 +16,8 @@ import {
 } from 'api/change-requests';
 import actionBarReducer from 'components/action-bar/actionBar.slice';
 import { FilterProvider } from 'components/filter';
+import widgetReducer from 'components/action-widget/widget.slice';
+import pageStateReducer from 'components/page-state/pageState.slice';
 import { UserContext } from 'shared/contexts';
 
 jest.mock('api/change-requests', () => ({
@@ -42,7 +44,7 @@ const changeRequest = {
 };
 
 const withUser = (roles, children) => (
-  <Provider store={configureStore({ reducer: { actionBar: actionBarReducer } })}>
+  <Provider store={configureStore({ reducer: { actionBar: actionBarReducer, pageState: pageStateReducer, widget: widgetReducer } })}>
     <SnackbarProvider>
       <UserContext.Provider value={{ hasAnyRole: (r) => r.some((role) => roles.includes(role)) }}>
         { children }

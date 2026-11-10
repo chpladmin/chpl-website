@@ -1,7 +1,7 @@
 import React from 'react';
 import { UIView } from '@uirouter/react';
 
-import ChplDevelopersWrapper from 'pages/organizations/developers/developers-wrapper';
+import ChplDevelopersPage from 'pages/organizations/developers/developers';
 
 // organizations.developers is both a page and a parent: it renders the
 // developers list when no child state is active, and the developer detail page
@@ -11,7 +11,7 @@ import ChplDevelopersWrapper from 'pages/organizations/developers/developers-wra
 function DevelopersView() {
   return (
     <UIView>
-      <ChplDevelopersWrapper />
+      <ChplDevelopersPage />
     </UIView>
   );
 }

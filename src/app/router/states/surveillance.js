@@ -15,14 +15,14 @@ const states = [{
   // note: no roles of its own; inherits them from the abstract parent above
   name: 'surveillance.complaints',
   url: '/complaints',
-  component: lazy(() => import('components/surveillance/complaints/complaints-wrapper')),
+  component: lazy(() => import('components/surveillance/complaints/complaints-page')),
   data: {
     title: 'CHPL Surveillance - Complaints Reporting',
   },
 }, {
   name: 'surveillance.activity-reporting',
   url: '/activity-reporting',
-  component: lazy(() => import('pages/surveillance/activity-reporting/activity-reporting-wrapper')),
+  component: lazy(() => import('pages/surveillance/activity-reporting/activity-reporting')),
   data: {
     title: 'CHPL Surveillance - Activity Reporting',
     roles: ['chpl-admin', 'chpl-onc'],
@@ -31,7 +31,7 @@ const states = [{
   // also inherits roles from the parent
   name: 'surveillance.reporting',
   url: '/reporting',
-  component: lazy(() => import('pages/surveillance/reporting/reporting-wrapper')),
+  component: lazy(() => import('pages/surveillance/reporting/reporting')),
   data: {
     title: 'CHPL Surveillance - Complaints Reporting',
   },

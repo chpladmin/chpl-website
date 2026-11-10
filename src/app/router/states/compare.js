@@ -3,7 +3,7 @@ import { lazy } from 'react';
 const states = [{
   name: 'compare',
   url: '/compare/{ids}',
-  component: lazy(() => import('pages/compare/compare-wrapper')),
+  component: lazy(() => import('pages/compare/compare')),
   params: {
     ids: { squash: true, value: null },
   },

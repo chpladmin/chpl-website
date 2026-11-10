@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box, Card, CardContent, CardHeader, IconButton, Typography,
 } from '@mui/material';
@@ -34,36 +34,32 @@ function ChplUserTriggersView({
   dispatch = () => {},
   triggers: initialTriggers = [],
 }) {
-  const [triggers, setTriggers] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('email');
 
-  useEffect(() => {
-    setTriggers(initialTriggers
-      .map((trigger) => {
-        const response = {
-          ...trigger,
-          jobName: trigger.job.name,
-          schedule: trigger.cronSchedule,
-        };
-        if (trigger.acb) {
-          const relevant = trigger.acb
-            .split(',')
-            .map((id) => parseInt(id, 10))
-            .map((id) => acbs.find((acb) => acb.id === id))
-            .map((acb) => `${acb.name}${acb.retired ? ' (Retired)' : ''}`)
-            .sort((a, b) => compareStrings(a, b))
-            .join(', ');
-          response.acbNames = relevant;
-        }
-        return response;
-      })
-      .sort(sortComparator('email')));
-  }, [acbs, initialTriggers]);
+  // Built from the props on every change, so triggers fetched again after a save or delete are shown in the chosen order
+  const triggers = useMemo(() => initialTriggers
+    .map((trigger) => {
+      const response = {
+        ...trigger,
+        jobName: trigger.job.name,
+        schedule: trigger.cronSchedule,
+      };
+      if (trigger.acb) {
+        const relevant = trigger.acb
+          .split(',')
+          .map((id) => parseInt(id, 10))
+          .map((id) => acbs.find((acb) => acb.id === id))
+          .map((acb) => `${acb.name}${acb.retired ? ' (Retired)' : ''}`)
+          .sort((a, b) => compareStrings(a, b))
+          .join(', ');
+        response.acbNames = relevant;
+      }
+      return response;
+    })
+    .sort(sortComparator(orderBy, order === 'desc')), [acbs, initialTriggers, order, orderBy]);
 
   const handleSort = (property, orderDirection) => {
-    const descending = orderDirection === 'desc';
-    setTriggers((prev) => [...prev].sort(sortComparator(property, descending)));
     setOrderBy(property);
     setOrder(orderDirection);
   };
