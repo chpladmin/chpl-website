@@ -11,8 +11,6 @@ import store from './store';
 
 import ApiWrapper from 'api/api-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
-import CmsWrapper from 'components/cms-widget/cms-wrapper';
-import CompareWrapper from 'components/compare-widget/compare-wrapper';
 import { UserWrapper } from 'components/login';
 import { SnackbarWrapper } from 'components/util';
 import { AnalyticsProvider, HashProvider } from 'shared/contexts';
@@ -34,17 +32,13 @@ function AppWrapper({ children, showQueryTools = DEVELOPER_MODE }) {
               <ApiWrapper showQueryTools={showQueryTools}>
                 <UserWrapper>
                   <FlagWrapper>
-                    <CompareWrapper>
-                      <CmsWrapper>
-                        <AnalyticsProvider>
-                          <HashProvider>
-                            <ChplAppLayout>
-                              {children}
-                            </ChplAppLayout>
-                          </HashProvider>
-                        </AnalyticsProvider>
-                      </CmsWrapper>
-                    </CompareWrapper>
+                    <AnalyticsProvider>
+                      <HashProvider>
+                        <ChplAppLayout>
+                          {children}
+                        </ChplAppLayout>
+                      </HashProvider>
+                    </AnalyticsProvider>
                   </FlagWrapper>
                 </UserWrapper>
               </ApiWrapper>

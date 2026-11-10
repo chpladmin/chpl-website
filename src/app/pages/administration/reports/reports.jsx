@@ -15,7 +15,12 @@ import {
 import ChplJobEdit from 'components/jobs/job-edit';
 import ChplReportJobTypesView from 'components/jobs/report-job-types-view';
 import ChplUserTriggersView from 'components/jobs/user-triggers-view';
-import { ChplLoadingTable, ChplSkeletonCard } from 'components/util';
+import {
+  ChplLoadingTable,
+  ChplPageBody,
+  ChplPageHeader,
+  ChplSkeletonCard,
+} from 'components/util';
 import { utilStyles } from 'themes';
 
 const styles = {
@@ -178,40 +183,45 @@ function ChplReports() {
   // Both cards wait together, so neither appears beside a skeleton, and so do
   // the ONC-ACBs the scheduled reports are labelled with. The effects above copy
   // each result into state a render after it arrives, so wait for those too
-  if (acbQuery.isLoading || jobTypeQuery.isLoading || userQuery.isLoading
+  const isLoading = acbQuery.isLoading || jobTypeQuery.isLoading || userQuery.isLoading
       || (acbQuery.data?.acbs?.length > 0 && acbs.length === 0)
       || (jobTypeQuery.data?.some((j) => j.group === 'chplJobs') && jobTypes.length === 0)
-      || (userQuery.data?.length > 0 && userTriggers.length === 0)) {
-    return <ChplReportsLoading />;
-  }
+      || (userQuery.data?.length > 0 && userTriggers.length === 0);
 
   return (
     <>
-      { !job
-        && (
-          <Box sx={styles.containerTrigger}>
-            <ChplUserTriggersView
+      <ChplPageHeader text="Scheduled Reports" />
+      <ChplPageBody>
+        { isLoading
+          && (
+            <ChplReportsLoading />
+          )}
+        { !isLoading && !job
+          && (
+            <Box sx={styles.containerTrigger}>
+              <ChplUserTriggersView
+                acbs={acbs}
+                triggers={userTriggers}
+                dispatch={handleDispatch}
+              />
+              { jobTypes.length > 0
+                && (
+                  <ChplReportJobTypesView
+                    jobTypes={jobTypes}
+                    dispatch={handleDispatch}
+                  />
+                )}
+            </Box>
+          )}
+        { !isLoading && job
+          && (
+            <ChplJobEdit
               acbs={acbs}
-              triggers={userTriggers}
+              job={job}
               dispatch={handleDispatch}
             />
-            { jobTypes.length > 0
-              && (
-                <ChplReportJobTypesView
-                  jobTypes={jobTypes}
-                  dispatch={handleDispatch}
-                />
-              )}
-          </Box>
-        )}
-      { job
-        && (
-          <ChplJobEdit
-            acbs={acbs}
-            job={job}
-            dispatch={handleDispatch}
-          />
-        )}
+          )}
+      </ChplPageBody>
     </>
   );
 }

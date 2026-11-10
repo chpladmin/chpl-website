@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
+import { node } from 'prop-types';
+import { Provider } from 'react-redux';
 
 import ChplAnnouncements from './announcement/announcements';
 import ChplApiKeys from './api-key/api-keys';
@@ -16,6 +19,8 @@ import {
   useFetchRules,
   useFetchStandards,
 } from 'api/standards';
+import widgetReducer from 'components/action-widget/widget.slice';
+import pageStateReducer from 'components/page-state/pageState.slice';
 import { UserContext } from 'shared/contexts';
 
 jest.mock('api/activity', () => ({
@@ -46,12 +51,23 @@ jest.mock('api/standards', () => ({
 const loading = { data: undefined, isLoading: true, isSuccess: false };
 const loaded = (data) => ({ data, isLoading: false, isSuccess: true });
 
+// The filters and lists keep their state in the pageState slice, so they need a store
+function StoreProvider({ children }) {
+  const [store] = useState(() => configureStore({ reducer: { pageState: pageStateReducer, widget: widgetReducer } }));
+  return <Provider store={store}>{children}</Provider>;
+}
+
+StoreProvider.propTypes = {
+  children: node.isRequired,
+};
+
 const renderAs = (ui, roles = []) => render(
   <SnackbarProvider>
     <UserContext.Provider value={{ hasAnyRole: (r) => r.some((role) => roles.includes(role)), hasAuthorityOn: () => false }}>
       { ui }
     </UserContext.Provider>
   </SnackbarProvider>,
+  { wrapper: StoreProvider },
 );
 
 // The rectangular shapes stand for the search bar, sidebar, controls and buttons

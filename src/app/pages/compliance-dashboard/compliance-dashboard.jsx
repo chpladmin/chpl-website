@@ -9,7 +9,12 @@ import {
 } from '@mui/material';
 
 import { useFetchReportMetadata } from 'api/reports';
-import { ChplPowerBiReport, ChplSkeletonCard } from 'components/util';
+import {
+  ChplPageBody,
+  ChplPageHeader,
+  ChplPowerBiReport,
+  ChplSkeletonCard,
+} from 'components/util';
 import { utilStyles } from 'themes';
 
 const styles = {
@@ -110,22 +115,30 @@ function ChplComplianceDashboard() {
   };
 
   return (
-    <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start">
-      { isLoading
-        && (
-          <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading compliance reports</Box>
-        )}
-      <Grid item xs={12} md={4}>
-        <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
-          { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+    <>
+      <ChplPageHeader
+        text="Compliance Dashboard"
+        subtitle="A comprehensive view of compliance reports and metrics"
+      />
+      <ChplPageBody>
+        <Grid container sx={{ width: 'calc(100% + 64px)' }} spacing={2} alignItems="flex-start">
+          { isLoading
+            && (
+              <Box component="span" sx={utilStyles.visuallyHidden} role="status" aria-live="polite">Loading compliance reports</Box>
+            )}
+          <Grid item xs={12} md={4}>
+            <Grid sx={{ paddingLeft: '0px' }} container spacing={4}>
+              { reports.filter((r) => !r.isWide).map((report) => buildCard(report)) }
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Grid container spacing={4}>
+              { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} md={8}>
-        <Grid container spacing={4}>
-          { reports.filter((r) => r.isWide).map((report) => buildCard(report)) }
-        </Grid>
-      </Grid>
-    </Grid>
+      </ChplPageBody>
+    </>
   );
 }
 

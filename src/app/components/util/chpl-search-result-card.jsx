@@ -239,6 +239,6 @@ ChplSearchResultCard.propTypes = {
         iconButton: node,
       }),
     ),
-  ).isRequired,
+  ),
   actions: node,
 };

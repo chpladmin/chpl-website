@@ -61,4 +61,12 @@ describe('the search result card', () => {
     expect(getByText('None')).toBeInTheDocument();
     expect(getByText('N/A')).toBeInTheDocument();
   });
+
+  // The accessibility standard, QMS standard and UCD process cards show only a title
+  it('renders a card with only a title, without a prop type warning', () => {
+    const { getByText } = render(<ChplSearchResultCard cardTitle="Name" cardTitleValue="WCAG" />);
+
+    expect(getByText('WCAG')).toBeInTheDocument();
+    expect(consoleError.mock.calls.filter((args) => args.some((arg) => typeof arg === 'string' && arg.includes('fieldGroups')))).toHaveLength(0);
+  });
 });
