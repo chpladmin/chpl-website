@@ -115,8 +115,14 @@ const loadState = () => {
 
     // `actionBar` is never persisted, but drop it in case an older `chplState` holds one.
     const { actionBar, ...persisted } = JSON.parse(serializedState);
+    // Older builds stored the forgot password page's reset step as the global
+    // login state, which nothing renders any more, so settle it from the user.
+    const userInfo = persisted.userInfo?.loginState === 'RESETFORGOTTENPASSWORD'
+      ? { ...persisted.userInfo, loginState: persisted.userInfo.user ? 'LOGGEDIN' : 'SIGNIN' }
+      : persisted.userInfo;
     return {
       ...persisted,
+      ...(userInfo ? { userInfo } : {}),
       browserInfo: {
         ...browserInfoDefaults,
         // A `chplState` from before the lists moved in gets them from their old keys
