@@ -1,16 +1,9 @@
 import React from 'react';
-import { Box, Container } from '@mui/material';
 import { func, shape } from 'prop-types';
 
 import ChplLogin from 'components/login/login';
+import { ChplPageBody, ChplPageHeader } from 'components/util';
 import { goToState } from 'services/navigation.service';
-import { palette } from 'themes';
-
-const styles = {
-  fixFooterSpacing: {
-    minHeight: 'calc(100vh - 100px)',
-  },
-};
 
 // `returnTo` is a ui-router TargetState resolved by the login state. It is
 // absent when this renders as /administration's default content, in which case
@@ -33,15 +26,14 @@ function ChplLoginPage({
   };
 
   return (
-    <Container disableGutters maxWidth={false} id="login-component">
-      <Box py="4vh" bgcolor={palette.background}>
-        <Container sx={styles.fixFooterSpacing} maxWidth="xs">
-          <ChplLogin
-            dispatch={handleLogin}
-          />
-        </Container>
-      </Box>
-    </Container>
+    <>
+      <ChplPageHeader text="Administrator Login" maxWidth="xs" />
+      <ChplPageBody maxWidth="xs">
+        <ChplLogin
+          dispatch={handleLogin}
+        />
+      </ChplPageBody>
+    </>
   );
 }
 
