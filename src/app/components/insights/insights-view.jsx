@@ -15,7 +15,7 @@ import {
 
 import { useFetchInsights } from 'api/developer';
 import { ChplLink, ChplLoadingSection } from 'components/util';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const styles = {
@@ -26,13 +26,14 @@ const styles = {
 };
 
 function ChplInsightsView({ developer }) {
+  const { insightsDisplayIsOn } = useContext(FlagContext);
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const {
     data,
     error,
     isError,
     isLoading,
-  } = useFetchInsights({ developer });
+  } = useFetchInsights({ developer, insightsDisplayIsOn });
   const [insights, setInsights] = useState([]);
 
   useEffect(() => {

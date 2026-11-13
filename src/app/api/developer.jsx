@@ -67,23 +67,23 @@ const useFetchDirectReviews = ({ developer }) => {
   });
 };
 
-const useFetchInsights = ({ developer }) => {
+const useFetchInsights = ({ developer, insightsDisplayIsOn }) => {
   const axios = useAxios();
   return useQuery(['developers/insights', developer.id], async () => {
     const response = await axios.get(`/developers/${developer.id}/insights`);
     return response.data;
   }, {
-    enabled: !!developer,
+    enabled: !!developer && insightsDisplayIsOn,
   });
 };
 
-const useFetchRealWorldTestingPlans = ({ developer }) => {
+const useFetchRealWorldTestingPlans = ({ developer, hti5ErdIsOn }) => {
   const axios = useAxios();
   return useQuery(['developers/rwt-plans-urls', developer?.id], async () => {
     const response = await axios.get(`/developers/${developer.id}/rwt-plans-urls`);
     return response.data;
   }, {
-    enabled: !!developer,
+    enabled: !!developer && !hti5ErdIsOn,
   });
 };
 
