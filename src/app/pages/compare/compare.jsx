@@ -18,6 +18,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import CheckIcon from '@mui/icons-material/Check';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
+import { useSnackbar } from 'notistack';
 import { number, string } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
@@ -198,16 +199,32 @@ function ChplComparePage({ ids }) {
     ...useAnalyticsContext().analytics,
     category: 'Compare',
   };
+  const { enqueueSnackbar } = useSnackbar();
   const [activeListing, setActiveListing] = useState(undefined);
   const [cqms, setCqms] = useState([]);
   const [criteria, setCriteria] = useState([]);
+  const [failedIds, setFailedIds] = useState([]);
   const [listings, setListings] = useState([]);
   const [listingsToProcess, setListingsToProcess] = useState([]);
   const [showPracticeType, setShowPracticeType] = useState(false);
-  const { data, isLoading, isSuccess } = useFetchListing({ id: activeListing });
+  const {
+    data, isError, isLoading, isSuccess,
+  } = useFetchListing({ id: activeListing });
 
+  // A bad id (e.g. a stale or mistyped link) is dropped rather than left
+  // retrying forever, so the skeleton doesn't pulse indefinitely
   useEffect(() => {
-    if (isLoading || !isSuccess) {
+    if (isLoading) {
+      return;
+    }
+    if (isError) {
+      enqueueSnackbar('A selected product could not be found and was skipped.', { variant: 'error' });
+      setFailedIds((previous) => [...previous, activeListing]);
+      setListingsToProcess((previous) => previous.filter((id) => id !== activeListing));
+      setActiveListing(undefined);
+      return;
+    }
+    if (!isSuccess) {
       return;
     }
     if (data?.id) {
@@ -226,7 +243,7 @@ function ChplComparePage({ ids }) {
       });
       if (data.practiceType.name) { setShowPracticeType(true); }
     }
-  }, [data, isLoading, isSuccess]);
+  }, [data, isError, isLoading, isSuccess]);
 
   useEffect(() => {
     setListingsToProcess(ids.split('&'));
@@ -243,6 +260,13 @@ function ChplComparePage({ ids }) {
     </TableCell>
   ));
 
+  // One placeholder cell per product that could not be found, after the pending ones
+  const makeFailedCells = () => failedIds.map((id) => (
+    <TableCell key={`failed-${id}`}>
+      <Typography variant="body2" color="text.secondary">—</Typography>
+    </TableCell>
+  ));
+
   const makeRow = (title, getData, skeleton = 'text') => (
     <TableRow>
       <TableCell sx={styles.stickyColumn}><strong>{ title }</strong></TableCell>
@@ -252,6 +276,7 @@ function ChplComparePage({ ids }) {
         </TableCell>
       ))}
       { makePendingCells(skeleton, listings.length) }
+      { makeFailedCells() }
     </TableRow>
   );
 
@@ -318,6 +343,7 @@ function ChplComparePage({ ids }) {
           </TableCell>
         ))}
         { makePendingCells('icon') }
+        { makeFailedCells() }
       </TableRow>
     );
   };
@@ -362,6 +388,7 @@ function ChplComparePage({ ids }) {
           </TableCell>
         ))}
         { makePendingCells('icon') }
+        { makeFailedCells() }
       </TableRow>
     );
   };
@@ -376,7 +403,10 @@ function ChplComparePage({ ids }) {
     setListings((prev) => prev.filter((l) => l.id !== listing.id));
   };
 
-  if (listings.length === 0) {
+  // The full-page skeleton is only for the first load, before anything has
+  // settled. Once a product has loaded or failed, the table itself carries
+  // the remaining skeleton and not-found columns
+  if (listings.length === 0 && failedIds.length === 0) {
     return <ChplCompareLoading products={ids.split('&').length} />;
   }
 
@@ -419,6 +449,18 @@ function ChplComparePage({ ids }) {
                   { listingsToProcess.map((id) => (
                     <TableCell sx={styles.headerColumnContent} key={`pending-${id}`}>
                       { renderSkeletonHeader() }
+                    </TableCell>
+                  ))}
+                  { failedIds.map((id) => (
+                    <TableCell sx={styles.headerColumnContent} key={`failed-${id}`}>
+                      <Box display="flex" alignItems="center">
+                        Not Found
+                        <ChplTooltip title="This product could not be found. It may have been removed, or the link may be incorrect.">
+                          <IconButton sx={styles.infoIcon} size="small">
+                            <InfoIcon sx={styles.infoIconColor} />
+                          </IconButton>
+                        </ChplTooltip>
+                      </Box>
                     </TableCell>
                   ))}
                 </TableRow>
