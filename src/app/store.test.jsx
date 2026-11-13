@@ -104,6 +104,39 @@ describe('the store', () => {
     });
   });
 
+  it('keeps a persisted login state', () => {
+    localStorage.setItem('chplState', JSON.stringify({ userInfo: { loginState: 'LOGGEDIN', user: { fullName: 'Signed In User' } } }));
+    const store = loadStore();
+
+    expect(store.getState().userInfo).toEqual({ loginState: 'LOGGEDIN', user: { fullName: 'Signed In User' } });
+  });
+
+  // older builds stored the forgot password page's reset step as the global login state
+  describe('with a reset step left over from an older build', () => {
+    const user = { fullName: 'Signed In User' };
+
+    it('signs in an anonymous user', () => {
+      localStorage.setItem('chplState', JSON.stringify({ userInfo: { loginState: 'RESETFORGOTTENPASSWORD' } }));
+      const store = loadStore();
+
+      expect(store.getState().userInfo.loginState).toBe('SIGNIN');
+    });
+
+    it('keeps a signed in user signed in', () => {
+      localStorage.setItem('chplState', JSON.stringify({ userInfo: { loginState: 'RESETFORGOTTENPASSWORD', user } }));
+      const store = loadStore();
+
+      expect(store.getState().userInfo).toEqual({ loginState: 'LOGGEDIN', user });
+    });
+
+    it('writes the settled state back', () => {
+      localStorage.setItem('chplState', JSON.stringify({ userInfo: { loginState: 'RESETFORGOTTENPASSWORD' } }));
+      loadStore();
+
+      expect(persisted().userInfo.loginState).toBe('SIGNIN');
+    });
+  });
+
   it('still carries over the AngularJS-era keys', () => {
     localStorage.setItem('ngStorage-currentUser', JSON.stringify({ fullName: 'Old User' }));
     localStorage.setItem('ngStorage-previouslyViewed', JSON.stringify([3, 2, 1]));
