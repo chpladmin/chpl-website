@@ -52,7 +52,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
   };
 
   // isInitialLoading, since a query disabled for want of a developer stays isLoading
-  if (resultsQuery.isInitialLoading || plansQuery.isInitialLoading) {
+  if (resultsQuery.isInitialLoading || (!hti5ErdIsOn && plansQuery.isInitialLoading)) {
     return <ChplLoadingSection rows={3} />;
   }
 
