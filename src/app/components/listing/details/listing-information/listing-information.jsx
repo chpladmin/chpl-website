@@ -4,14 +4,13 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   List,
   ListItem,
   Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-import { ChplLink } from 'components/util';
+import { ChplLink, ChplLoadingSection } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { FlagContext, UserContext } from 'shared/contexts';
@@ -63,7 +62,7 @@ function ChplListingInformation({ listing: initialListing }) {
     return false;
   };
 
-  if (!listing) { return <CircularProgress />; }
+  if (!listing) { return <ChplLoadingSection title={false} rows={6} />; }
 
   return (
     <Box gap="16px" display="flex" flexDirection="column">

@@ -3,6 +3,7 @@ import ChplConfirmListing from './confirm-listing';
 import ChplConfirmListings from './confirm-listings';
 import ChplConfirmProduct from './confirm-product';
 import ChplConfirmProgress from './confirm-progress';
+import ChplConfirmStepLoading from './confirm-step-loading';
 import ChplConfirmVersion from './confirm-version';
 
 export {
@@ -11,5 +12,6 @@ export {
   ChplConfirmListings,
   ChplConfirmProduct,
   ChplConfirmProgress,
+  ChplConfirmStepLoading,
   ChplConfirmVersion,
 };

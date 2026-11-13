@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
 } from '@mui/material';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import { useSnackbar } from 'notistack';
@@ -19,6 +18,7 @@ import {
   usePostCodeSet,
   usePutCodeSet,
 } from 'api/standards';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 function ChplCodeSets() {
   const { data, isLoading, isSuccess } = useFetchCodeSets();
@@ -133,7 +133,11 @@ function ChplCodeSets() {
 
   if (isLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        editable
+        fieldGroups={[3, 1]}
+        label="Loading code sets"
+      />
     );
   }
 

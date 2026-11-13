@@ -15,9 +15,11 @@ import {
   ChplPagination,
   ChplPageBody,
   ChplPageHeader,
+  ChplResultsUpdating,
   ChplSearchResultCard,
   ChplSearchResultControls,
   ChplSortControls,
+  useResultsUpdating,
 } from 'components/util';
 import {
   ChplFilterLayout,
@@ -49,13 +51,19 @@ function ChplRealWorldTestingSearchView() {
   const toggledCsvDefaults = ['rwt'];
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchListings({
+  const {
+    data, isError, isFetching, isLoading, isPreviousData,
+  } = useFetchListings({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query: filterContext.queryString(),
   });
+
+  // Old results stay on screen while a new sort, page or filter loads, and a
+  // sort shows as updating briefly even when it's cached
+  const isUpdating = useResultsUpdating({ isFetching, isPreviousData, sortKey: `${orderBy}-${sortDescending}` });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -315,7 +323,7 @@ function ChplRealWorldTestingSearchView() {
       <ChplPageBody>
         <ChplFilterSearchBar sticky />
         <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards />)}
+          { isLoading && (<ChplLoadingCards fieldGroups={[3, 3, hti5ErdIsOn ? [{ flex: '1 1 100%' }] : [{ flex: '1 1 100%' }, { flex: '1 1 100%' }]]} />)}
           { !isLoading
           && (
             <>
@@ -329,28 +337,31 @@ function ChplRealWorldTestingSearchView() {
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
                   onSort={handleSort}
+                  isUpdating={isUpdating}
                 />
                 <ChplDownloadListings
                   listings={listings}
                   toggled={toggledCsvDefaults}
                 />
               </ChplSearchResultControls>
-              { listings.length > 0
-              && (
-                <>
-                  <Box>
-                    {listings.map((item) => buildSearchResultCard(item))}
-                  </Box>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                  />
-                </>
-              )}
+              <ChplResultsUpdating isUpdating={isUpdating}>
+                { listings.length > 0
+                && (
+                  <>
+                    <Box>
+                      {listings.map((item) => buildSearchResultCard(item))}
+                    </Box>
+                    <ChplPagination
+                      count={recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[25, 50, 100]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                    />
+                  </>
+                )}
+              </ChplResultsUpdating>
             </>
           )}
         </ChplFilterLayout>

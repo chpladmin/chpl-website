@@ -172,13 +172,14 @@ function ChplDeveloperView({ dispatch }) {
         {state === 'view' && (
         <ChplProducts developer={developer} dispatch={handleProductDispatch} />
         )}
+        {/* isInitialLoading, since the users query stays isLoading while it's disabled */}
         {(state === 'view' || state === 'editUser') && canManageUsers && (
           <ChplUsers
             users={users}
             dispatch={handleUserDispatch}
             groupNames={['chpl-developer']}
             organizationId={developer.id}
-            isLoading={usersQuery.isLoading}
+            isLoading={usersQuery.isInitialLoading}
           />
         )}
       </Box>

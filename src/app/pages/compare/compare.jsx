@@ -3,8 +3,8 @@ import { keyframes } from '@emotion/react';
 import {
   Box,
   Card,
-  CircularProgress,
   IconButton,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -18,14 +18,17 @@ import InfoIcon from '@mui/icons-material/Info';
 import CheckIcon from '@mui/icons-material/Check';
 import NotInterestedIcon from '@mui/icons-material/NotInterested';
 import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
-import { string } from 'prop-types';
+import { useSnackbar } from 'notistack';
+import { number, string } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
 import {
   ChplLink,
+  ChplLoadingPage,
   ChplPageBody,
   ChplPageHeader,
+  ChplSkeletonCard,
   ChplTooltip,
 } from 'components/util';
 import CmsButton from 'components/cms-widget/cms-button';
@@ -68,14 +71,127 @@ const styles = {
     backgroundColor: palette.background,
     maxWidth: '200px',
   },
-  MuiTableCellStickyHeader: {
-    '&.TableCell-stickyHeader': {
-      top: '75px',
-    },
-  },
   animatedItem: {
     animation: `${itemEnter} 1000ms ${theme.transitions.easing.easeInOut}`,
   },
+};
+
+// The compare table, built on the same small MUI Table as the real one so its
+// cells have the same padding and the rows the same heights. Its dividers are in
+// the skeleton grey, as on the other skeletons
+const loadingStyles = {
+  table: {
+    '& .MuiTableCell-root': {
+      borderBottom: `1px solid ${palette.skeletonBorder}`,
+    },
+    // nothing to point at yet, so no theme hover highlight
+    '& .MuiTableRow-root:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  // The real table's sticky column of data items, and its product header cells
+  itemColumn: {
+    width: '200px',
+    maxWidth: '200px',
+  },
+  headerColumnContent: {
+    padding: '16px',
+    minWidth: '150px',
+  },
+  stack: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '8px',
+  },
+};
+
+// The rows in the order the page has them. `item` is the widths of the lines the
+// data item's name wraps to in its 200px column, and `value` what each product shows
+const rows = [
+  { item: ['55%'], value: 'text' }, // Developer
+  { item: ['45%'], value: 'text' }, // Version
+  { item: ['90%'], value: 'text' }, // Certification Status
+  { item: ['75%'], value: 'text' }, // Certifying Body
+  { item: ['85%'], value: 'text' }, // Certification Date
+  { item: ['95%', '40%'], value: 'text' }, // Inactive/Decertified Date
+  { item: ['95%', '80%'], value: 'productNumber' }, // CHPL Product Number, Manage CMS ID Creator
+  { item: ['95%', '60%'], value: 'text' }, // Number of Open Non-Conformities
+  { item: ['90%'], value: 'text' }, // Certification Criteria
+  ...[...Array(3)].map(() => ({ item: ['100%', '95%', '50%'], value: 'icon' })), // each criterion: number and title
+  { item: ['95%', '45%'], value: 'text' }, // Clinical Quality Measures
+  ...[...Array(2)].map(() => ({ item: ['100%', '90%', '40%'], value: 'icon' })), // each CQM: id and title
+];
+
+const valueWidths = ['70%', '50%', '80%', '60%'];
+
+// What a product shows in one row while it loads, by the row's `value`
+const renderSkeletonValue = (value, key) => {
+  switch (value) {
+    case 'icon':
+      return <Skeleton variant="circular" width="24px" height="24px" />;
+    case 'productNumber':
+      return (
+        <Box sx={loadingStyles.stack}>
+          <Skeleton variant="text" width="80%" height="20px" />
+          <Skeleton variant="rectangular" width="120px" height="30px" sx={{ borderRadius: '4px' }} />
+        </Box>
+      );
+    default:
+      return <Skeleton variant="text" width={valueWidths[key % valueWidths.length]} height="20px" />;
+  }
+};
+
+// A product's header while it loads
+const renderSkeletonHeader = () => <Skeleton variant="text" width="60%" height="24px" />;
+
+function ChplCompareLoading({ products }) {
+  const columns = Math.max(products, 1);
+
+  return (
+    <ChplLoadingPage label="Loading products to compare" subtitle={2}>
+      <ChplSkeletonCard>
+        <TableContainer>
+          <Table size="small" sx={loadingStyles.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={loadingStyles.itemColumn} />
+                {[...Array(columns)].map((_product, idx) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <TableCell key={idx} sx={loadingStyles.headerColumnContent}>
+                    { renderSkeletonHeader() }
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, rowIdx) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <TableRow key={rowIdx}>
+                  <TableCell sx={loadingStyles.itemColumn}>
+                    {row.item.map((width, lineIdx) => (
+                      // eslint-disable-next-line react/no-array-index-key
+                      <Skeleton key={lineIdx} variant="text" width={width} height="20px" />
+                    ))}
+                  </TableCell>
+                  {[...Array(columns)].map((_product, colIdx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <TableCell key={colIdx}>
+                      { renderSkeletonValue(row.value, rowIdx + colIdx) }
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </ChplSkeletonCard>
+    </ChplLoadingPage>
+  );
+}
+
+ChplCompareLoading.propTypes = {
+  products: number.isRequired,
 };
 
 function ChplComparePage({ ids }) {
@@ -83,16 +199,32 @@ function ChplComparePage({ ids }) {
     ...useAnalyticsContext().analytics,
     category: 'Compare',
   };
+  const { enqueueSnackbar } = useSnackbar();
   const [activeListing, setActiveListing] = useState(undefined);
   const [cqms, setCqms] = useState([]);
   const [criteria, setCriteria] = useState([]);
+  const [failedIds, setFailedIds] = useState([]);
   const [listings, setListings] = useState([]);
   const [listingsToProcess, setListingsToProcess] = useState([]);
   const [showPracticeType, setShowPracticeType] = useState(false);
-  const { data, isLoading, isSuccess } = useFetchListing({ id: activeListing });
+  const {
+    data, isError, isLoading, isSuccess,
+  } = useFetchListing({ id: activeListing });
 
+  // A bad id (e.g. a stale or mistyped link) is dropped rather than left
+  // retrying forever, so the skeleton doesn't pulse indefinitely
   useEffect(() => {
-    if (isLoading || !isSuccess) {
+    if (isLoading) {
+      return;
+    }
+    if (isError) {
+      enqueueSnackbar('A selected product could not be found and was skipped.', { variant: 'error' });
+      setFailedIds((previous) => [...previous, activeListing]);
+      setListingsToProcess((previous) => previous.filter((id) => id !== activeListing));
+      setActiveListing(undefined);
+      return;
+    }
+    if (!isSuccess) {
       return;
     }
     if (data?.id) {
@@ -111,7 +243,7 @@ function ChplComparePage({ ids }) {
       });
       if (data.practiceType.name) { setShowPracticeType(true); }
     }
-  }, [data, isLoading, isSuccess]);
+  }, [data, isError, isLoading, isSuccess]);
 
   useEffect(() => {
     setListingsToProcess(ids.split('&'));
@@ -121,7 +253,21 @@ function ChplComparePage({ ids }) {
     setActiveListing(listingsToProcess[0]);
   }, [listingsToProcess]);
 
-  const makeRow = (title, getData) => (
+  // One skeleton cell per listing still loading, after the loaded ones
+  const makePendingCells = (value, key = 0) => listingsToProcess.map((id, idx) => (
+    <TableCell key={`pending-${id}`}>
+      { renderSkeletonValue(value, key + idx) }
+    </TableCell>
+  ));
+
+  // One placeholder cell per product that could not be found, after the pending ones
+  const makeFailedCells = () => failedIds.map((id) => (
+    <TableCell key={`failed-${id}`}>
+      <Typography variant="body2" color="text.secondary">—</Typography>
+    </TableCell>
+  ));
+
+  const makeRow = (title, getData, skeleton = 'text') => (
     <TableRow>
       <TableCell sx={styles.stickyColumn}><strong>{ title }</strong></TableCell>
       { listings.map((listing) => (
@@ -129,6 +275,8 @@ function ChplComparePage({ ids }) {
           { getData(listing) }
         </TableCell>
       ))}
+      { makePendingCells(skeleton, listings.length) }
+      { makeFailedCells() }
     </TableRow>
   );
 
@@ -194,6 +342,8 @@ function ChplComparePage({ ids }) {
               : getAttestationDisplay('Cannot meet')}
           </TableCell>
         ))}
+        { makePendingCells('icon') }
+        { makeFailedCells() }
       </TableRow>
     );
   };
@@ -237,6 +387,8 @@ function ChplComparePage({ ids }) {
             { getCqmValue(cqm, listing) }
           </TableCell>
         ))}
+        { makePendingCells('icon') }
+        { makeFailedCells() }
       </TableRow>
     );
   };
@@ -251,8 +403,11 @@ function ChplComparePage({ ids }) {
     setListings((prev) => prev.filter((l) => l.id !== listing.id));
   };
 
-  if (listings.length === 0) {
-    return <CircularProgress />;
+  // The full-page skeleton is only for the first load, before anything has
+  // settled. Once a product has loaded or failed, the table itself carries
+  // the remaining skeleton and not-found columns
+  if (listings.length === 0 && failedIds.length === 0) {
+    return <ChplCompareLoading products={ids.split('&').length} />;
   }
 
   return (
@@ -270,7 +425,7 @@ function ChplComparePage({ ids }) {
       <ChplPageBody>
         <Card>
           <TableContainer sx={styles.Table}>
-            <Table size="small">
+            <Table size="small" aria-busy={listingsToProcess.length > 0}>
               <TableHead>
                 <TableRow hover={false} sx={styles.headerRow}>
                   <TableCell sx={styles.stickyColumn}><Box component="span" sx={utilStyles.srOnly}>Data item</Box></TableCell>
@@ -288,6 +443,23 @@ function ChplComparePage({ ids }) {
                         >
                           <CloseIcon />
                         </IconButton>
+                      </Box>
+                    </TableCell>
+                  ))}
+                  { listingsToProcess.map((id) => (
+                    <TableCell sx={styles.headerColumnContent} key={`pending-${id}`}>
+                      { renderSkeletonHeader() }
+                    </TableCell>
+                  ))}
+                  { failedIds.map((id) => (
+                    <TableCell sx={styles.headerColumnContent} key={`failed-${id}`}>
+                      <Box display="flex" alignItems="center">
+                        Not Found
+                        <ChplTooltip title="This product could not be found. It may have been removed, or the link may be incorrect.">
+                          <IconButton sx={styles.infoIcon} size="small">
+                            <InfoIcon sx={styles.infoIconColor} />
+                          </IconButton>
+                        </ChplTooltip>
                       </Box>
                     </TableCell>
                   ))}
@@ -335,6 +507,7 @@ function ChplComparePage({ ids }) {
                       <CmsButton listing={listing} size="small" />
                     </Box>
                   ),
+                  'productNumber',
                 )}
                 { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
                 { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
@@ -351,6 +524,7 @@ function ChplComparePage({ ids }) {
 }
 
 export default ChplComparePage;
+export { ChplCompareLoading };
 
 ChplComparePage.propTypes = {
   ids: string.isRequired,

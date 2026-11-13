@@ -25,6 +25,7 @@ import {
 } from 'components/filter';
 import { certificationCriteriaIds } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import ChplSystemMaintenanceLoading from 'components/system-maintenance/system-maintenance-loading';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -164,15 +165,26 @@ function ChplSvaps() {
     );
   }
 
-  if (isLoading) {
+  // The filter search bar's criteria options come from criterionOptionsQuery, so the
+  // skeleton waits for them as well as for the list
+  const filtersLoading = criterionOptionsQuery.isLoading;
+
+  if (isLoading || filtersLoading) {
     return (
-      <CircularProgress />
+      <ChplSystemMaintenanceLoading
+        controls={2}
+        editable
+        fieldGroups={[3]}
+        filter
+        label="Loading SVAPs"
+      />
     );
   }
 
   return (
     <FilterProvider
       filters={filters}
+      isLoading={filtersLoading}
       storageKey="storageKey-svapManagement"
     >
       <Card>

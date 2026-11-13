@@ -60,7 +60,7 @@ const styles = {
 function ChplNavigationBottom() {
   return (
     <Box sx={styles.footer}>
-      <Container noGutters maxWidth="xl" disableGutters>
+      <Container maxWidth="xl" disableGutters>
         <Box sx={styles.footerContentContainer}>
           <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'center', md: 'baseline' }} gap="4px">
             <Typography sx={styles.footerText} variant="body1">Helpful Links</Typography>

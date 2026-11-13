@@ -64,6 +64,7 @@ function ChplActivityPage() {
       <FilterProvider
         analytics={data.analytics}
         filters={filters}
+        isLoading={activityDataQuery.isLoading}
         storageKey="storageKey-activity"
       >
         <ChplActivityView />

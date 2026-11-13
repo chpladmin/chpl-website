@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, CircularProgress, Dialog, DialogContent,
+  Button, Dialog, DialogContent,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { number } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
-import { ChplDialogTitle } from 'components/util';
+import { ChplDialogTitle, ChplLoadingSection } from 'components/util';
 import ChplSed from 'components/listing/details/sed/sed';
 import { eventTrack } from 'services/analytics.service';
 import { ListingContext, useAnalyticsContext } from 'shared/contexts';
@@ -87,7 +87,7 @@ function ChplSedPopup({ id }) {
             )}
           { !listing
             && (
-              <CircularProgress />
+              <ChplLoadingSection title={false} rows={8} />
             )}
         </DialogContent>
       </Dialog>

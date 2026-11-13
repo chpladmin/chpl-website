@@ -1,7 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  CircularProgress,
-} from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import { useFetchUsers, usePostCreateInvitation } from 'api/users';
@@ -59,10 +56,6 @@ function ChplUsersPage() {
     }
   };
 
-  if (isLoading || !isSuccess) {
-    return <CircularProgress />;
-  }
-
   return (
     <>
       <ChplPageHeader text="CHPL Users" />
@@ -71,6 +64,7 @@ function ChplUsersPage() {
           dispatch={handleDispatch}
           users={users}
           groupNames={groupNames}
+          isLoading={isLoading}
         />
       </ChplPageBody>
     </>

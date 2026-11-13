@@ -5,7 +5,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  CircularProgress,
   List,
   ListItem,
   Typography,
@@ -13,7 +12,7 @@ import {
 import { func } from 'prop-types';
 
 import { useFetchRealWorldTestingPlans, useFetchRealWorldTestingResults } from 'api/developer';
-import { ChplLink } from 'components/util';
+import { ChplLink, ChplLoadingSection } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { FlagContext, UserContext, useAnalyticsContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -52,9 +51,12 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
     dispatch('createRwtResults');
   };
 
-  if (resultsQuery.isError || resultsQuery.isLoading || plansQuery.isError || plansQuery.isLoading) {
-    return <CircularProgress />;
+  // isInitialLoading, since a query disabled for want of a developer stays isLoading
+  if (resultsQuery.isInitialLoading || plansQuery.isInitialLoading) {
+    return <ChplLoadingSection rows={3} />;
   }
+
+  const isError = resultsQuery.isError || plansQuery.isError;
 
   return (
     <Card>
@@ -90,7 +92,13 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
               </List>
             </>
           )}
-        { results.length === 0 && plans.length === 0
+        { isError
+          && (
+            <Typography>
+              Real World Testing information is not currently available, please check back later
+            </Typography>
+          )}
+        { !isError && results.length === 0 && plans.length === 0
           && (
             <Typography>
               No Real World Testing data is available

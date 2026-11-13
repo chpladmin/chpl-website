@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
-  CircularProgress,
   Typography,
-  Box,
 } from '@mui/material';
 import { func, number, object } from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -27,7 +26,7 @@ function ChplQuarter({
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: doDownload } = usePostQuarterlyReportRequest();
   const { mutate: doInitiate } = usePostInitiateQuarterlyReport();
-  const [report, setReport] = useState(undefined);
+  const [report, setReport] = useState(() => initialReport ?? {});
   const [state, setState] = useState('summary');
 
   // Default here rather than in the signature: a `= {}` default is a new object
@@ -93,10 +92,6 @@ function ChplQuarter({
     setState('view');
     dispatch({ action: `focus-quarter-${quarter.name}` });
   };
-
-  if (!report) {
-    return <CircularProgress />;
-  }
 
   if (state === 'edit') {
     return (

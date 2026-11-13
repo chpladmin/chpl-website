@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -15,7 +14,7 @@ import {
 } from '@mui/material';
 
 import { useFetchInsights } from 'api/developer';
-import { ChplLink } from 'components/util';
+import { ChplLink, ChplLoadingSection } from 'components/util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
@@ -41,6 +40,11 @@ function ChplInsightsView({ developer }) {
     setInsights(data);
   }, [data, isError, isLoading]);
 
+  // Stands in for the whole card, title included, rather than sitting inside it
+  if (isLoading) {
+    return <ChplLoadingSection variant="table" columns={4} rows={3} />;
+  }
+
   return (
     <Card>
       <CardHeader title="Access Insights" />
@@ -56,7 +60,6 @@ function ChplInsightsView({ developer }) {
           />
           .
         </Typography>
-        { isLoading && <CircularProgress /> }
         { isError
           && (
             <Typography>

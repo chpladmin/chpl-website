@@ -141,6 +141,7 @@ function ChplDevelopersPage() {
           <FilterProvider
             analytics={data.analytics}
             filters={filters}
+            isLoading={acbQuery.isLoading || ccQuery.isLoading}
             storageKey="storageKey-developersPage"
           >
             <ChplDevelopersView />
