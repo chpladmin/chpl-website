@@ -9,6 +9,7 @@ import {
   Popover,
   Switch,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import {
   number,
@@ -20,6 +21,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 
 import { useFilterContext } from './filter-context';
 
+import { ChplTooltip } from 'components/util';
 import { eventTrack } from 'services/analytics.service';
 import { compareStrings } from 'services/sort.service';
 import { palette, theme } from 'themes';
@@ -60,9 +62,18 @@ const styles = {
   filterBold: {
     fontWeight: '600',
   },
-  // Just under the theme's 1em, so the longest name still fits half a row when it's selected and bold
+  // Just under the theme's 1em, so the longest name still fits half a row when it's selected and bold.
+  // minWidth/overflow keep a nowrap label from forcing the button - and the grid and popover around it - wider than intended.
   filterCategoryButton: {
     fontSize: '0.9em',
+    minWidth: 0,
+    overflow: 'hidden',
+  },
+  filterCategoryButtonLabel: {
+    display: 'block',
+    width: '100%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   // Two categories to a row, e.g. Certification Criteria beside Certification Date
   filterContainer: {
@@ -131,9 +142,17 @@ const styles = {
 // The panel is as wide as its search bar, less the space the bar's buttons
 // take. extraWidth, a CSS length such as '300px', widens it for a page whose
 // filter names need more room than that. width replaces the size altogether,
-// with any sx width, including one that changes at each breakpoint
-const getPanelWidth = (searchBarWidth, extraWidth) => {
-  const usual = searchBarWidth ? `${searchBarWidth - 284}px` : '100vw - 316px';
+// with any sx width, including one that changes at each breakpoint.
+// Below `md` the search bar's buttons wrap onto their own row instead of
+// sitting beside the input (filter-search-bar.jsx's searchContainer grid),
+// so the full measured width is already available - there's nothing to subtract.
+const getPanelWidth = (searchBarWidth, extraWidth, isDesktopWidth) => {
+  let usual;
+  if (isDesktopWidth) {
+    usual = searchBarWidth ? `${searchBarWidth - 284}px` : '100vw - 316px';
+  } else {
+    usual = searchBarWidth ? `${searchBarWidth}px` : '100vw - 32px';
+  }
   if (extraWidth) { return `calc(${usual} + ${extraWidth})`; }
   return searchBarWidth ? usual : `calc(${usual})`;
 };
@@ -146,6 +165,7 @@ function ChplFilterPanel({ extraWidth = undefined, width = undefined }) {
   const [activeCategoryKey, setActiveCategoryKey] = useState('');
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
+  const isDesktopWidth = useMediaQuery(theme.breakpoints.up('md'));
 
   useEffect(() => {
     setFilters([...filterContext.filters]
@@ -294,7 +314,7 @@ function ChplFilterPanel({ extraWidth = undefined, width = undefined }) {
         }}
         PaperProps={{
           sx: {
-            width: width ?? getPanelWidth(panelWidth, extraWidth),
+            width: width ?? getPanelWidth(panelWidth, extraWidth, isDesktopWidth),
             maxWidth: 'calc(100vw - 32px)',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
@@ -337,19 +357,23 @@ function ChplFilterPanel({ extraWidth = undefined, width = undefined }) {
                 <Box sx={styles.filterSubHeaderContainer}>
                   <Box sx={styles.filterContainer}>
                     { filters.map((f) => (
-                      <Button
-                        fullWidth
-                        key={f.key}
-                        color={f === activeCategory ? 'inherit' : 'primary'}
-                        id={`filter-panel-primary-items-${f.key}`}
-                        sx={[styles.filterCategoryButton, { whiteSpace: f.wrapText ? 'normal' : 'nowrap' }]}
-                        variant="outlined"
-                        onClick={() => handleCategoryToggle(f)}
-                      >
-                        <Box component="span" sx={f === activeCategory ? styles.filterBold : undefined}>
-                          {f.getFilterDisplay(f)}
-                        </Box>
-                      </Button>
+                      <ChplTooltip key={f.key} title={f.getFilterDisplay(f)}>
+                        <Button
+                          fullWidth
+                          color={f === activeCategory ? 'inherit' : 'primary'}
+                          id={`filter-panel-primary-items-${f.key}`}
+                          sx={[styles.filterCategoryButton, { whiteSpace: f.wrapText ? 'normal' : 'nowrap' }]}
+                          variant="outlined"
+                          onClick={() => handleCategoryToggle(f)}
+                        >
+                          <Box
+                            component="span"
+                            sx={[styles.filterCategoryButtonLabel, f === activeCategory && styles.filterBold]}
+                          >
+                            {f.getFilterDisplay(f)}
+                          </Box>
+                        </Button>
+                      </ChplTooltip>
                     ))}
                   </Box>
                 </Box>
@@ -374,9 +398,11 @@ function ChplFilterPanel({ extraWidth = undefined, width = undefined }) {
                     sx={styles.clearResetContainer}
                     disableGutters
                   >
-                    <Typography variant="subtitle1" sx={styles.clearResetTitle}>
-                      { activeCategory.getFilterDisplay(activeCategory) }
-                    </Typography>
+                    <ChplTooltip title={activeCategory.getFilterDisplay(activeCategory)}>
+                      <Typography variant="subtitle1" sx={styles.clearResetTitle}>
+                        { activeCategory.getFilterDisplay(activeCategory) }
+                      </Typography>
+                    </ChplTooltip>
                     <Box sx={styles.secondaryPanelOptions}>
                       { activeCategory.operatorKey
                         && (
