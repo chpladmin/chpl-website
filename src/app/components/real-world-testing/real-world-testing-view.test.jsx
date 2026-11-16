@@ -19,8 +19,8 @@ const query = (state) => ({
   ...state,
 });
 
-const view = () => (
-  <FlagContext.Provider value={{ hti5ErdIsOn: false, rwtChangeRequestIsOn: false }}>
+const view = ({ hti5ErdIsOn = false } = {}) => (
+  <FlagContext.Provider value={{ hti5ErdIsOn, rwtChangeRequestIsOn: false }}>
     <UserContext.Provider value={{ hasAnyRole: () => false, hasAuthorityOn: () => false }}>
       <ChplRealWorldTestingView developer={{ id: 1, name: 'Dev' }} dispatch={jest.fn()} />
     </UserContext.Provider>
@@ -57,5 +57,31 @@ describe('the Real World Testing section', () => {
     useFetchRealWorldTestingResults.mockReturnValue(query({ data: [] }));
     render(view());
     expect(screen.getByText('RWT Plans URL')).toBeInTheDocument();
+  });
+
+  describe('with hti5ErdIsOn', () => {
+    it('shows the results without waiting on the disabled plans query', () => {
+      useFetchRealWorldTestingPlans.mockReturnValue(query({ isLoading: true }));
+      useFetchRealWorldTestingResults.mockReturnValue(query({ data: [{ url: 'https://example.com/results' }] }));
+      render(view({ hti5ErdIsOn: true }));
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+      expect(screen.getByText('RWT Results URL')).toBeInTheDocument();
+    });
+
+    it('hides plans URLs and says there is no data when only plans exist', () => {
+      useFetchRealWorldTestingPlans.mockReturnValue(query({ data: [{ url: 'https://example.com/plan' }] }));
+      useFetchRealWorldTestingResults.mockReturnValue(query({ data: [] }));
+      render(view({ hti5ErdIsOn: true }));
+      expect(screen.queryByText('RWT Plans URL')).not.toBeInTheDocument();
+      expect(screen.getByText('No Real World Testing data is available')).toBeInTheDocument();
+    });
+
+    it('ignores a plans query error', () => {
+      useFetchRealWorldTestingPlans.mockReturnValue(query({ isError: true }));
+      useFetchRealWorldTestingResults.mockReturnValue(query({ data: [] }));
+      render(view({ hti5ErdIsOn: true }));
+      expect(screen.queryByText(/not currently available/)).not.toBeInTheDocument();
+      expect(screen.getByText('No Real World Testing data is available')).toBeInTheDocument();
+    });
   });
 });

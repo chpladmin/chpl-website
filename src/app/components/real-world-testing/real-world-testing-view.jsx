@@ -56,7 +56,7 @@ function ChplRealWorldTestingView({ developer, dispatch }) {
     return <ChplLoadingSection rows={3} />;
   }
 
-  const isError = resultsQuery.isError || plansQuery.isError;
+  const isError = resultsQuery.isError || (!hti5ErdIsOn && plansQuery.isError);
 
   return (
     <Card>
