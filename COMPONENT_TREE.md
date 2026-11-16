@@ -398,7 +398,7 @@ graph TD
     SearchPage -->|usePageState| ReadRedux["Read filters<br/>from Redux"]
     SearchPage -->|useFetchListings| QueryAPI["react-query hook<br/>(fetch with params)"]
     QueryAPI -->|fetch| Backend["/rest/listings<br/>(backend)"]
-    Backend -->|response| Cache["Query Cache<br/>(react-query)"]
+    Backend -->|response| Cache["Query Cache<br/>(react-query listings)"]
     Cache -->|data, loading| SearchPage
     
     SearchPage -->|pass as props| SearchView["ChplSearchView<br/>(presentational)"]
@@ -980,7 +980,7 @@ graph TD
     SearchPage -->|usePageState| ReadPageState["Read filter state<br/>from Redux"]
     SearchPage -->|useFetchListings| APIHook["useFetchListings<br/>(api/listing.jsx)"]
     APIHook -->|fetch params| Backend["/rest/listings<br/>(backend API)"]
-    Backend -->|listings[]| APIHook
+    Backend -->|listings array| APIHook
     
     APIHook -->|data, isLoading| SearchPage
     SearchPage -->|listings, isLoading| SearchView["ChplSearchView<br/>(presentational)"]
