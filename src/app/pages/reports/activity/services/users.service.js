@@ -32,21 +32,51 @@ const compare = (before, after, key, title = 'unknown') => {
   return undefined;
 };
 
+// Older user activity holds status as an object of account fields, newer activity as a string.
+// For the object, compareObject lists the nested changes, so this is only their heading.
+const compareStatus = (before, after) => {
+  if (typeof (before?.status ?? after?.status) === 'object') {
+    return 'Status';
+  }
+  return comparePrimitive(before, after, 'status', 'Status');
+};
+
 lookup = {
   shortCircuit: [
   ],
   'root.accountEnabled': { message: (before, after) => compareBoolean(before, after, 'accountEnabled', 'Account Enabled') },
   'root.accountLocked': { message: (before, after) => compareBoolean(before, after, 'accountLocked', 'Account Locked') },
   'root.accountNonLocked': { message: (before, after) => compareBoolean(before, after, 'accountNonLocked', 'Account Non-Locked') },
+  'root.cognitoId': { message: () => undefined },
+  'root.credentialsExpired': { message: (before, after) => compareBoolean(before, after, 'credentialsExpired', 'Credentials Expired') },
   'root.email': { message: (before, after) => comparePrimitive(before, after, 'email', 'Email') },
   'root.enabled': { message: (before, after) => compareBoolean(before, after, 'enabled', 'Enabled') },
   'root.failedLoginCount': { message: (before, after) => comparePrimitive(before, after, 'failedLoginCount', 'Failed Login Count') },
   'root.friendlyName': { message: (before, after) => comparePrimitive(before, after, 'friendlyName', 'Friendly Name') },
   'root.fullName': { message: (before, after) => comparePrimitive(before, after, 'fullName', 'Full Name') },
+  'root.hash': { message: () => undefined },
+  'root.lastLoggedInDate': { message: () => undefined },
   'root.organizations': { message: (before, after) => compare(before, after, 'organizations', 'Organizations') },
   'root.passwordResetRequired': { message: (before, after) => compareBoolean(before, after, 'passwordResetRequired', 'Password Reset Required') },
   'root.phoneNumber': { message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number') },
+  'root.role': { message: (before, after) => comparePrimitive(before, after, 'role', 'Role') },
   'root.signatureDate': { message: (before, after) => comparePrimitive(before, after, 'signatureDate', 'Signature Date', getDisplayDateFormat) },
+  'root.status': { message: compareStatus },
+  'root.status.accountEnabled': { message: (before, after) => compareBoolean(before, after, 'accountEnabled', 'Enabled') },
+  'root.status.accountLocked': { message: (before, after) => compareBoolean(before, after, 'accountLocked', 'Locked') },
+  'root.status.cognitoId': { message: (before, after) => comparePrimitive(before, after, 'cognitoId', 'Cognito ID') },
+  'root.status.credentialsExpired': { message: (before, after) => compareBoolean(before, after, 'credentialsExpired', 'Credentials Expired') },
+  'root.status.email': { message: (before, after) => comparePrimitive(before, after, 'email', 'Email') },
+  'root.status.fullName': { message: (before, after) => comparePrimitive(before, after, 'fullName', 'Full Name') },
+  'root.status.hash': { message: () => undefined },
+  'root.status.lastLoggedInDate': { message: () => undefined },
+  'root.status.organizations': { message: (before, after) => compare(before, after, 'organizations', 'Organizations') },
+  'root.status.passwordResetRequired': { message: (before, after) => compareBoolean(before, after, 'passwordResetRequired', 'Password Reset Required') },
+  'root.status.phoneNumber': { message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number') },
+  'root.status.role': { message: (before, after) => comparePrimitive(before, after, 'role', 'Role') },
+  'root.status.status': { message: (before, after) => comparePrimitive(before, after, 'status', 'Status') },
+  'root.status.subjectName': { message: (before, after) => comparePrimitive(before, after, 'subjectName', 'Subject Name') },
+  'root.subjectName': { message: (before, after) => comparePrimitive(before, after, 'subjectName', 'Subject Name') },
   'root.title': { message: (before, after) => comparePrimitive(before, after, 'title', 'Title') },
 };
 
