@@ -181,9 +181,8 @@ const sortCriteria = (a, b) => {
   if (criteriaSortOrder.indexOf(aValue) !== criteriaSortOrder.indexOf(bValue)) {
     return criteriaSortOrder.indexOf(aValue) - criteriaSortOrder.indexOf(bValue);
   }
-  return a.id - b.id;
+  // older activity records carry no id, and undefined - undefined is NaN, which callers can't read as "same item"
+  return (a.id ?? 0) - (b.id ?? 0);
 };
 
-export {
-  sortCriteria,
-};
+export { sortCriteria }; // eslint-disable-line import/prefer-default-export
