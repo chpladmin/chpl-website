@@ -297,6 +297,15 @@ const compareTestParticipants = (before, after) => {
   return undefined;
 };
 
+// Transparency Attestation is either a string or an object of { transparencyAttestation, removed }.
+// For the object, compareObject lists the nested changes, so this is only their heading.
+const compareTransparencyAttestation = (before, after) => {
+  if (typeof (before?.transparencyAttestation ?? after?.transparencyAttestation) === 'object') {
+    return 'Transparency Attestation';
+  }
+  return comparePrimitive(before, after, 'transparencyAttestation', 'Transparency Attestation');
+};
+
 const briefLookup = {
   shortCircuit: [
     'cqmResults.criteria.criterion',
@@ -514,6 +523,8 @@ const briefLookup = {
   'root.testingLab.name': { message: () => undefined },
   'root.testingLabs': { message: () => undefined },
   'root.transparencyAttestation': { message: () => undefined },
+  'root.transparencyAttestation.removed': { message: () => undefined },
+  'root.transparencyAttestation.transparencyAttestation': { message: () => undefined },
   'root.transparencyAttestationUrl': { message: () => undefined },
   'root.visibleOnChpl': { message: () => undefined },
   'root.warningMessages': { message: () => undefined },
@@ -712,7 +723,9 @@ const lookup = {
   'root.testingLab': { message: () => 'ONC-ATL' },
   'root.testingLab.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'ONC-ATL') },
   'root.testingLabs': { message: (before, after) => compare(before, after, 'testingLabs', 'Testing Labs') },
-  'root.transparencyAttestation': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestation', 'Transparency Attestation') },
+  'root.transparencyAttestation': { message: compareTransparencyAttestation },
+  'root.transparencyAttestation.removed': { message: () => undefined },
+  'root.transparencyAttestation.transparencyAttestation': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestation', 'Transparency Attestation') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
   'root.visibleOnChpl': { message: (before, after) => compareBoolean(before, after, 'visibleOnChpl', 'Visible on CHPL') },
   'surveillance.endDate': { message: (before, after) => comparePrimitive(before, after, 'endDate', 'End Date', getDisplayDateFormat) },
