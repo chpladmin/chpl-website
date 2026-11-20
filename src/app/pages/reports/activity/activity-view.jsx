@@ -121,6 +121,9 @@ function ChplActivityView() {
         if (!after?.id) {
           return null;
         }
+        if (!after.owner) {
+          return after.name;
+        }
         return (
           <ChplLink
             href={`#/organizations/developers/${after.owner.id}`}
