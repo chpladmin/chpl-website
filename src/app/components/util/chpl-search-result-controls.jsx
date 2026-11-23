@@ -1,7 +1,11 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import {
-  bool, node, number, string,
+  bool,
+  node,
+  number,
+  shape,
+  string,
 } from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -77,15 +81,17 @@ function ChplSearchResultControls({
   pageEnd,
   children = undefined,
   fadeBackground = palette.backgroundPage,
+  showActionsWhenEmpty = false,
   sticky = true,
   wrapActions = false,
+  sx = undefined,
 }) {
   const widgetIsOpen = useSelector((state) => state.widget.open !== null);
   // an open widget narrows the page without changing the viewport, so breakpoints alone won't wrap
   const styles = getStyles({ fadeBackground, sticky, wrapActions: wrapActions || widgetIsOpen });
 
   return (
-    <Box sx={styles.container}>
+    <Box sx={[styles.container, sx]}>
       <Box sx={styles.results}>
         <Typography variant="subtitle2">Search Results:</Typography>
         { recordCount === 0
@@ -101,7 +107,7 @@ function ChplSearchResultControls({
             </Typography>
           )}
       </Box>
-      { recordCount > 0 && children
+      { (recordCount > 0 || showActionsWhenEmpty) && children
         && (
           <Box sx={styles.actions}>
             { children }
@@ -119,6 +125,8 @@ ChplSearchResultControls.propTypes = {
   pageEnd: number.isRequired,
   children: node,
   fadeBackground: string,
+  showActionsWhenEmpty: bool,
   sticky: bool,
   wrapActions: bool,
+  sx: shape({}),
 };
