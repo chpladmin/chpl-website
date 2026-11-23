@@ -63,6 +63,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
       />
       <ChplFilterLayout>
         <ChplSearchResultControls
+          showEmptyState
           sx={resultsHeaderSx}
           wrapActions
           recordCount={g1g2.length}

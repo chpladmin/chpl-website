@@ -51,6 +51,7 @@ function ChplUcdProcessesView({ dispatch, ucdProcesses: initialUcdProcesses }) {
         pageEnd={ucdProcesses.length}
         sticky={false}
         wrapActions
+        showEmptyState
         sx={resultsHeaderSx}
       >
         <ChplSortControls

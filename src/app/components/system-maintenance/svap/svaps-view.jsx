@@ -21,6 +21,7 @@ import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext } from 'shared/contexts';
 import { svap as svapPropType } from 'shared/prop-types';
+import { palette } from 'themes';
 
 const sortOptions = [
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation' },
@@ -69,8 +70,9 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
           recordCount={svaps.length}
           pageStart={1}
           pageEnd={svaps.length}
-          sticky={false}
+          fadeBackground={palette.white}
           wrapActions
+          showEmptyState
           sx={resultsHeaderSx}
         >
           <ChplSortControls

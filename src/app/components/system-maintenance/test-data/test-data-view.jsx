@@ -30,6 +30,7 @@ function ChplTestDataView({ testData: initialTestData }) {
         pageEnd={testData.length}
         sticky={false}
         wrapActions
+        showEmptyState
         sx={resultsHeaderSx}
       />
       <Box>

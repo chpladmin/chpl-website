@@ -13,6 +13,7 @@ import {
 import { sortComparator } from 'components/util/sortable-headers';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
+import { palette } from 'themes';
 
 const sortOptions = [
   { property: 'displayValue', text: 'Display Value' },
@@ -59,8 +60,9 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
           recordCount={optionalStandards.length}
           pageStart={1}
           pageEnd={optionalStandards.length}
-          sticky={false}
+          fadeBackground={palette.white}
           wrapActions
+          showEmptyState
           sx={resultsHeaderSx}
         >
           <ChplSortControls

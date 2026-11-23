@@ -123,6 +123,7 @@ function ChplSystemTriggersView({
                     pageEnd={triggers.length}
                     sticky={false}
                     wrapActions
+                    showEmptyState
                     sx={resultsHeaderSx}
                   >
                     <ChplSortControls

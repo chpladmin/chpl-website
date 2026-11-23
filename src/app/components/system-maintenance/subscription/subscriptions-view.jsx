@@ -131,6 +131,7 @@ function ChplSubscriptionsView({ analytics }) {
           && (
             <>
               <ChplSearchResultControls
+                showEmptyState
                 sx={resultsHeaderSx}
                 wrapActions
                 recordCount={recordCount}

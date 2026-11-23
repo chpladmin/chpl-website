@@ -43,6 +43,7 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
         pageEnd={codeSets.length}
         sticky={false}
         wrapActions
+        showEmptyState
         sx={resultsHeaderSx}
       >
         <ChplSystemMaintenanceActivity

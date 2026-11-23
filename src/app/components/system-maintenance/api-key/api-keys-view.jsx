@@ -51,6 +51,7 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
         pageEnd={apiKeys.length}
         sticky={false}
         wrapActions
+        showEmptyState
         sx={resultsHeaderSx}
       >
         <ChplSortControls

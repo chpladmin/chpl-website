@@ -58,6 +58,7 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
         pageEnd={conformanceMethods.length}
         sticky={false}
         wrapActions
+        showEmptyState
         sx={resultsHeaderSx}
       >
         <ChplSortControls

@@ -55,6 +55,7 @@ function ChplCqmsView({ cqms: initialCqms }) {
         pageEnd={cqms.length}
         sticky={false}
         wrapActions
+        showEmptyState
         sx={resultsHeaderSx}
       >
         <ChplSortControls

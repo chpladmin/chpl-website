@@ -74,6 +74,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
       />
       <ChplFilterLayout>
         <ChplSearchResultControls
+          showEmptyState
           sx={resultsHeaderSx}
           wrapActions
           recordCount={functionalitiesTested.length}

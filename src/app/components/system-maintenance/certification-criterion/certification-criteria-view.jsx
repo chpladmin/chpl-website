@@ -95,6 +95,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
       />
       <ChplFilterLayout>
         <ChplSearchResultControls
+          showEmptyState
           sx={resultsHeaderSx}
           wrapActions
           recordCount={certificationCriteria.length}

@@ -211,6 +211,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
           && (
             <>
               <ChplSearchResultControls
+                showEmptyState
                 sx={resultsHeaderSx}
                 wrapActions
                 recordCount={recordCount}

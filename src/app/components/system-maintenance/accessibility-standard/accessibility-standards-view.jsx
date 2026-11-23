@@ -51,6 +51,7 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
         pageEnd={accessibilityStandards.length}
         sticky={false}
         wrapActions
+        showEmptyState
         sx={resultsHeaderSx}
       >
         <ChplSortControls

@@ -20,6 +20,7 @@ import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { testTool as testToolPropType } from 'shared/prop-types';
+import { palette } from 'themes';
 
 const sortOptions = [
   { property: 'value', text: 'Value' },
@@ -67,8 +68,9 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
           recordCount={testTools.length}
           pageStart={1}
           pageEnd={testTools.length}
-          sticky={false}
+          fadeBackground={palette.white}
           wrapActions
+          showEmptyState
           sx={resultsHeaderSx}
         >
           <ChplSortControls

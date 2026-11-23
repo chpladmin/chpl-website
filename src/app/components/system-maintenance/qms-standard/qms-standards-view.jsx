@@ -51,6 +51,7 @@ function ChplQmsStandardsView({ dispatch, qmsStandards: initialQmsStandards }) {
         pageEnd={qmsStandards.length}
         sticky={false}
         wrapActions
+        showEmptyState
         sx={resultsHeaderSx}
       >
         <ChplSortControls

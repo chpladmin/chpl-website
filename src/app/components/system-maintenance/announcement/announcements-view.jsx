@@ -97,6 +97,7 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
                 showActionsWhenEmpty
                 sticky={false}
                 wrapActions
+                showEmptyState
                 sx={resultsHeaderSx}
               >
                 <ChplSystemMaintenanceActivity

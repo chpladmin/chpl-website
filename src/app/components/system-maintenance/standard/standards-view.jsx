@@ -74,6 +74,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       />
       <ChplFilterLayout>
         <ChplSearchResultControls
+          showEmptyState
           sx={resultsHeaderSx}
           wrapActions
           recordCount={standards.length}

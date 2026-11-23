@@ -52,6 +52,7 @@ function ChplSystemJobTypesView(props) {
           pageEnd={jobTypes.length}
           sticky={false}
           wrapActions
+          showEmptyState
           sx={resultsHeaderSx}
         >
           <ChplSortControls
