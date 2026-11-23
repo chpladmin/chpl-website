@@ -30,10 +30,6 @@ const styles = {
     '&:last-child': {
       paddingBottom: '16px',
     },
-    [theme.breakpoints.up('lg')]: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-    },
   },
   contentBody: {
     display: 'flex',
@@ -112,28 +108,19 @@ const styles = {
     flex: '1.75 1 320px',
   },
   actionsContainer: {
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    borderTop: `1px solid ${theme.palette.divider}`,
     display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(1.5),
-    justifyContent: 'space-between',
-    minHeight: '100%',
-    [theme.breakpoints.down('lg')]: {
-      alignItems: 'stretch',
-      width: '100%',
-    },
-    // actions sit below the details here; lay the buttons out in a row instead of a column
-    '@media (min-width: 800px) and (max-width: 1199.95px)': {
-      borderTop: `1px solid ${theme.palette.divider}`,
-      paddingTop: theme.spacing(1.5),
-      '& > *': {
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-        gap: theme.spacing(1),
-        '& > *': {
-          flex: 1,
-        },
-      },
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing(1),
+    justifyContent: 'flex-end',
+    paddingTop: theme.spacing(1.5),
+    width: '100%',
+    // action buttons keep their natural width and sit at the bottom right
+    '& > *': {
+      flex: '0 0 auto',
+      width: 'auto',
     },
   },
   titleValue: {
@@ -151,9 +138,10 @@ function ChplSearchResultCard({
   additionalTitleContent = undefined,
   fieldGroups = [],
   actions = undefined,
+  sx = undefined,
 }) {
   return (
-    <Card sx={styles.card}>
+    <Card sx={[styles.card, sx]}>
       <CardContent sx={styles.cardContent}>
         <Box sx={styles.contentBody}>
           { (cardTitle || cardTitleValue)
@@ -241,4 +229,5 @@ ChplSearchResultCard.propTypes = {
     ),
   ),
   actions: node,
+  sx: shape({}),
 };
