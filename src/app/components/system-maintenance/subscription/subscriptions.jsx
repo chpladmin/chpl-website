@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Card, CardContent, CardHeader } from '@mui/material';
+import { SubscriptionsOutlined } from '@mui/icons-material';
 
-import ChplManageSubscriptionsView from './manage-subscriptions-view';
+import ChplSubscriptionsView from './subscriptions-view';
 
 import {
   FilterProvider,
@@ -37,7 +39,7 @@ subscriptionSubjects,
 subscriptionTypes,
 ];
 
-function ChplManageSubscriptionsPage() {
+function ChplSubscriptions() {
   const { hti5ErdIsOn } = useContext(FlagContext);
   const [filters, setFilters] = useState(staticFilters);
 
@@ -71,14 +73,24 @@ function ChplManageSubscriptionsPage() {
       filters={filters}
       storageKey="storageKey-manageSubscriptionsPage"
     >
-      <ChplManageSubscriptionsView
-        analytics={analytics}
-      />
+      <Card style={{ overflow: 'visible' }}>
+        <CardHeader
+          style={{ paddingLeft: '16px' }}
+          title={(
+            <>
+              Subscriptions
+              <SubscriptionsOutlined style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
+            </>
+          )}
+        />
+        <CardContent style={{ overflow: 'visible' }}>
+          <ChplSubscriptionsView
+            analytics={analytics}
+          />
+        </CardContent>
+      </Card>
     </FilterProvider>
   );
 }
 
-export default ChplManageSubscriptionsPage;
-
-ChplManageSubscriptionsPage.propTypes = {
-};
+export default ChplSubscriptions;

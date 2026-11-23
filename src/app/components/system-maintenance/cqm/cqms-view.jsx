@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { arrayOf } from 'prop-types';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { cqm as cqmPropType } from 'shared/prop-types';
-import { utilStyles } from 'themes';
 
 const sortOptions = [
   { property: 'display', text: 'ID' },
   { property: 'title', text: 'Title' },
   { property: 'description', text: 'Description' },
 ];
-
-const styles = {
-  ...utilStyles,
-};
 
 const sortVersion = (a, b) => {
   const aNum = parseInt(a.substring(1), 10);
@@ -48,28 +49,26 @@ function ChplCqmsView({ cqms: initialCqms }) {
 
   return (
     <>
-      <Box sx={styles.headerContainer}>
-        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-          <Typography variant="subtitle2">
-            CQMs
-          </Typography>
-          <Typography variant="body2">
-            {`(${cqms.length} Result${cqms.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="4px">
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+      <ChplSearchResultControls
+        recordCount={cqms.length}
+        pageStart={1}
+        pageEnd={cqms.length}
+        sticky={false}
+        wrapActions
+        sx={resultsHeaderSx}
+      >
+        <ChplSortControls
+          sortOptions={sortOptions}
+          orderBy={orderBy}
+          order={order}
+          onSort={handleSort}
+        />
+      </ChplSearchResultControls>
+      <Box>
         { cqms
           .map((item) => (
             <ChplSearchResultCard
+              sx={resultCardSx}
               key={item.display}
               cardTitle="ID"
               cardTitleValue={item.display}

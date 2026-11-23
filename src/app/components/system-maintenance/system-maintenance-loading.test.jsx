@@ -50,8 +50,10 @@ jest.mock('api/standards', () => ({
 const loading = { data: undefined, isLoading: true, isSuccess: false };
 const loaded = (data) => ({ data, isLoading: false, isSuccess: true });
 
+const makeStore = () => configureStore({ reducer: { pageState: pageStateReducer, widget: widgetReducer } });
+
 const renderAs = (ui, roles = []) => render(
-  <Provider store={configureStore({ reducer: { pageState: pageStateReducer, widget: widgetReducer } })}>
+  <Provider store={makeStore()}>
     <SnackbarProvider>
       <UserContext.Provider value={{ hasAnyRole: (r) => r.some((role) => roles.includes(role)), hasAuthorityOn: () => false }}>
         { ui }
@@ -100,9 +102,11 @@ describe('a System Maintenance list', () => {
       id: 1, cmsId: 'CMS2', title: 'A measure', description: 'About it', versions: ['v1'],
     }]));
     rerender(
-      <SnackbarProvider>
-        <ChplCqms />
-      </SnackbarProvider>,
+      <Provider store={makeStore()}>
+        <SnackbarProvider>
+          <ChplCqms />
+        </SnackbarProvider>
+      </Provider>,
     );
 
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
@@ -123,7 +127,7 @@ describe('the API Keys list', () => {
     renderAs(<ChplApiKeys />);
 
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
-    expect(screen.getByText('(0 Results)')).toBeInTheDocument();
+    expect(screen.getByText('No results found')).toBeInTheDocument();
   });
 });
 

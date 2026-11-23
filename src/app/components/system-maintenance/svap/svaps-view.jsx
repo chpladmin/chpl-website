@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box, Button, IconButton, Typography,
+  Box, Button, IconButton,
 } from '@mui/material';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
@@ -10,26 +10,23 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useFetchSvapsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext } from 'shared/contexts';
 import { svap as svapPropType } from 'shared/prop-types';
-import { utilStyles } from 'themes';
 
 const sortOptions = [
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation' },
   { property: 'approvedStandardVersion', text: 'Approved Standard Version' },
   { property: 'replaced', text: 'Replaced' },
 ];
-
-const styles = {
-  ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-};
 
 function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
   const [svaps, setSvaps] = useState([]);
@@ -68,25 +65,25 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
         placeholder="Search by Citation or Version..."
       />
       <ChplFilterLayout>
-        <Box sx={styles.headerContainer}>
-          <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-            <Typography variant="subtitle2">Search Results</Typography>
-            <Typography variant="body2">
-              {`(${svaps.length} Result${svaps.length !== 1 ? 's' : ''})`}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center" gap="4px">
-            <ChplSortControls
-              sortOptions={sortOptions}
-              orderBy={orderBy}
-              order={order}
-              onSort={handleSort}
-            />
-            <ChplSystemMaintenanceActivity
-              fetch={useFetchSvapsActivity}
-              title="SVAP"
-            />
-            { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+        <ChplSearchResultControls
+          recordCount={svaps.length}
+          pageStart={1}
+          pageEnd={svaps.length}
+          sticky={false}
+          wrapActions
+          sx={resultsHeaderSx}
+        >
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
+          <ChplSystemMaintenanceActivity
+            fetch={useFetchSvapsActivity}
+            title="SVAP"
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
             <Button
               onClick={() => dispatch({ action: 'edit', payload: {} })}
               id="add-new-svap"
@@ -96,13 +93,13 @@ function ChplSvapsView({ dispatch, svaps: initialSvaps }) {
             >
               Add
             </Button>
-            )}
-          </Box>
-        </Box>
-        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+          )}
+        </ChplSearchResultControls>
+        <Box>
           { svaps
             .map((item) => (
               <ChplSearchResultCard
+                sx={resultCardSx}
                 key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
                 cardTitle="Approved Standard Version"
                 cardTitleValue={item.approvedStandardVersion}

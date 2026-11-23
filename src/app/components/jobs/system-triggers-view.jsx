@@ -8,7 +8,8 @@ import Moment from 'react-moment';
 import { arrayOf, func } from 'prop-types';
 
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import { ChplSearchResultCard, ChplSearchResultControls, ChplSortControls } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { scheduledSystemTrigger } from 'shared/prop-types';
 
@@ -17,20 +18,6 @@ const sortOptions = [
   { property: 'nextRunDate', text: 'Next Run Date' },
   { property: 'triggerScheduleType', text: 'Trigger Schedule Type' },
 ];
-
-const styles = {
-  headerContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '16px',
-  },
-  resultsContainer: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center',
-  },
-};
 
 function ChplSystemTriggersView({
   dispatch,
@@ -119,7 +106,9 @@ function ChplSystemTriggersView({
           )}
         />
         <CardContent>
-          <>            { (triggers.length === 0)
+          <>
+            {' '}
+            { (triggers.length === 0)
               && (
                 <Typography style={{ padding: '16px' }}>
                   No results found
@@ -128,23 +117,25 @@ function ChplSystemTriggersView({
             { triggers.length > 0
               && (
                 <>
-                  <Box sx={styles.headerContainer}>
-                    <Box sx={styles.resultsContainer}>
-                      <Typography variant="subtitle2">Scheduled Jobs:</Typography>
-                      <Typography variant="body2">
-                        {`(${triggers.length} Result${triggers.length !== 1 ? 's' : ''})`}
-                      </Typography>
-                    </Box>
+                  <ChplSearchResultControls
+                    recordCount={triggers.length}
+                    pageStart={1}
+                    pageEnd={triggers.length}
+                    sticky={false}
+                    wrapActions
+                    sx={resultsHeaderSx}
+                  >
                     <ChplSortControls
                       sortOptions={sortOptions}
                       orderBy={orderBy}
                       order={order}
                       onSort={handleSort}
                     />
-                  </Box>
+                  </ChplSearchResultControls>
                   <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 16px' }}>
                     { triggers.map((item) => (
                       <ChplSearchResultCard
+                        sx={resultCardSx}
                         key={item.nextRunDate}
                         cardTitle="Job Name"
                         cardTitleValue={item.name}

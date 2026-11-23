@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box, Button, Card, CardContent, CardHeader, Typography,
+  Box, Button, Card, CardContent, CardHeader,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
@@ -11,7 +11,8 @@ import ChplAnnouncementEdit from './announcement-edit';
 
 import { useFetchAnnouncementsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSearchResultCard } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import { ChplSearchResultCard, ChplSearchResultControls } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { announcement as announcementPropType } from 'shared/prop-types';
@@ -89,45 +90,38 @@ function ChplAnnouncementsView({ announcements: initialAnnouncements = [], dispa
         { !announcement
           && (
             <>
-              <Box sx={styles.headerContainer}>
-                <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-                  <Typography variant="subtitle2">
-                    Announcements
-                  </Typography>
-                  <Typography variant="body2">
-                    {`(${announcements.length} Result${announcements.length !== 1 ? 's' : ''})`}
-                  </Typography>
-                </Box>
-                <Box display="flex" alignItems="center" gap="4px">
-                  <ChplSystemMaintenanceActivity
-                    fetch={useFetchAnnouncementsActivity}
-                    title="Announcements"
-                  />
-                  { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      id="add-new-announcement"
-                      onClick={() => setAnnouncement({})}
-                      endIcon={<AddIcon />}
-                    >
-                      Add
-                    </Button>
-                  )}
-                </Box>
-              </Box>
-              { (announcements.length === 0)
-                && (
-                  <Typography sx={styles.noResultsContainer}>
-                    No results found
-                  </Typography>
+              <ChplSearchResultControls
+                recordCount={announcements.length}
+                pageStart={1}
+                pageEnd={announcements.length}
+                showActionsWhenEmpty
+                sticky={false}
+                wrapActions
+                sx={resultsHeaderSx}
+              >
+                <ChplSystemMaintenanceActivity
+                  fetch={useFetchAnnouncementsActivity}
+                  title="Announcements"
+                />
+                { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  id="add-new-announcement"
+                  onClick={() => setAnnouncement({})}
+                  endIcon={<AddIcon />}
+                >
+                  Add
+                </Button>
                 )}
+              </ChplSearchResultControls>
               { announcements.length > 0
                 && (
-                  <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+                  <Box>
                     { announcements
                       .map((item) => (
                         <ChplSearchResultCard
+                          sx={resultCardSx}
                           key={item.id}
                           cardTitle="Title"
                           cardTitleValue={item.title}

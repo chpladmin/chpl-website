@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { useFetchTargetedUsers } from 'api/standards';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { usePageState } from 'components/page-state';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
 import {
   ChplLoadingCards,
   ChplPagination,
@@ -210,6 +211,8 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
           && (
             <>
               <ChplSearchResultControls
+                sx={resultsHeaderSx}
+                wrapActions
                 recordCount={recordCount}
                 pageStart={pageStart}
                 pageEnd={pageEnd}
@@ -241,6 +244,7 @@ function ChplTargetedUsersView({ certificationStatuses: initialStatuses }) {
                 { targetedUsers
                   .map((item) => (
                     <ChplSearchResultCard
+                      sx={resultCardSx}
                       key={item.id}
                       cardTitle="Targeted User"
                       cardTitleValue={item.name}

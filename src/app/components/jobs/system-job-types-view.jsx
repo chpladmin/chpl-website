@@ -1,32 +1,24 @@
 import React, { useMemo, useState } from 'react';
 import {
-  Box, Card, CardContent, CardHeader, IconButton, Typography,
+  Box, Card, CardContent, CardHeader, IconButton,
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import { arrayOf, func } from 'prop-types';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { job as jobType } from 'shared/prop-types';
 
 const sortOptions = [
   { property: 'name', text: 'Job Name' },
 ];
-
-const styles = {
-  headerContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '16px',
-  },
-  resultsContainer: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center',
-  },
-};
 
 function ChplSystemJobTypesView(props) {
   const { dispatch, jobTypes: initialJobTypes } = props;
@@ -54,23 +46,25 @@ function ChplSystemJobTypesView(props) {
         )}
       />
       <CardContent>
-        <Box sx={styles.headerContainer}>
-          <Box sx={styles.resultsContainer}>
-            <Typography variant="subtitle2">Jobs:</Typography>
-            <Typography variant="body2">
-              {`(${jobTypes.length} Result${jobTypes.length !== 1 ? 's' : ''})`}
-            </Typography>
-          </Box>
+        <ChplSearchResultControls
+          recordCount={jobTypes.length}
+          pageStart={1}
+          pageEnd={jobTypes.length}
+          sticky={false}
+          wrapActions
+          sx={resultsHeaderSx}
+        >
           <ChplSortControls
             sortOptions={sortOptions}
             orderBy={orderBy}
             order={order}
             onSort={handleTableSort}
           />
-        </Box>
+        </ChplSearchResultControls>
         <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 16px' }}>
           { jobTypes.map((item) => (
             <ChplSearchResultCard
+              sx={resultCardSx}
               key={item.name}
               cardTitle="Job Name"
               cardTitleValue={item.name}

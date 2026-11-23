@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box, Button, IconButton, Typography,
+  Box, Button, IconButton,
 } from '@mui/material';
 import { arrayOf, func, shape } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,15 +9,16 @@ import InfoIcon from '@mui/icons-material/Info';
 
 import { useFetchCodeSetsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSearchResultCard, ChplUpdateIndicator, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplTooltip,
+  ChplUpdateIndicator,
+} from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
-
-const styles = {
-  ...utilStyles,
-};
 
 function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
   const { hasAnyRole } = useContext(UserContext);
@@ -36,21 +37,19 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
 
   return (
     <>
-      <Box sx={styles.headerContainer}>
-        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-          <Typography variant="subtitle2">
-            Code Sets
-          </Typography>
-          <Typography variant="body2">
-            {`(${codeSets.length} Result${codeSets.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="4px">
-          <ChplSystemMaintenanceActivity
-            fetch={useFetchCodeSetsActivity}
-            title="Code Sets"
-          />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+      <ChplSearchResultControls
+        recordCount={codeSets.length}
+        pageStart={1}
+        pageEnd={codeSets.length}
+        sticky={false}
+        wrapActions
+        sx={resultsHeaderSx}
+      >
+        <ChplSystemMaintenanceActivity
+          fetch={useFetchCodeSetsActivity}
+          title="Code Sets"
+        />
+        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
           <Button
             onClick={() => dispatch({ action: 'edit', payload: {} })}
             id="add-new-code-set"
@@ -60,13 +59,13 @@ function ChplCodeSetsView({ dispatch, codeSets: initialCodeSets }) {
           >
             Add
           </Button>
-          )}
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        )}
+      </ChplSearchResultControls>
+      <Box>
         { codeSets
           .map((item) => (
             <ChplSearchResultCard
+              sx={resultCardSx}
               key={item.id}
               cardTitle="CHPL Entry Value"
               cardTitleValue={item.name}
