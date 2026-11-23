@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import {
   bool,
   node,
@@ -9,6 +9,9 @@ import {
 } from 'prop-types';
 import { useSelector } from 'react-redux';
 
+import ChplEmptyState from './chpl-empty-state';
+
+import { useFilterContext } from 'components/filter/filter-context';
 import { palette, theme } from 'themes';
 
 const getStyles = ({ fadeBackground, sticky, wrapActions }) => ({
@@ -81,39 +84,71 @@ function ChplSearchResultControls({
   pageEnd,
   children = undefined,
   fadeBackground = palette.backgroundPage,
+  showEmptyState = false,
   showActionsWhenEmpty = false,
   sticky = true,
   wrapActions = false,
   sx = undefined,
 }) {
+  // only present on pages with filters
+  const filterContext = useFilterContext();
+  const hasFilters = !!filterContext
+    && (filterContext.searchTerm !== ''
+      || filterContext.filters.some((f) => f.values?.some((v) => v.selected)));
+  const clearFilters = () => {
+    filterContext.dispatch('seeAllTextSearchResults');
+    filterContext.setSearchTerm('');
+  };
   const widgetIsOpen = useSelector((state) => state.widget.open !== null);
   // an open widget narrows the page without changing the viewport, so breakpoints alone won't wrap
   const styles = getStyles({ fadeBackground, sticky, wrapActions: wrapActions || widgetIsOpen });
 
   return (
-    <Box sx={[styles.container, sx]}>
-      <Box sx={styles.results}>
-        <Typography variant="subtitle2">Search Results:</Typography>
-        { recordCount === 0
+    <>
+      <Box sx={[styles.container, sx]}>
+        <Box sx={styles.results}>
+          <Typography variant="subtitle2">Search Results:</Typography>
+          { recordCount === 0 && !showEmptyState
+            && (
+              <Typography>
+                No results found
+              </Typography>
+            )}
+          { recordCount > 0
+            && (
+              <Typography variant="body2">
+                {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+              </Typography>
+            )}
+        </Box>
+        { (recordCount > 0 || showActionsWhenEmpty) && children
           && (
-            <Typography>
-              No results found
-            </Typography>
-          )}
-        { recordCount > 0
-          && (
-            <Typography variant="body2">
-              {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-            </Typography>
+            <Box sx={styles.actions}>
+              { children }
+            </Box>
           )}
       </Box>
-      { (recordCount > 0 || showActionsWhenEmpty) && children
+      { recordCount === 0 && showEmptyState
         && (
-          <Box sx={styles.actions}>
-            { children }
-          </Box>
+          <ChplEmptyState
+            action={hasFilters && (
+              <Button
+                color="primary"
+                variant="text"
+                size="small"
+                sx={{ fontSize: '12px', minHeight: 0, padding: '2px 8px' }}
+                onClick={clearFilters}
+              >
+                Clear All Filters
+              </Button>
+            )}
+          >
+            { hasFilters
+              ? 'No results found. Try clearing your filters or search term to find more results.'
+              : 'No results found' }
+          </ChplEmptyState>
         )}
-    </Box>
+    </>
   );
 }
 
@@ -125,6 +160,7 @@ ChplSearchResultControls.propTypes = {
   pageEnd: number.isRequired,
   children: node,
   fadeBackground: string,
+  showEmptyState: bool,
   showActionsWhenEmpty: bool,
   sticky: bool,
   wrapActions: bool,
