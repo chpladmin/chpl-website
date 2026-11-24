@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Web UI for CHPL (Certified Health IT Product List), a healthit.gov site. A React single-page app routed with @uirouter/react. It was an AngularJS 1.8 shell until the router migration; if you find a stray reference to Angular, it is stale. Yarn 2+ (`packageManager: yarn@4.18.0`) is required — run `corepack enable` if `yarn` isn't already the right version.
+Web UI for CHPL (Certified Health IT Product List), a healthit.gov site. A React single-page app routed with @uirouter/react. It was an AngularJS 1.8 shell until the router migration; if you find a stray reference to Angular, it is stale. Yarn 2+ (`packageManager: yarn@4.19.0`) is required — run `corepack enable` if `yarn` isn't already the right version.
 
 ## Commands
 
