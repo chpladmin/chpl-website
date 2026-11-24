@@ -1,5 +1,27 @@
 # Release Notes
 
+## Version 14.14.0
+_23 November 2026_
+
+### Features
+* Add skeleton building blocks for page loading states
+
+### User Interface Updates
+* Rename ONC Compliance Dashboard report to Direct Review Activities
+* Update the Direct Review Activities report on the ONC Compliance Dashboard
+* Remove RWT Plans from the Real World Testing chart
+* Remove Measures from the Listing Attributes chart
+
+### Bug Fixes
+* Stop the password reset page from taking over the header login panel
+* Send users to the home page after they sign in from a password reset
+* Show a report's saved changes when it is edited again straight away
+
+### Flagged Features
+* Create Real World Testing Results charts to meet HTI-5 requirements
+
+---
+
 ## Version 14.13.1
 _9 November 2026_
 

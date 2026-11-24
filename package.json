@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "14.13.1",
+  "version": "14.14.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -47,7 +47,7 @@
     "react-moment": "^1.1.3",
     "react-redux": "^9.3.0",
     "regenerator-runtime": "^0.14.1",
-    "swagger-ui-react": "^4.1.3",
+    "swagger-ui-react": "^5.35.0",
     "yup": "^0.32.11",
     "zxcvbn": "^4.4.2"
   },

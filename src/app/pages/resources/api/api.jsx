@@ -112,7 +112,7 @@ const styles = {
         background: '#eeeeee',
         color: '#3b495f',
       },
-      '& .parameter__name .required span': {
+      '& .parameter__name.required span': {
         color: palette.error,
         fontSize: '24px',
         verticalAlign: 'middle',
