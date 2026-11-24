@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { arrayOf, func, object } from 'prop-types';
 
 import { useFetchApiKeyActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSearchResultCard, ChplSortControls } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import { ChplSearchResultCard, ChplSearchResultControls, ChplSortControls } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { utilStyles } from 'themes';
@@ -44,33 +45,30 @@ function ChplApiKeysView({ dispatch, apiKeys: initialApiKeys }) {
 
   return (
     <>
-      <Box sx={styles.headerContainer}>
-        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-          <Typography variant="subtitle2">
-            API Keys
-          </Typography>
-          <Typography variant="body2">
-            {`(${apiKeys.length} Result${apiKeys.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box sx={styles.tableResultsHeaderContainer}>
-          <Box display="flex" alignItems="center" gap="4px">
-            <ChplSortControls
-              sortOptions={sortOptions}
-              orderBy={orderBy}
-              order={order}
-              onSort={handleSort}
-            />
-            <ChplSystemMaintenanceActivity
-              fetch={useFetchApiKeyActivity}
-              title="API Keys History"
-            />
-          </Box>
-        </Box>
-      </Box>
-      <Box sx={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+      <ChplSearchResultControls
+        recordCount={apiKeys.length}
+        pageStart={1}
+        pageEnd={apiKeys.length}
+        sticky={false}
+        wrapActions
+        showEmptyState
+        sx={resultsHeaderSx}
+      >
+        <ChplSortControls
+          sortOptions={sortOptions}
+          orderBy={orderBy}
+          order={order}
+          onSort={handleSort}
+        />
+        <ChplSystemMaintenanceActivity
+          fetch={useFetchApiKeyActivity}
+          title="API Keys History"
+        />
+      </ChplSearchResultControls>
+      <Box>
         {apiKeys.map((key) => (
           <ChplSearchResultCard
+            sx={resultCardSx}
             key={key.key}
             cardTitle="User"
             cardTitleValue={key.name}

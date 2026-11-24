@@ -3,6 +3,7 @@ import { Box, IconButton } from '@mui/material';
 import { arrayOf, shape } from 'prop-types';
 import InfoIcon from '@mui/icons-material/Info';
 
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
 import {
   ChplSearchResultCard,
   ChplSearchResultControls,
@@ -62,6 +63,9 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
       />
       <ChplFilterLayout>
         <ChplSearchResultControls
+          showEmptyState
+          sx={resultsHeaderSx}
+          wrapActions
           recordCount={g1g2.length}
           pageStart={g1g2.length > 0 ? 1 : 0}
           pageEnd={g1g2.length}
@@ -78,6 +82,7 @@ function ChplG1g2View({ g1g2: initialG1g2 }) {
           { g1g2
             .map((item) => (
               <ChplSearchResultCard
+                sx={resultCardSx}
                 key={`${item.id}`}
                 cardTitle="Name"
                 cardTitleValue={item.name}

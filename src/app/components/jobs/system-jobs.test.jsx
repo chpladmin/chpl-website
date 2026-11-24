@@ -1,11 +1,16 @@
 import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
+import { Provider } from 'react-redux';
 
 import ChplJobs from './system-jobs';
 
 import { useFetchJobTypes, useFetchSystemTriggers } from 'api/jobs';
+import widgetReducer from 'components/action-widget/widget.slice';
 import { UserContext } from 'shared/contexts';
+
+const makeStore = () => configureStore({ reducer: { widget: widgetReducer } });
 
 jest.mock('api/jobs', () => ({
   useDeleteTrigger: () => ({ mutate: jest.fn() }),
@@ -17,11 +22,13 @@ jest.mock('api/jobs', () => ({
 const jobTypes = [{ name: 'A job', description: 'Does things', group: 'systemJobs' }];
 
 const renderAs = (roles) => render(
-  <SnackbarProvider>
-    <UserContext.Provider value={{ hasAnyRole: (r) => r.some((role) => roles.includes(role)), hasAuthorityOn: () => false }}>
-      <ChplJobs />
-    </UserContext.Provider>
-  </SnackbarProvider>,
+  <Provider store={makeStore()}>
+    <SnackbarProvider>
+      <UserContext.Provider value={{ hasAnyRole: (r) => r.some((role) => roles.includes(role)), hasAuthorityOn: () => false }}>
+        <ChplJobs />
+      </UserContext.Provider>
+    </SnackbarProvider>
+  </Provider>,
 );
 
 describe('the System Jobs card', () => {

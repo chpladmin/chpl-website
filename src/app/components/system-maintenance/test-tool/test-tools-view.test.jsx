@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 import ChplTestToolsView from './test-tools-view';
 
+import widgetReducer from 'components/action-widget/widget.slice';
 import { FilterProvider } from 'components/filter';
 import pageStateReducer from 'components/page-state/pageState.slice';
 
@@ -33,7 +34,7 @@ const testTools = deepFreeze([
 describe('the test tools list', () => {
   it('sorts the tools by value, ignoring case, and lists each one\'s criteria in order, without reordering them', () => {
     render(
-      <Provider store={configureStore({ reducer: { pageState: pageStateReducer } })}>
+      <Provider store={configureStore({ reducer: { pageState: pageStateReducer, widget: widgetReducer } })}>
         <FilterProvider filters={[]} storageKey="test-testTools">
           <ChplTestToolsView testTools={testTools} dispatch={jest.fn()} />
         </FilterProvider>

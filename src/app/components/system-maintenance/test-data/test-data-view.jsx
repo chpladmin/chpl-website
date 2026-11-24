@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { arrayOf, object } from 'prop-types';
 
-import { ChplSearchResultCard } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import { ChplSearchResultCard, ChplSearchResultControls } from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
-import { utilStyles } from 'themes';
-
-const styles = {
-  ...utilStyles,
-};
 
 function ChplTestDataView({ testData: initialTestData }) {
   const [testData, setTestData] = useState([]);
@@ -28,21 +24,20 @@ function ChplTestDataView({ testData: initialTestData }) {
 
   return (
     <>
-      <Box sx={styles.headerContainer}>
-        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-          <Typography variant="subtitle2">
-            Test Data
-          </Typography>
-          <Typography variant="body2">
-            {`(${testData.length} Result${testData.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="4px" />
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+      <ChplSearchResultControls
+        recordCount={testData.length}
+        pageStart={1}
+        pageEnd={testData.length}
+        sticky={false}
+        wrapActions
+        showEmptyState
+        sx={resultsHeaderSx}
+      />
+      <Box>
         { testData
           .map((item) => (
             <ChplSearchResultCard
+              sx={resultCardSx}
               key={`${item.id}`}
               cardTitle="Name"
               cardTitleValue={item.name}

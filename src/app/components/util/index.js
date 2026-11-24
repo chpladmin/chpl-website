@@ -2,6 +2,7 @@ import ChplAvatar from './avatar';
 import ChplConfirmation from './confirmation';
 import ChplCriterionTitle from './criterion-title';
 import ChplDialogTitle from './chpl-dialog-title';
+import ChplEmptyState from './chpl-empty-state';
 import ChplEllipsis from './chpl-ellipsis';
 import ChplLink from './chpl-link';
 import ChplPageBody from './chpl-page-body';
@@ -33,6 +34,7 @@ export {
   ChplConfirmation,
   ChplCriterionTitle,
   ChplDialogTitle,
+  ChplEmptyState,
   ChplEllipsis,
   ChplLink,
   ChplLoadingCards,

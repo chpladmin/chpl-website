@@ -42,10 +42,10 @@ import ChplConformanceMethods from 'components/system-maintenance/conformance-me
 import ChplCqms from 'components/system-maintenance/cqm/cqms';
 import ChplFunctionalitiesTested from 'components/system-maintenance/functionality-tested/functionalities-tested';
 import ChplG1g2 from 'components/system-maintenance/g1g2/g1g2';
-import ChplManageSubscriptions from 'pages/subscriptions/manage-subscriptions';
 import ChplOptionalStandards from 'components/system-maintenance/optional-standard/optional-standards';
 import ChplQmsStandards from 'components/system-maintenance/qms-standard/qms-standards';
 import ChplStandards from 'components/system-maintenance/standard/standards';
+import ChplSubscriptions from 'components/system-maintenance/subscription/subscriptions';
 import ChplSvaps from 'components/system-maintenance/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
 import ChplTargetedUsers from 'components/system-maintenance/targeted-user/targeted-users';
@@ -353,7 +353,7 @@ function ChplSystemMaintenance() {
               { active === 'optionalStandards' && <ChplOptionalStandards /> }
               { active === 'qmsStandards' && <ChplQmsStandards /> }
               { active === 'standards' && <ChplStandards /> }
-              { active === 'subscriptions' && <ChplManageSubscriptions /> }
+              { active === 'subscriptions' && <ChplSubscriptions /> }
               { active === 'svaps' && <ChplSvaps /> }
               { active === 'systemJobs' && <ChplSystemJobs /> }
               { active === 'targetedUsers' && <ChplTargetedUsers /> }

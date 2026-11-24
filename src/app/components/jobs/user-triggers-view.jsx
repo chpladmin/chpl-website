@@ -5,7 +5,13 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import { arrayOf, func } from 'prop-types';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { compareStrings } from 'services/sort.service';
 import { acb as acbType, trigger as triggerType } from 'shared/prop-types';
@@ -14,20 +20,6 @@ const sortOptions = [
   { property: 'email', text: 'Email' },
   { property: 'jobName', text: 'Type' },
 ];
-
-const styles = {
-  headerContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '16px',
-  },
-  resultsContainer: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'center',
-  },
-};
 
 function ChplUserTriggersView({
   acbs = [],
@@ -78,20 +70,22 @@ function ChplUserTriggersView({
           { triggers.length > 0
             && (
               <>
-                <Box sx={styles.headerContainer}>
-                  <Box sx={styles.resultsContainer}>
-                    <Typography variant="subtitle2">Scheduled Reports:</Typography>
-                    <Typography variant="body2">
-                      {`(${triggers.length} Result${triggers.length !== 1 ? 's' : ''})`}
-                    </Typography>
-                  </Box>
+                <ChplSearchResultControls
+                  recordCount={triggers.length}
+                  pageStart={1}
+                  pageEnd={triggers.length}
+                  sticky={false}
+                  wrapActions
+                  showEmptyState
+                  sx={resultsHeaderSx}
+                >
                   <ChplSortControls
                     sortOptions={sortOptions}
                     orderBy={orderBy}
                     order={order}
                     onSort={handleSort}
                   />
-                </Box>
+                </ChplSearchResultControls>
                 <Box style={{ maxHeight: 'calc(100vh - 400px)', overflow: 'auto', padding: '0 16px' }}>
                   { triggers.map((item) => {
                     const fieldGroups = [
@@ -113,6 +107,7 @@ function ChplUserTriggersView({
 
                     return (
                       <ChplSearchResultCard
+                        sx={resultCardSx}
                         key={`${item.name}-${item.job.name}`}
                         cardTitle="Report Name"
                         cardTitleValue={item.name}
