@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -15,6 +15,7 @@ import { arrayOf, bool } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
 import { getCqmDisplayValue, sortCqms } from 'services/cqms.service';
+import { ListingContext } from 'shared/contexts';
 import {
   certificationEdition,
   cqm as cqmType,
@@ -35,15 +36,18 @@ const styles = {
 };
 
 function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialViewAll }) {
+  const { listing } = useContext(ListingContext);
   const [viewAll, setViewAll] = useState(false);
   const [edition, setEdition] = useState(undefined);
+  const c4Result = listing?.certificationResults?.find((cr) => cr.criterion.number === '170.315 (c)(4)');
+  const isC4Removed = !c4Result || c4Result.criterion.removed;
 
   useEffect(() => {
     setEdition(initialEdition);
     setViewAll(initialViewAll);
   }, [initialEdition, initialViewAll]);
 
-  const getCriteriaCells = (cqm) => [1, 2, 3, 4].map((num) => {
+  const getCriteriaCells = (cqm) => (isC4Removed ? [1, 2, 3] : [1, 2, 3, 4]).map((num) => {
     const meets = cqm.criteria.find((crit) => crit.certificationNumber === `170.315 (c)(${num})`);
     return (
       <TableCell key={num}>
@@ -78,7 +82,8 @@ function ChplCqms({ cqms, edition: initialEdition = undefined, viewAll: initialV
                   <TableCell>170.315 (c)(1)</TableCell>
                   <TableCell>170.315 (c)(2)</TableCell>
                   <TableCell>170.315 (c)(3)</TableCell>
-                  <TableCell>170.315 (c)(4)</TableCell>
+                  { !isC4Removed
+                    && <TableCell>170.315 (c)(4)</TableCell>}
                 </>
               )}
             </TableRow>
