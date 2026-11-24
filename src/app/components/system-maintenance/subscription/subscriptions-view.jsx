@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  CardHeader,
-  List,
-  ListItem,
-} from '@mui/material';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { Box, Button } from '@mui/material';
 import { shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
-import { NotificationsOutlined, SubscriptionsOutlined } from '@mui/icons-material';
+import { NotificationsOutlined } from '@mui/icons-material';
 
 import { useFetchAllSubscriptions, usePostGetDeliveredNotifications } from 'api/subscriptions';
 import { usePageState } from 'components/page-state';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
 import {
   ChplLink,
   ChplLoadingCards,
@@ -27,7 +25,7 @@ import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'compone
 import { eventTrack } from 'services/analytics.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { compareStrings } from 'services/sort.service';
-import { palette, theme } from 'themes';
+import { palette } from 'themes';
 
 const sortOptions = [
   { property: 'subscriber_email', text: 'Email' },
@@ -35,72 +33,7 @@ const sortOptions = [
   { property: 'subscriber_role', text: 'Role' },
 ];
 
-const styles = {
-  card: {
-    overflow: 'visible',
-  },
-  linkWrap: {
-    overflowWrap: 'anywhere',
-  },
-  pageHeader: {
-    padding: '16px 32px',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  pageBody: {
-    display: 'grid',
-    backgroundColor: palette.background,
-  },
-  pageContent: {
-    display: 'grid',
-    gridTemplateRows: '3fr 1fr',
-  },
-  stickyColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'inset rgb(30 36 42 / 2%) -16px 0px 16px 0px',
-    backgroundColor: palette.background,
-    overflowWrap: 'anywhere',
-    [theme.breakpoints.up('sm')]: {
-      minWidth: '150px',
-    },
-  },
-  tableContainer: {
-    overflowWrap: 'normal',
-    border: `.5px solid ${palette.divider}`,
-    margin: '0px 32px',
-    width: 'auto',
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
-    margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-  },
-  resultsContainer: {
-    padding: '0 32px',
-  },
-  listContainer: {
-    fontSize: 'smaller',
-    paddingY: '4px',
-  },
-  listItem: {
-    paddingTop: 4,
-    paddingBottom: 4,
-  },
-  notificationsButton: {
-    fontSize: '14px',
-  },
-};
-
-function ChplManageSubscriptionsView({ analytics }) {
+function ChplSubscriptionsView({ analytics }) {
   const storageKey = 'storageKey-manageSubscriptionsView';
   const { enqueueSnackbar } = useSnackbar();
   const [orderBy, setOrderBy] = usePageState(`${storageKey}-orderBy`, 'creation_date');
@@ -112,6 +45,7 @@ function ChplManageSubscriptionsView({ analytics }) {
   const { mutate } = usePostGetDeliveredNotifications();
 
   const filterContext = useFilterContext();
+  const query = filterContext.queryString();
   const {
     data,
     isError,
@@ -123,7 +57,7 @@ function ChplManageSubscriptionsView({ analytics }) {
     pageNumber,
     pageSize,
     sortDescending,
-    query: filterContext.queryString(),
+    query,
   });
 
   // Old results stay on screen while a new sort, page or filter loads, and a sort shows as updating briefly even when it's cached
@@ -141,11 +75,21 @@ function ChplManageSubscriptionsView({ analytics }) {
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
 
+  // A new search, sort or page size starts again from the first page. Skipped
+  // on mount, so a page remembered from earlier in the session is kept
+  const resetKey = `${query}|${orderBy}|${sortDescending}|${pageSize}`;
+  const lastResetKey = useRef(resetKey);
+  useEffect(() => {
+    if (lastResetKey.current === resetKey) { return; }
+    lastResetKey.current = resetKey;
+    setPageNumber(0);
+  }, [resetKey, setPageNumber]);
+
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
       setPageNumber(0);
     }
-  }, [data?.recordCount, pageNumber, data?.results?.length]);
+  }, [data?.recordCount, pageNumber, data?.results?.length, setPageNumber]);
 
   const handleTableSort = (property, orderDirection) => {
     eventTrack({
@@ -175,39 +119,21 @@ function ChplManageSubscriptionsView({ analytics }) {
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
-    <Card sx={styles.card}>
-      <CardHeader
-        style={{ paddingLeft: '16px' }}
-        title={(
-          <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
-            <span>
-              Subscriptions
-              <SubscriptionsOutlined style={{ verticalAlign: 'middle', marginLeft: '8px' }} />
-            </span>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={getDeliveredMessages}
-              sx={styles.notificationsButton}
-              endIcon={<NotificationsOutlined fontSize="small" />}
-            >
-              Get Delivered Notifications
-            </Button>
-          </Box>
-        )}
+    <>
+      <ChplFilterSearchBar
+        sticky
+        fadeBackground={palette.white}
+        placeholder="Search by Subscriber Email or CHPL Product Number..."
       />
-      <Box sx={styles.pageBody} id="main-content" tabIndex="-1">
-        <ChplFilterSearchBar
-          sticky
-          fadeBackground={palette.white}
-          placeholder="Search by Subscriber Email or CHPL Product Number..."
-        />
-        <ChplFilterLayout>
-          { isLoading && (<ChplLoadingCards title fieldGroups={[2, [{ flex: '2 1 320px' }, { lines: 3 }]]} actions={0} controls={1} />)}
-          { !isLoading
+      <ChplFilterLayout>
+        { isLoading && (<ChplLoadingCards title fieldGroups={[2, [{ flex: '2 1 320px' }, { lines: 3 }]]} actions={0} controls={1} />)}
+        { !isLoading
           && (
             <>
               <ChplSearchResultControls
+                showEmptyState
+                sx={resultsHeaderSx}
+                wrapActions
                 recordCount={recordCount}
                 pageStart={pageStart}
                 pageEnd={pageEnd}
@@ -223,14 +149,23 @@ function ChplManageSubscriptionsView({ analytics }) {
                       isUpdating={isUpdating}
                     />
                   )}
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={getDeliveredMessages}
+                  endIcon={<NotificationsOutlined fontSize="small" />}
+                >
+                  Get Delivered Notifications
+                </Button>
               </ChplSearchResultControls>
               <ChplResultsUpdating isUpdating={isUpdating}>
                 { subscriptions.length > 0
                   && (
                     <>
-                      <Box sx={styles.resultsContainer}>
+                      <Box>
                         { subscriptions.map((item) => (
                           <ChplSearchResultCard
+                            sx={resultCardSx}
                             key={`${item.subscriberId}-${item.subscribedObjectId}`}
                             cardTitle="CHPL Product"
                             cardTitleValue={(
@@ -252,13 +187,13 @@ function ChplManageSubscriptionsView({ analytics }) {
                                 {
                                   label: 'Subscription Subjects',
                                   value: (
-                                    <List sx={styles.listContainer}>
+                                    <Box>
                                       { [...item.subscriptionSubjects]
                                         .sort(compareStrings)
                                         .map((sub) => (
-                                          <ListItem sx={styles.listItem} key={sub}>{ sub }</ListItem>
+                                          <Box key={sub}>{ sub }</Box>
                                         ))}
-                                    </List>
+                                    </Box>
                                   ),
                                 },
                               ],
@@ -280,15 +215,14 @@ function ChplManageSubscriptionsView({ analytics }) {
               </ChplResultsUpdating>
             </>
           )}
-        </ChplFilterLayout>
-      </Box>
-    </Card>
+      </ChplFilterLayout>
+    </>
   );
 }
 
-export default ChplManageSubscriptionsView;
+export default ChplSubscriptionsView;
 
-ChplManageSubscriptionsView.propTypes = {
+ChplSubscriptionsView.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }).isRequired,

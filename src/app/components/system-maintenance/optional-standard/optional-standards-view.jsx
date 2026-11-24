@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { arrayOf, shape } from 'prop-types';
 import InfoIcon from '@mui/icons-material/Info';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
-import { utilStyles } from 'themes';
+import { palette } from 'themes';
 
 const sortOptions = [
   { property: 'displayValue', text: 'Display Value' },
 ];
-
-const styles = {
-  ...utilStyles,
-};
 
 function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards }) {
   const [optionalStandards, setOptionalStandards] = useState([]);
@@ -54,26 +56,27 @@ function ChplOptionalStandardsView({ optionalStandards: initialOptionalStandards
         placeholder="Search by Display Value, Citation, or Description..."
       />
       <ChplFilterLayout>
-        <Box sx={styles.headerContainer}>
-          <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-            <Typography variant="subtitle2">Search Results</Typography>
-            <Typography variant="body2">
-              {`(${optionalStandards.length} Result${optionalStandards.length !== 1 ? 's' : ''})`}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center" gap="4px">
-            <ChplSortControls
-              sortOptions={sortOptions}
-              orderBy={orderBy}
-              order={order}
-              onSort={handleSort}
-            />
-          </Box>
-        </Box>
-        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        <ChplSearchResultControls
+          recordCount={optionalStandards.length}
+          pageStart={1}
+          pageEnd={optionalStandards.length}
+          fadeBackground={palette.white}
+          wrapActions
+          showEmptyState
+          sx={resultsHeaderSx}
+        >
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
+        </ChplSearchResultControls>
+        <Box>
           { optionalStandards
             .map((item) => (
               <ChplSearchResultCard
+                sx={resultCardSx}
                 key={`${item.id}`}
                 cardTitle="Display Value"
                 cardTitleValue={item.displayValue}

@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import { arrayOf } from 'prop-types';
 
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
 import {
   ChplLink,
   ChplSearchResultCard,
@@ -94,6 +95,9 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
       />
       <ChplFilterLayout>
         <ChplSearchResultControls
+          showEmptyState
+          sx={resultsHeaderSx}
+          wrapActions
           recordCount={certificationCriteria.length}
           pageStart={certificationCriteria.length > 0 ? 1 : 0}
           pageEnd={certificationCriteria.length}
@@ -110,6 +114,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
           {certificationCriteria
             .map((item) => (
               <ChplSearchResultCard
+                sx={resultCardSx}
                 key={`${item.id}`}
                 cardTitle="Number"
                 cardTitleValue={`${item.removed ? 'Removed | ' : ''}${item.number}`}

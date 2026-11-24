@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Button, Card, CardContent, Chip, Collapse, Skeleton, Typography, useMediaQuery,
+  Box, Button, Chip, Collapse, Skeleton, useMediaQuery,
 } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import LabelOffIcon from '@mui/icons-material/LabelOff';
@@ -11,6 +11,7 @@ import { bool, node } from 'prop-types';
 import ChplFilterChips from './filter-chips';
 import { useFilterContext } from './filter-context';
 
+import ChplEmptyState from 'components/util/chpl-empty-state';
 import { palette, theme } from 'themes';
 
 const styles = {
@@ -139,14 +140,9 @@ function ChplFilterLayout({ children = undefined, mobileOnly = false }) {
     return (
       <Box sx={mobileOnly ? styles.layoutContainerMobileOnly : styles.layoutContainer}>
         <Box sx={mobileOnly ? styles.sidebarMobileOnly : styles.sidebar}>
-          <Card sx={styles.emptyCard}>
-            <CardContent sx={styles.emptyContent}>
-              <LabelOffIcon sx={styles.emptyIcon} />
-              <Typography variant="body2">
-                No filters applied. Please use the Filters button to apply filters and view results.
-              </Typography>
-            </CardContent>
-          </Card>
+          <ChplEmptyState icon={LabelOffIcon} sx={styles.emptyCard}>
+            No filters applied. Please use the Filters button to apply filters and view results.
+          </ChplEmptyState>
         </Box>
         <Box sx={styles.content}>
           {children}

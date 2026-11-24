@@ -8,6 +8,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useFetchStandardsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
 import {
   ChplSearchResultCard,
   ChplSearchResultControls,
@@ -73,6 +74,9 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
       />
       <ChplFilterLayout>
         <ChplSearchResultControls
+          showEmptyState
+          sx={resultsHeaderSx}
+          wrapActions
           recordCount={standards.length}
           pageStart={standards.length > 0 ? 1 : 0}
           pageEnd={standards.length}
@@ -104,6 +108,7 @@ function ChplStandardsView({ dispatch, standards: initialStandards }) {
           { standards
             .map((item) => (
               <ChplSearchResultCard
+                sx={resultCardSx}
                 key={`${item.id}-${item.value}`}
                 cardTitle="Value"
                 cardTitleValue={`${item.value}${item.retired ? ' (Expired)' : ''}`}

@@ -1,30 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box, Button, IconButton, Typography,
+  Box, Button, IconButton,
 } from '@mui/material';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import InfoIcon from '@mui/icons-material/Info';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { ChplFilterLayout, ChplFilterSearchBar, useFilterContext } from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { testTool as testToolPropType } from 'shared/prop-types';
-import { utilStyles } from 'themes';
+import { palette } from 'themes';
 
 const sortOptions = [
   { property: 'value', text: 'Value' },
   { property: 'startDay', text: 'Start Date' },
   { property: 'endDay', text: 'End Date' },
 ];
-
-const styles = {
-  ...utilStyles,
-};
 
 function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const { hasAnyRole } = useContext(UserContext);
@@ -62,21 +64,22 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
         placeholder="Search by Value..."
       />
       <ChplFilterLayout>
-        <Box sx={styles.headerContainer}>
-          <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-            <Typography variant="subtitle2">Search Results</Typography>
-            <Typography variant="body2">
-              {`(${testTools.length} Result${testTools.length !== 1 ? 's' : ''})`}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center" gap="4px">
-            <ChplSortControls
-              sortOptions={sortOptions}
-              orderBy={orderBy}
-              order={order}
-              onSort={handleSort}
-            />
-            { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+        <ChplSearchResultControls
+          recordCount={testTools.length}
+          pageStart={1}
+          pageEnd={testTools.length}
+          fadeBackground={palette.white}
+          wrapActions
+          showEmptyState
+          sx={resultsHeaderSx}
+        >
+          <ChplSortControls
+            sortOptions={sortOptions}
+            orderBy={orderBy}
+            order={order}
+            onSort={handleSort}
+          />
+          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
             <Button
               onClick={() => dispatch({ action: 'edit', payload: {} })}
               id="add-new-test-tool"
@@ -86,13 +89,13 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
             >
               Add
             </Button>
-            )}
-          </Box>
-        </Box>
-        <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+          )}
+        </ChplSearchResultControls>
+        <Box>
           { testTools
             .map((item) => (
               <ChplSearchResultCard
+                sx={resultCardSx}
                 key={`${item.value}`}
                 cardTitle="Value"
                 cardTitleValue={`${item.value}${item.retired ? ' (Retired)' : ''}`}

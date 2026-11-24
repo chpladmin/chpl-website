@@ -1,7 +1,13 @@
 import React from 'react';
+import { configureStore } from '@reduxjs/toolkit';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 import ChplUserTriggersView from './user-triggers-view';
+
+import widgetReducer from 'components/action-widget/widget.slice';
+
+const makeStore = () => configureStore({ reducer: { widget: widgetReducer } });
 
 const acbs = Object.freeze([
   Object.freeze({ id: 1, name: 'Drummond Group', retired: true }),
@@ -32,14 +38,14 @@ const sortByType = () => {
 
 describe('the scheduled reports list', () => {
   it('starts sorted by email, and lists each ONC-ACB in name order', () => {
-    render(<ChplUserTriggersView acbs={acbs} triggers={triggers} />);
+    render(<Provider store={makeStore()}><ChplUserTriggersView acbs={acbs} triggers={triggers} /></Provider>);
 
     expect(reportNames()).toEqual(['Report A', 'Report B', 'Report C']);
     expect(screen.getByText('Drummond Group (Retired), ICSA Labs')).toBeInTheDocument();
   });
 
   it('re-sorts by the chosen option, without reordering the props', () => {
-    render(<ChplUserTriggersView acbs={acbs} triggers={triggers} />);
+    render(<Provider store={makeStore()}><ChplUserTriggersView acbs={acbs} triggers={triggers} /></Provider>);
     sortByType();
 
     expect(reportNames()).toEqual(['Report B', 'Report C', 'Report A']);
@@ -47,10 +53,10 @@ describe('the scheduled reports list', () => {
   });
 
   it('shows triggers fetched again in the chosen sort, matching the sort control', () => {
-    const { rerender } = render(<ChplUserTriggersView acbs={acbs} triggers={triggers} />);
+    const { rerender } = render(<Provider store={makeStore()}><ChplUserTriggersView acbs={acbs} triggers={triggers} /></Provider>);
     sortByType();
     fireEvent.click(screen.getByRole('button', { name: 'Sort descending' }));
-    rerender(<ChplUserTriggersView acbs={acbs} triggers={[...triggers.slice(1), trigger('Report D', 'd@example.com', 'Delta type')]} />);
+    rerender(<Provider store={makeStore()}><ChplUserTriggersView acbs={acbs} triggers={[...triggers.slice(1), trigger('Report D', 'd@example.com', 'Delta type')]} /></Provider>);
 
     expect(reportNames()).toEqual(['Report A', 'Report D', 'Report C']);
     expect(screen.getByRole('button', { name: 'Type' })).toBeInTheDocument();

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box, Button, IconButton, Typography,
+  Box, Button, IconButton,
 } from '@mui/material';
 import { arrayOf, func, shape } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,24 +9,21 @@ import InfoIcon from '@mui/icons-material/Info';
 
 import { useFetchConformanceMethodsActivity } from 'api/activity';
 import ChplSystemMaintenanceActivity from 'components/activity/system-maintenance-activity';
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
-import { utilStyles } from 'themes';
 
 const sortOptions = [
   { property: 'name', text: 'Name' },
 ];
-
-const styles = {
-  ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-};
 
 function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConformanceMethods }) {
   const { hasAnyRole } = useContext(UserContext);
@@ -55,27 +52,26 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
 
   return (
     <>
-      <Box sx={styles.headerContainer}>
-        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-          <Typography variant="subtitle2">
-            Conformance Methods
-          </Typography>
-          <Typography variant="body2">
-            {`(${conformanceMethods.length} Result${conformanceMethods.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="4px">
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-          <ChplSystemMaintenanceActivity
-            fetch={useFetchConformanceMethodsActivity}
-            title="Conformance Methods"
-          />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+      <ChplSearchResultControls
+        recordCount={conformanceMethods.length}
+        pageStart={1}
+        pageEnd={conformanceMethods.length}
+        sticky={false}
+        wrapActions
+        showEmptyState
+        sx={resultsHeaderSx}
+      >
+        <ChplSortControls
+          sortOptions={sortOptions}
+          orderBy={orderBy}
+          order={order}
+          onSort={handleSort}
+        />
+        <ChplSystemMaintenanceActivity
+          fetch={useFetchConformanceMethodsActivity}
+          title="Conformance Methods"
+        />
+        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
           <Button
             onClick={() => dispatch({ action: 'edit', payload: {} })}
             id="add-new-conformance-method"
@@ -85,13 +81,13 @@ function ChplConformanceMethodsView({ dispatch, conformanceMethods: initialConfo
           >
             Add
           </Button>
-          )}
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        )}
+      </ChplSearchResultControls>
+      <Box>
         { conformanceMethods
           .map((item) => (
             <ChplSearchResultCard
+              sx={resultCardSx}
               key={`${item.id}`}
               cardTitle="Name"
               cardTitleValue={`${item.removed ? 'Removed | ' : ''}${item.name}`}

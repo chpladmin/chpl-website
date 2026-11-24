@@ -69,7 +69,6 @@ function ChplSystemMaintenanceActivity({ fetch, title }) {
           variant="contained"
           onClick={handleClickOpen}
           endIcon={<TrackChangesOutlined />}
-          style={{ marginRight: '8px' }}
         >
           History
         </Button>

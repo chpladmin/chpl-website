@@ -1,29 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Box, Button, IconButton, Typography,
+  Box, Button, IconButton,
 } from '@mui/material';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import InfoIcon from '@mui/icons-material/Info';
 
-import { ChplSearchResultCard, ChplSortControls, ChplTooltip } from 'components/util';
+import { resultCardSx, resultsHeaderSx } from 'components/system-maintenance/results-styles';
+import {
+  ChplSearchResultCard,
+  ChplSearchResultControls,
+  ChplSortControls,
+  ChplTooltip,
+} from 'components/util';
 import { sortComparator } from 'components/util/sortable-headers';
 import { UserContext } from 'shared/contexts';
 import { accessibilityStandardType } from 'shared/prop-types';
-import { utilStyles } from 'themes';
 
 const sortOptions = [
   { property: 'name', text: 'Name' },
 ];
-
-const styles = {
-  ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-};
 
 function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: initialAccessibilityStandards }) {
   const { hasAnyRole } = useContext(UserContext);
@@ -48,23 +45,22 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
 
   return (
     <>
-      <Box sx={styles.headerContainer}>
-        <Box display="flex" flexDirection="row" gap="2px" alignItems="center">
-          <Typography variant="subtitle2">
-            Accessibility Standards
-          </Typography>
-          <Typography variant="body2">
-            {`(${accessibilityStandards.length} Result${accessibilityStandards.length !== 1 ? 's' : ''})`}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="4px">
-          <ChplSortControls
-            sortOptions={sortOptions}
-            orderBy={orderBy}
-            order={order}
-            onSort={handleSort}
-          />
-          { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
+      <ChplSearchResultControls
+        recordCount={accessibilityStandards.length}
+        pageStart={1}
+        pageEnd={accessibilityStandards.length}
+        sticky={false}
+        wrapActions
+        showEmptyState
+        sx={resultsHeaderSx}
+      >
+        <ChplSortControls
+          sortOptions={sortOptions}
+          orderBy={orderBy}
+          order={order}
+          onSort={handleSort}
+        />
+        { hasAnyRole(['chpl-admin', 'chpl-onc']) && (
           <Button
             onClick={() => dispatch({ action: 'edit', payload: {} })}
             id="add-new-accessibility-standard"
@@ -74,13 +70,13 @@ function ChplAccessibilityStandardsView({ dispatch, accessibilityStandards: init
           >
             Add
           </Button>
-          )}
-        </Box>
-      </Box>
-      <Box style={{ maxHeight: 'calc(100vh - 300px)', overflow: 'auto', padding: '16px' }}>
+        )}
+      </ChplSearchResultControls>
+      <Box>
         { accessibilityStandards
           .map((item) => (
             <ChplSearchResultCard
+              sx={resultCardSx}
               key={`${item.id}`}
               cardTitle="Name"
               cardTitleValue={item.name}

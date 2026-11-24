@@ -44,6 +44,8 @@ const styles = {
     },
   },
   primaryButton: {
+    padding: '0 16px',
+    fontSize: '12px',
     [theme.breakpoints.down('md')]: {
       flex: '1 1 auto',
       justifyContent: 'flex-start',
@@ -52,6 +54,8 @@ const styles = {
   directionButton: {
     borderLeft: `1px solid ${palette.primaryBorder}`,
     borderRadius: 0,
+    minWidth: '40px',
+    padding: '9px 4px',
   },
 };
 
@@ -121,7 +125,6 @@ function ChplSortControls({
           onClick={(e) => setSortMenuAnchor(e.currentTarget)}
           startIcon={showSpinner ? <CircularProgress size={16} aria-label="Sorting results" /> : <SortIcon />}
           color="primary"
-          style={{ padding: '0 16px', fontSize: '12px' }}
         >
           {getCurrentSortLabel()}
         </Button>
@@ -130,7 +133,6 @@ function ChplSortControls({
           aria-label={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
           title={`Sort ${order === 'asc' ? 'descending' : 'ascending'}`}
           sx={styles.directionButton}
-          style={{ minWidth: '40px', padding: '9px 4px' }}
           color="primary"
         >
           {order === 'asc' ? <ArrowUpwardIcon fontSize="small" /> : <ArrowDownwardIcon fontSize="small" />}
