@@ -9,6 +9,9 @@
 name: Nightly security scan
 
 on:
+  push:
+    branches:
+      [development]
   schedule:
     # 08:00 UTC, after the nightly image builds. Scheduled runs only fire on the default branch.
     - cron: '0 8 * * *'
